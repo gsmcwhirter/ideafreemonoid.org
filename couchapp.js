@@ -1,11 +1,9 @@
 var couchapp = require('couchapp')
     , path = require('path')
-    , watch = require('watch')
     , jade = require('jade')
     , ffi = require('node-ffi')
     , libc = new ffi.Library(null, {"system": ["int32", ["string"]]})
     , run = libc.system
-    , sys = require('util')
     ;
 
 var ddoc =
@@ -34,7 +32,7 @@ ddoc.validate_doc_update = function (newDoc, oldDoc, userCtx) {
 
 ddoc.templates = couchapp.loadFiles(path.join(__dirname, "templates"), {
     operators: [
-        function renderJade(content, options) {
+        function renderJade(content) {
             return jade.compile(content, {compileDebug: false, client: true});
         }
     ]

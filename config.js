@@ -5,6 +5,7 @@ module.exports = {
     , builder: {
           path: '/path/to/area'
         , python: '/path/to/python'
+        , redis_channel: "build tasks"
     }
     , couchdb: {
           host: "http://localhost:5984"
