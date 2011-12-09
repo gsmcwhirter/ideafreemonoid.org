@@ -1,0 +1,15 @@
+{
+    "name": "ideafreemonoid.org"
+  , "private": true
+  , "version": "0.0.1"
+  , "private": true
+  , "dependencies": {
+      "jade": ">= 0.16.4"
+    , "follow": ">= 0.4.0"
+    , "node-ffi": ">= 0.4.2"
+    , "request": ">= 2.2.0"
+    , "stylus": ">= 0.19.2"
+    , "watch": ">= 0.4.0"
+    , "couchapp": ">= 0.8.1"
+  }
+}

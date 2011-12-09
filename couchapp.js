@@ -1,0 +1,54 @@
+var couchapp = require('couchapp')
+  , path = require('path')
+  , watch = require('watch')
+  , jade = require('jade')
+  , ffi = require('node-ffi')
+  , libc = new ffi.Library(null, {
+        "system": ["int32", ["string"]]
+        })
+  , run = libc.system
+  , sys = require('util')
+  ;
+
+var ddoc =
+  { _id:'_design/app'
+  , rewrites :
+    [ {from:"/", to:'news.html'}
+    , {from:"/forums", to: 'forums.html'}
+    , {from:"/issues", to: 'issues.html'}
+    , {from:"/servers", to: 'servers.html'}
+    , {from:"/api", to:'../'}
+    , {from:"/api/*", to:'../*'}
+    , {from:"/*", to:'*'}
+    ]
+  }
+  ;
+
+ddoc.views = {};
+
+ddoc.validate_doc_update = function (newDoc, oldDoc, userCtx) {
+  if (newDoc._deleted === true && userCtx.roles.indexOf('_admin') === -1) {
+    throw "Only admin can delete documents on this database.";
+  }
+
+  if (userCtx.is_banned) {
+    throw "You have been banned.";
+  }
+}
+
+ddoc.templates = couchapp.loadFiles(path.join(__dirname, "templates"), {
+    operators: [
+        function renderJade(content, options) {
+            return jade.compile(content, {compileDebug: false, client: true});
+        }
+    ]
+});
+
+ddoc.changes = require("./backend");
+
+run(["jade", path.join(__dirname, "attachments")].join(" "));
+run(["stylus", path.join(__dirname, "attachments", "css", "layout.styl")].join(" "));
+
+couchapp.loadAttachments(ddoc, path.join(__dirname, 'attachments'));
+
+module.exports = ddoc;
