@@ -1,10 +1,11 @@
 {
     "name": "ideafreemonoid.org"
   , "private": true
-  , "version": "0.0.1"
+  , "version": "0.1"
   , "private": true
   , "dependencies": {
-      "jade": ">= 0.16.4"
+      "express": ">= 2.5.1"
+    , "jade": ">= 0.16.4"
     , "follow": ">= 0.4.0"
     , "node-ffi": ">= 0.4.2"
     , "request": ">= 2.2.0"

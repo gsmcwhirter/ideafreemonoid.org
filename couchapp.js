@@ -1,40 +1,36 @@
 var couchapp = require('couchapp')
-  , path = require('path')
-  , watch = require('watch')
-  , jade = require('jade')
-  , ffi = require('node-ffi')
-  , libc = new ffi.Library(null, {
-        "system": ["int32", ["string"]]
-        })
-  , run = libc.system
-  , sys = require('util')
-  ;
+    , path = require('path')
+    , watch = require('watch')
+    , jade = require('jade')
+    , ffi = require('node-ffi')
+    , libc = new ffi.Library(null, {"system": ["int32", ["string"]]})
+    , run = libc.system
+    , sys = require('util')
+    ;
 
 var ddoc =
-  { _id:'_design/app'
-  , rewrites :
-    [ {from:"/", to:'news.html'}
-    , {from:"/forums", to: 'forums.html'}
-    , {from:"/issues", to: 'issues.html'}
-    , {from:"/servers", to: 'servers.html'}
-    , {from:"/api", to:'../'}
-    , {from:"/api/*", to:'../*'}
-    , {from:"/*", to:'*'}
-    ]
-  }
-  ;
+    { _id:'_design/app'
+    , rewrites :
+        [ {from:"/", to:'blog.html'}
+        , {from:"/gametheory", to: 'gametheory.html'}
+        , {from:"/cv", to: 'cv.html'}
+        , {from:"/api", to:'../'}
+        , {from:"/api/*", to:'../*'}
+        , {from:"/*", to:'*'}
+        ]
+    }
+    ;
 
 ddoc.views = {};
 
 ddoc.validate_doc_update = function (newDoc, oldDoc, userCtx) {
-  if (newDoc._deleted === true && userCtx.roles.indexOf('_admin') === -1) {
-    throw "Only admin can delete documents on this database.";
-  }
-
-  if (userCtx.is_banned) {
-    throw "You have been banned.";
-  }
-}
+    if (newDoc._deleted === true && userCtx.roles.indexOf('_admin') === -1){
+        throw "Only admin can delete documents on this database.";
+    }
+    else if (userCtx.roles.indexOf('poster') === -1 && userCtx.roles.indexOf('_admin') === -1){
+        throw "You do not have permission to make changes.";
+    }
+};
 
 ddoc.templates = couchapp.loadFiles(path.join(__dirname, "templates"), {
     operators: [
@@ -44,7 +40,7 @@ ddoc.templates = couchapp.loadFiles(path.join(__dirname, "templates"), {
     ]
 });
 
-ddoc.changes = require("./backend");
+ddoc.changes = require("./couchwatcher");
 
 run(["jade", path.join(__dirname, "attachments")].join(" "));
 run(["stylus", path.join(__dirname, "attachments", "css", "layout.styl")].join(" "));
