@@ -2,9 +2,9 @@
 set logfile /var/log/monit.log
 
 check host nodejsnp with address 127.0.0.1
-    start program = "cd /var/nodeapps/EvoGames; sudo -u node-dev NODE_ENV=production nohup node server.js &"
-    stop program = "cd /var/nodeapps/EvoGames; node server.js stop"
-    if failed port 7080 protocol HTTP
+    start program = "cd /home/gmcwhirt/ideafreemonoid.org; sudo -u gmcwhirt NODE_ENV=production nohup node server.js &"
+    stop program = ""
+    if failed port 7060 protocol HTTP
         request /
         with timeout 10 seconds
         then restart
