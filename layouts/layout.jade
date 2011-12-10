@@ -21,20 +21,21 @@ html(class="no-js", lang="en")
   body
     #container
       header
+        h1 IdeaFreeMonoid
       #main(role="main")
+        p
+          | Under re-development (since I was stupid and forgot to check wheat compatibility before upgrading node to 0.6, and now I want to play around with other stuff).
+        block maincontent
       footer
 
     script(type="text/javascript", src="js/jquery-1.7.min.js")
     script(type="text/javascript", src="js/underscore-min.js")
-    script(type="text/javascript", src="js/backbone-min.js")
+    script(type="text/javascript", src="js/sproutcore.min.js")
     script(type="text/javascript", src="js/jquery.couch.js")
-    script(type="text/javascript", src="js/backbone-couchdb.js")
     script(type="text/javascript", src="js/plugins.js")
     script(type="text/javascript", src="js/runtime.min.js")
     script(type="text/javascript", src="js/site.main.js")
     block scripts
-    script(type="text/javascript")
-        $(function (){ /*Backbone.history.start({pushState: true});*/ });
 
     script(type="text/javascript")
       window._gaq = [['_setAccount','UAXXXXXXXX1'],['_trackPageview'],['_trackPageLoadTime']];
