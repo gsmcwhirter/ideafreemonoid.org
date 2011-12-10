@@ -26,14 +26,40 @@ html(class="no-js", lang="en")
     #container
       header
         #userbox
-        h1 IdeaFreeMonoid
+          script(type="text/html")
+            {{#view User.UserView}}
+            {{#if currentUser.is_connected}}
+            |  {{currentUser.name}}
+            |  {{#view SC.Button classBinding="isActive"
+            |    target="User.userController"
+            |    action="logout"}}
+            |    Log Out
+            |  {{/view}}
+            {{else}}
+            |  {{view User.UsernameEntry id="login-username" placeholder="Username"}}
+            |  {{view User.PasswordEntry id="login-password" placeholder="Password"}}
+            |  {{#view SC.Button classBinding="isActive"
+            |    target="User.userController"
+            |    action="login"}}
+            |    Log In
+            |  {{/view}}
+            {{/if}}
+            {{/view}}
+        h1#title IdeaFreeMonoid
+        nav#menu
+          ul
+            li
+              a(href="/") Blog
+            li
+              a(href="/cv") CV
+            li
+              a(href="/gametheory") Game Theory
       #main(role="main")
-        p
-          | Under re-development (since I was stupid and forgot to check wheat compatibility before upgrading node to 0.6, and now I want to play around with other stuff).
         block maincontent
       footer
 
     script(type="text/javascript", src="js/jquery-1.7.min.js")
+    script(type="text/javascript", src="js/showdown.js")
     script(type="text/javascript", src="js/underscore-min.js")
     script(type="text/javascript", src="js/sproutcore.min.js")
     script(type="text/javascript", src="js/jquery.couch.js")
@@ -43,7 +69,10 @@ html(class="no-js", lang="en")
     block scripts
 
     script(type="text/javascript")
-      window._gaq = [['_setAccount','UAXXXXXXXX1'],['_trackPageview'],['_trackPageLoadTime']];
+      window._gaq = typeof _gaq !== "undefined" ? _gaq || [] : [];
+      _gaq.push(['_setAccount', 'UA-18419792-1']);
+      _gaq.push(['_trackPageview']);
+      _gaq.push(['_trackPageLoadTime']);
       Modernizr.load({
         load: ('https:' == location.protocol ? '//ssl' : '//www') + '.google-analytics.com/ga.js'
       });

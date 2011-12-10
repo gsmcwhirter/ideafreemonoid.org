@@ -1,8 +1,27 @@
+/* Font sizing (px  pct)
+10   77
+11	 85
+12	 93
+13	 100
+14	 108
+15	 116
+16	 123.1
+17	 131
+18	 138.5
+19	 146.5
+20	 153.9
+21	 161.6
+22	 167
+23	 174
+24	 182
+25	 189
+26	 197
+*/
 body,
 html {
-  background-color: #ddd;
-  padding: 50px;
-  font: 14px 'Linden Hill', 'Lucinda Grande', Helvetica, Arial, sans-serif;
+  background-color: #fff;
+  padding: 35px 50px;
+  font: 108% 'Linden Hill', 'Lucinda Grande', Helvetica, Arial, sans-serif;
   color: #000;
 }
 h1,
@@ -12,19 +31,68 @@ h4,
 h5,
 h6 {
   font-family: 'Electrolize', sans-serif;
+  margin-bottom: 0.25em;
+}
+h1 {
+  font-size: 182%;
+}
+h2 {
+  font-size: 153.9%;
+}
+h3 {
+  font-size: 138.5%;
+}
+h4 {
+  font-size: 123.1%;
+}
+h5,
+h6 {
+  font-size: 116%;
 }
 a {
   color: #00b7ff;
 }
+h1#title {
+  float: left;
+  margin-top: 0;
+}
+nav#menu {
+  float: left;
+  margin-left: 2em;
+}
+nav#menu ul>li {
+  list-style-type: none;
+  display: block;
+  float: left;
+  margin-right: 1em;
+  font-family: 'Electrolize', sans-serif;
+}
 #userbox {
   float: right;
+  font-size: 85%;
+  margin-top: 15px;
+}
+#userbox button {
+  font-size: 85%;
+}
+#userbox input {
+  width: 8em;
+}
+#main {
+  clear: both;
 }
 #blog li {
   list-style-type: none;
   border-bottom: 1px solid #0bf;
   padding-bottom: 1em;
 }
-#blog li .byline {
-  font-size: 85%;
+#blog li .byline,
+#blog li .tagline,
+#blog li .editline {
+  font-size: 93%;
   color: #444;
+  padding: 0 1em;
+}
+#blog li .content {
+  padding: 1em;
 }

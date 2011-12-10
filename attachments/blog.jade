@@ -1,14 +1,31 @@
 extends ../layouts/layout
 
 block title
-  title News
+  title Blog
 
 block maincontent
+  p
+    | Under re-development (since I was stupid and forgot to check wheat 
+    | compatibility before upgrading node to 0.6, and now I want to play 
+    | around with other stuff).
   #blog
     script(type="text/html")
       {{#collection contentBinding="Blog.postsController" tagName="ul"}}
-      <h2>{{content.title}}</h2>
-      <div class="byline">{{content.authorsString}}</div>
+      {{#with content}}
+      |  <h2>{{title}}</h2>
+      |  <div class="byline">Posted: {{dateString}} by {{authorString}}</div>
+      |  {{#if tagString}}
+      |    <div class="tagline">Tags: {{{tagString}}}</div>
+      |  {{/if}}
+      |  <div class="content">{{{content}}}</div>
+      |  {{#if edits.length}}
+      |    <div class="editline">{{content.editString}}
+      |    {{#list content.edits tagClass="editlist"}}
+      |    Edited on {{edit_date}} by {{author}}
+      |    </div>
+      |    {{/list}}
+      |  {{/if}}
+      {{/with}}
       {{/collection}}
 
 block scripts
