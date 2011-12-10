@@ -26,7 +26,30 @@ server {
     }
 
     location / {
-        proxy_pass         http://127.0.0.1:5984/ideafreemonoid/_design/app/_rewrite;
+        proxy_pass         http://127.0.0.1:5984/ideafreemonoid/_design/app/_rewrite/;
+        proxy_redirect     off;
+
+        proxy_set_header    Host             $host;
+        proxy_set_header    X-Real-IP        $remote_addr;
+        proxy_set_header    X-Forwarded-For  $proxy_add_x_forwarded_for;
+        proxy_set_header    X-IFM-Proxy 1;
+        proxy_set_header    X-Forwarded-Secure 1;
+
+        client_max_body_size       10m;
+        client_body_buffer_size    128k;
+
+        proxy_connect_timeout      90;
+        proxy_send_timeout         90;
+        proxy_read_timeout         90;
+
+        proxy_buffer_size          4k;
+        proxy_buffers              4 32k;
+        proxy_busy_buffers_size    64k;
+        proxy_temp_file_write_size 64k;
+    }
+
+    location /session {
+        proxy_pass         http://127.0.0.1:5984/_session;
         proxy_redirect     off;
 
         proxy_set_header    Host             $host;
@@ -49,7 +72,7 @@ server {
     }
 
     location /build/ {
-        proxy_pass  http://127.0.0.1:7060
+        proxy_pass  http://127.0.0.1:7060/;
 
         proxy_redirect     off;
 

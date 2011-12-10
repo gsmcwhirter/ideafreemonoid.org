@@ -12,7 +12,6 @@ var ddoc =
         [ {from:"/", to:'blog.html'}
         , {from:"/gametheory", to:'gametheory.html'}
         , {from:"/cv", to:'cv.html'}
-        , {from:"/session", to:'../../../_session'}
         , {from:"/api", to:'../'}
         , {from:"/api/*", to:'../*'}
         , {from:"/*", to:'*'}
