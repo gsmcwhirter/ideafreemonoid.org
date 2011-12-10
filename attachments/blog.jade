@@ -5,10 +5,11 @@ block title
 
 block maincontent
   #blog
-    | {{#collection contentBinding="Blog.postsController" tagName="ul"}}
-    h2 {{content.title}}
-    .byline {{content.authors.join(", ")}}
-    | {{/collection}}
+    script(type="text/html")
+      {{#collection contentBinding="Blog.postsController" tagName="ul"}}
+      <h2>{{content.title}}</h2>
+      <div class="byline">{{content.authors.join(", ")}}</div>
+      {{/collection}}
 
 block scripts
   script(type="text/javascript", src="js/site.blog.js")

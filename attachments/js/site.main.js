@@ -1,4 +1,6 @@
-User = SC.Application.create();
+User = SC.Application.create({
+    rootElement: $("#userbox")
+});
 
 User.User = SC.Object.extend({
       type: "user"
