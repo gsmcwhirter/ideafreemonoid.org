@@ -68,7 +68,12 @@ function rclient_op(task){
 
 
 app.post('/', function (req, res, next){
-    var payload = req.body.payload
+    var payload = req.body.payload;
+
+    console.log(payload);
+    rclient_op({test: true});
+
+    res.end("ok");
 });
 
 rclient.on("ready", function (){
