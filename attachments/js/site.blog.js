@@ -15,6 +15,9 @@ Blog.Post = SC.Object.extend({
     , tags: []
     , edits: []
     , _deleted: false
+    , author_string: function (){
+        return this.authors.join(", ");
+    }
 });
 
 Blog.postsController = SC.ArrayProxy.create({
