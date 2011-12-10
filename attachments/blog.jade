@@ -3,5 +3,12 @@ extends ../layouts/layout
 block title
   title News
 
+block maincontent
+  #blog
+    | {{#collection contentBinding="Blog.postsController" tagName="ul"}}
+    h2 {{content.title}}
+    .byline {{content.authors.join(", ")}}
+    | {{/collection}}
+
 block scripts
   script(type="text/javascript", src="js/site.blog.js")

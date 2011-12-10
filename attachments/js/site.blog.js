@@ -1,4 +1,6 @@
-Blog = SC.Application.create();
+Blog = SC.Application.create({
+    rootElement: $("#blog")
+});
 
 Blog.Post = SC.Object.extend({
       type: "blog-post"
