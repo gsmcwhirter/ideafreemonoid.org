@@ -1,2 +1,3 @@
 node_modules
-config.live.jsattachments/*.html
+config.live.js
+attachments/*.html
