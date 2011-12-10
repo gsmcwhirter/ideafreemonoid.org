@@ -8,7 +8,7 @@ block maincontent
     script(type="text/html")
       {{#collection contentBinding="Blog.postsController" tagName="ul"}}
       <h2>{{content.title}}</h2>
-      <div class="byline">{{content.author_string}}</div>
+      <div class="byline">{{content.author_string()}}</div>
       {{/collection}}
 
 block scripts
