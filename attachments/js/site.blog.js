@@ -43,7 +43,7 @@ Blog.postsController = SC.ArrayProxy.create({
             , tags: tags || []
         });
 
-        this.pushObject(post);
+        this.unshiftObject(post);
     }
 
     , cleanPosts: function (){
