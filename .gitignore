@@ -1,3 +1,4 @@
 node_modules
 config.live.js
 attachments/*.html
+*.out
