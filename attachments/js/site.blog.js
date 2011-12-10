@@ -15,9 +15,14 @@ Blog.Post = SC.Object.extend({
     , tags: []
     , edits: []
     , _deleted: false
-    , author_string: function (){
-        return this.authors.join(", ");
-    }
+    , authorsString: function (){
+        if (this.authors && typeof this.authors.join === "function"){
+            return this.authors.join(", ");
+        }
+        else {
+            return this.authors;
+        }
+    }.property('authors')
 });
 
 Blog.postsController = SC.ArrayProxy.create({
@@ -49,7 +54,5 @@ Blog.postsController = SC.ArrayProxy.create({
         unpubPosts.forEach(this.removeObject, this);
 
     }
-
-
 });
 
