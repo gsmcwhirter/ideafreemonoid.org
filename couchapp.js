@@ -14,7 +14,7 @@ var ddoc =
         , {from:"/cv", to: 'cv.html'}
         , {from:"/api", to:'../'}
         , {from:"/api/*", to:'../*'}
-        , {from:"/*", to:'/*'}
+        , {from:"/*", to:'*'}
         ]
     }
     ;
