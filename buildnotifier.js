@@ -67,12 +67,13 @@ function rclient_op(task){
 }
 
 app.get('/', function (req, res, next){
+    console.log("Here");
     var fragment = req.param("_escaped_fragment_");
     if (fragment){
-        res.end(fragment); //TODO: real functionality
+        res.send(fragment); //TODO: real functionality
     }
     else {
-        res.end("not found", 404);
+        res.send("not found", 404);
     }
 });
 
