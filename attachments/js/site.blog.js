@@ -27,41 +27,6 @@ Blog.Post = SC.Object.extend({
     , _id: null
     , _rev: null
 
-    , content: function (){
-        return SDConverter.makeHtml(this.content_raw || "\n");
-    }.property('content_raw')
-
-    , authorString: function (){
-        if (this.authors && typeof this.authors.join === "function"){
-            return this.authors.join(", ");
-        }
-        else {
-            return this.authors;
-        }
-    }.property('authors')
-
-    , tagString: function (){
-        if (this.tags && this.tags.length){
-            _(this.tags).map(function(tag){
-                return "<a href=\"#!/tag/" + tag + "\">" + tag + "</a>";
-            }).join(", ");
-        }
-        else {
-            return "";
-        }
-    }.property('tags')
-
-    , dateString: function (){
-        if (this.display_date){
-            var date = new Date(this.display_date);
-
-            return date.toLocaleString();
-        }
-        else {
-            return "";
-        }
-    }.property('display_date')
-
     , editString: function (){
         if (this.edits && this.edits.length){
             var last = this.edits[this.edits.length - 1];
@@ -141,7 +106,28 @@ IFMAPI.getView("blogposts", {startkey: [true,0], endkey: [true, 1], include_docs
     }
 
     if (response && response.rows){
-        console.log(_(response.rows).pluck('doc'));
         Blog.postsController.set('content', _(response.rows).pluck('doc').map(function (doc){return Blog.Post.create(doc);}));
+    }
+});
+
+SC.Handlebars.registerHelper("formatTags", function (property){
+    var val = SC.getPath(this, property);
+    if (val && val.length){
+        _(this.tags).map(function(tag){
+            return "<a href=\"#!/tag/" + tag + "\">" + tag + "</a>"; //TODO: working links
+        }).join(", ");
+    }
+    else {
+        return "";
+    }
+});
+
+SC.Handlebars.registerHelper("formatAuthors", function (property){
+    var val = SC.getPath(this, property);
+    if (val && val.length){
+        return val.join(", "); //TODO: links
+    }
+    else {
+        return "";
     }
 });

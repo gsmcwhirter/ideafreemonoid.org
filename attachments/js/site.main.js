@@ -46,7 +46,18 @@ App.hideAll = function (){
     Gametheory.get("rootElement").hide();
 };
 
-SC.routes.add('', Blog, Blog.Router.index);
-SC.routes.add('cv', CV, CV.Router.index);
-SC.routes.add('gametheory', Gametheory, Gametheory.Router.index);
-//SC.routes.ping();
+SC.Handlebars.registerHelper("formatDate", function (property){
+    var val = SC.getPath(this, property);
+    if (val){
+        var date = new Date(val);
+        return date.toLocaleString();
+    }
+    else {
+        return "";
+    }
+});
+
+SC.Handlebars.registerHelper("parseMarkdown", function (property){
+    var val = SC.getPath(this, property);
+    return SDConverter.makeHtml(val || "\n");
+});

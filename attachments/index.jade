@@ -42,28 +42,33 @@ block maincontent
       | compatibility before upgrading node to 0.6, and now I want to play
       | around with other stuff).
     script(type="text/html")
-      {{#collection contentBinding="Blog.postsController" tagName="ul"}}
+      {{#collection contentBinding="Blog.postsController" tagName="ol"}}
       {{#with content}}
-      |  <h2>{{title}}</h2>
-      |  <div class="byline">Posted: {{dateString}} by {{authorString}}</div>
-      |  {{#if tagString}}
-      |    <div class="tagline">Tags: {{{tagString}}}</div>
-      |  {{/if}}
-      |  <div class="content">{{{content}}}</div>
-      |  {{#if edits.length}}
-      |    <div class="editline">{{content.editString}}
-      |    {{#list content.edits tagClass="editlist"}}
-      |    Edited on {{edit_date}} by {{author}}
-      |    </div>
-      |    {{/list}}
-      |  {{/if}}
+        h2 {{title}}
+        .byline Posted {{formatDate display_date}} by {{formatAuthors authors}}
+        .tagline Tags: {{formatTags tags}}
+        .content {{parseMarkdown content}}
+        .editline {{editString}}
+        |  {{#list edits tagClass="editlist" tagName="ol"}}
+        |    Edited on {{edit_date}} by {{author}}
+        |  {{/list}}
       {{/with}}
       {{/collection}}
+
   #cv
+    {{#collection contentBinding="CV.sectionsController" tagName="ol"}}
+    {{#with content}}
+      h2 {{title}}
+    {{/content}}
+    {{/collection}}
+
   #gametheory
 
 block scripts
+  script(type="text/javascript", src="js/site.api.js")
+  script(type="text/javascript", src="js/site.main.js")
   script(type="text/javascript", src="js/site.user.js")
   script(type="text/javascript", src="js/site.blog.js")
   script(type="text/javascript", src="js/site.cv.js")
   script(type="text/javascript", src="js/site.gametheory.js")
+  script(type="text/javascript", src="js/site.routes.js")
