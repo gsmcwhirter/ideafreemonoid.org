@@ -90,15 +90,6 @@ Blog.postsController = SC.ArrayController.create({
         });
 
     }
-
-    , cleanPosts: function (){
-        var deletedPosts = this.filterProperty('_deleted', true);
-        deletedPosts.forEach(this.removeObject, this);
-
-        var unpubPosts = this.filterProperty('is_published', false);
-        unpubPosts.forEach(this.removeObject, this);
-
-    }
 });
 
 IFMAPI.getView("blogposts", {startkey: [true,0], endkey: [true, 1], include_docs: true, descending: true}, function (err, response){

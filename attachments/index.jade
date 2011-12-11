@@ -52,11 +52,15 @@ block maincontent
       {{/collection}}
 
   #cv
-    {{#collection contentBinding="CV.sectionsController" tagName="ol"}}
-    {{#with content}}
-    h2 {{title}}
-    {{/content}}
-    {{/collection}}
+    script(type="text/html")
+      {{#collection contentBinding="CV.sectionsController" tagName="ol"}}
+      {{#with content}}
+      .cvsection
+        .updated Last updated {{formatDate last_updated}}
+        h2 {{title}}
+        .content {{parseMarkdown content_raw}}
+      {{/content}}
+      {{/collection}}
 
   #gametheory
 
