@@ -41,9 +41,9 @@ block maincontent
       {{#collection contentBinding="Blog.postsController" tagName="ol"}}
       {{#with content}}
       h2 {{title}}
-      .byline Posted {{formatDate display_date}} by {{formatAuthors authors}}
-      .tagline Tags: {{formatTags tags}}
-      .content {{parseMarkdown content_raw}}
+      .byline Posted {{formatDate display_date}} by {{{formatAuthors authors}}}
+      .tagline Tags: {{{formatTags tags}}}
+      .content {{{parseMarkdown content_raw}}}
       .editline {{editString}}
       |  {{#list edits tagClass="editlist" tagName="ol"}}
       |    Edited on {{edit_date}} by {{author}}
