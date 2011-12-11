@@ -2,7 +2,7 @@ server {
     listen 80;
     server_name ideafreemonoid.org www.ideafreemonoid.org;
 
-    rewrite ^ https://www.ideafreemonoid.org$request_uri? permanent;
+    rewrite ^ https://www.ideafreemonoid.org$uri permanent;
 }
 
 # HTTPS server
@@ -26,7 +26,7 @@ server {
     }
 
     if ($args ~ _escaped_fragment_=){
-        rewrite ^ /backend$uri?$args last;
+        rewrite ^ /backend$uri last;
     }
 
     location / {
