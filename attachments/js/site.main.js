@@ -40,10 +40,24 @@ window.App = SC.Application.create({
     rootElement: $("h1#title")
 });
 
+App.defaultPageTitle = "" + document.title;
+
 App.hideAll = function (){
     Blog.get("rootElement").hide();
     CV.get("rootElement").hide();
     Gametheory.get("rootElement").hide();
+
+    this.setTitle("");
+};
+
+App.setTitle = function (title){
+    $("span#pagetitle").text(title);
+    if (title){
+        document.title = title + " - " + this.defaultPageTitle;
+    }
+    else {
+        document.title = this.defaultPageTitle;
+    }
 };
 
 SC.Handlebars.registerHelper("formatDate", function (property){

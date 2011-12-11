@@ -6,6 +6,7 @@ CV.Router = {
     index: function (params){
         App.hideAll();
         this.get("rootElement").show();
+        App.setTitle("CV");
     }
 }
 

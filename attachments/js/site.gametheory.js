@@ -6,5 +6,6 @@ Gametheory.Router = {
     index: function (params){
         App.hideAll();
         this.get("rootElement").show();
+        App.setTitle("Game Theory");
     }
-}
+};
