@@ -20,7 +20,7 @@ CV.Section = SC.Object.extend({
     , _rev: null
 });
 
-CV.sectionsController = SC.Object.create({
+CV.sectionsController = SC.ArrayProxy.create({
     content: []
 
     , createSection: function (title, content, order){
