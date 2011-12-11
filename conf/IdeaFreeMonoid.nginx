@@ -48,7 +48,7 @@ server {
         proxy_temp_file_write_size 64k;
     }
 
-    location /session {
+    location /api/_session {
         proxy_pass         http://127.0.0.1:5984/_session;
         proxy_redirect     off;
 
@@ -71,7 +71,7 @@ server {
         proxy_temp_file_write_size 64k;
     }
 
-    location /uuids {
+    location /api/_uuids {
         proxy_pass         http://127.0.0.1:5984/_uuids;
         proxy_redirect     off;
 
