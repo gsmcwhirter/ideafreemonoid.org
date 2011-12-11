@@ -65,7 +65,7 @@ CV.sectionsController = SC.ArrayProxy.create({
 
     }
     , resort: function (){
-        this.set('content', _(this.get('content').sortBy(function (section){return section.order;})));
+        this.set('content', _(this.get('content')).sortBy(function (section){return section.order;}));
     }
 });
 
