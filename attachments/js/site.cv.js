@@ -56,12 +56,16 @@ CV.sectionsController = SC.ArrayProxy.create({
                     if (response && response.ok){
                         section._rev = response.rev;
 
-                        self.unshiftObject(CV.Section.create(section));
+                        self.pushObject(CV.Section.create(section));
+                        self.resort();
                     }
                 });
             }
         });
 
+    }
+    , resort: function (){
+        this.set('content', _(this.get('content').sortBy(function (section){return section.order;})));
     }
 });
 
