@@ -1,4 +1,38 @@
-User = SC.Application.create({
+function zeroPad(str, length){
+        length = length || 2;
+            
+        if (str){
+            str = "" + str;
+        }
+        else {
+            str = "";
+        }
+
+        if (str.length >= length){
+            return str;
+        }
+        else {
+            while (str.length < length){
+                str = "0" + str;
+            }
+
+            return str;
+        }
+}
+
+function dateISOString(date){
+    return  zeroPad(date.getUTCFullYear(), 4) + "-"
+            + zeroPad(date.getUTCMonth() + 1, 2) + "-"
+            + zeroPad(date.getUTCDate(), 2) + "T"
+            + zeroPad(date.getUTCHours(), 2) + ":"
+            + zeroPad(date.getUTCMinutes(), 2) + ":"
+            + zeroPad(date.getUTCSeconds(), 2) + "Z";
+}
+
+window.SDConverter = new Showdown.converter();
+
+
+window.User = SC.Application.create({
     rootElement: $("#userbox")
 });
 
