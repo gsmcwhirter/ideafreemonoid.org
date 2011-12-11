@@ -26,7 +26,7 @@ server {
     }
 
     if ($args ~ _escaped_fragment_=){
-        rewrite /spider/$uri?$args;
+        rewrite ^ /spider/$uri?$args;
     }
 
     location / {
