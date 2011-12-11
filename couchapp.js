@@ -9,9 +9,7 @@ var couchapp = require('couchapp')
 var ddoc =
     { _id:'_design/app'
     , rewrites :
-        [ {from:"/", to:'blog.html'}
-        , {from:"/gametheory", to:'gametheory.html'}
-        , {from:"/cv", to:'cv.html'}
+        [ {from:"/", to:'index.html'}
         , {from:"/api", to:'./'}
         , {from:"/api/*", to:'../../*'}
         , {from:"/*", to:'*'}

@@ -4,11 +4,11 @@ block title
   | Blog - 
 
 block maincontent
-  p
-    | Under re-development (since I was stupid and forgot to check wheat 
-    | compatibility before upgrading node to 0.6, and now I want to play 
-    | around with other stuff).
   #blog
+    p
+      | Under re-development (since I was stupid and forgot to check wheat 
+      | compatibility before upgrading node to 0.6, and now I want to play 
+      | around with other stuff).
     script(type="text/html")
       {{#collection contentBinding="Blog.postsController" tagName="ul"}}
       {{#with content}}
@@ -27,6 +27,10 @@ block maincontent
       |  {{/if}}
       {{/with}}
       {{/collection}}
+  #cv
+  #gametheory
 
 block scripts
   script(type="text/javascript", src="js/site.blog.js")
+  script(type="text/javascript", src="js/site.cv.js")
+  script(type="text/javascript", src="js/site.gametheory.js")
