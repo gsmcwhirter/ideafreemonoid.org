@@ -72,7 +72,7 @@ app.get('/', function (req, res, next){
         res.end(fragment); //TODO: real functionality
     }
     else {
-        res.end(404);
+        res.end("not found", 404);
     }
 });
 

@@ -26,7 +26,7 @@ server {
     }
 
     if ($args ~ _escaped_fragment_=){
-        rewrite ^ /backend/$uri?$args;
+        rewrite ^ /backend$uri?$args last;
     }
 
     location / {
