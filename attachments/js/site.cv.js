@@ -55,7 +55,7 @@ CV.sectionsController = SC.ArrayProxy.create({
                     if (response && response.ok){
                         section._rev = response.rev;
 
-                        self.unshiftObject(CV.Section.create(post));
+                        self.unshiftObject(CV.Section.create(section));
                     }
                 });
             }
