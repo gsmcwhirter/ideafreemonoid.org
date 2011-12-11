@@ -43,7 +43,7 @@ block maincontent
       h2 {{title}}
       .byline Posted {{formatDate display_date}} by {{formatAuthors authors}}
       .tagline Tags: {{formatTags tags}}
-      .content {{parseMarkdown content}}
+      .content {{parseMarkdown content_raw}}
       .editline {{editString}}
       |  {{#list edits tagClass="editlist" tagName="ol"}}
       |    Edited on {{edit_date}} by {{author}}

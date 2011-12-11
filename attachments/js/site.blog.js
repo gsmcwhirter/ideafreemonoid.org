@@ -60,6 +60,7 @@ Blog.postsController = SC.ArrayController.create({
             , display_date: now
             , content_raw: content || lipsum || "\n" /*REMOVE lipsum*/
             , is_published: true /*REMOVE*/
+            , tags: ["testing"] /*REMOVE*/
         };
 
         var self = this;
