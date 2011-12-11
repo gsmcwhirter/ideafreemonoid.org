@@ -66,8 +66,17 @@ function rclient_op(task){
     }
 }
 
+app.get('/', function (req, res, next){
+    var fragment = req.param("_escaped_fragment_");
+    if (fragment){
+        res.end(fragment); //TODO: real functionality
+    }
+    else {
+        res.end(404);
+    }
+});
 
-app.post('/', function (req, res, next){
+app.post('/build/', function (req, res, next){
     var payload = req.body.payload;
 
     console.log(payload);
