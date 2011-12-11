@@ -76,23 +76,46 @@ Blog.postsController = SC.ArrayController.create({
             authors = [authors];
         }
 
-        //console.log(authors);
-
         var now = dateISOString(new Date());
 
-        //console.log(now);
-
-        var post = Blog.Post.create({
-              title: title
+        var post = {
+              type: "blog-post"
+            , title: title
             , slug: slug
             , authors: authors
             , tags: tags || []
             , created_at: now
             , display_date: now
             , content_raw: content || lipsum || "\n" /*REMOVE lipsum*/
+            , is_published: true /*REMOVE*/
+        };
+
+        var self = this;
+
+        IFMAPI.getUUIDs(function (err, response){
+            if (err){
+                //TODO: error handling
+            }
+
+            if (response && response.uuids){
+                post._id = response.uuids[0];
+
+                IFMAPI.putDoc(post._id, post, function (err, response){
+                    if (err){
+                        //TODO: error handling
+                    }
+                    
+                    console.log(response);
+
+                    if (response && response.ok){
+                        post._rev = response.rev;
+
+                        self.unshiftObject(Blog.Post.create(post));
+                    }
+                });
+            }
         });
 
-        this.unshiftObject(post);
     }
 
     , cleanPosts: function (){
@@ -105,4 +128,13 @@ Blog.postsController = SC.ArrayController.create({
     }
 });
 
+IFMAPI.getView("blogposts", {startkey: [true,0], endkey: [true, 1], include_docs: true, descending: true}, function (err, response){
+    if (err){
+        //TODO: error handling
+    }
 
+    if (response && response.rows){
+        console.log(_(response.rows).pluck('doc'));
+        Blog.postsController.set('content', _(response.rows).pluck('doc').map(function (doc){return Blog.Post.create(doc);}));
+    }
+});

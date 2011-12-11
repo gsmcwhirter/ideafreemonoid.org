@@ -74,19 +74,19 @@ ddoc.validate_doc_update = function (newDoc, oldDoc, userCtx) {
     if (newDoc._deleted === true && userCtx.roles.indexOf('_admin') === -1){
         throw "Only admin can delete documents on this database.";
     }
-    else if (userCtx.roles.indexOf('poster') === -1 && userCtx.roles.indexOf('_admin') === -1){
+    else if (userCtx.roles.indexOf('poster') === -1 && userCtx.roles.indexOf("builder") === -1 && userCtx.roles.indexOf('_admin') === -1){
         throw "You do not have permission to make changes.";
     }
 
-    if (oldDoc && typeof oldDoc.build_status !== "undefined" && userCtx.roles.indexOf('builder') === -1 && userCtx.roles.indexOf('_admin') === -1){
+    if (!newDoc._deleted && oldDoc && typeof oldDoc.build_status !== "undefined" && userCtx.roles.indexOf('builder') === -1 && userCtx.roles.indexOf('_admin') === -1){
         throw "You may not change the build status.";
     }
 
-    if (oldDoc && oldDoc.type != newDoc.type){
+    if (!newDoc._deleted && oldDoc && oldDoc.type != newDoc.type){
         throw "You may not change a document's type.";
     }
 
-    if (oldDoc && oldDoc.created_at && oldDoc.created_at !== newDoc.created_at){
+    if (!newDoc._deleted && oldDoc && oldDoc.created_at && oldDoc.created_at !== newDoc.created_at){
         throw "You may not change the created_at value.";
     }
 };

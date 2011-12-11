@@ -21,12 +21,17 @@ function zeroPad(str, length){
 }
 
 function dateISOString(date){
-    return  zeroPad(date.getUTCFullYear(), 4) + "-"
-            + zeroPad(date.getUTCMonth() + 1, 2) + "-"
-            + zeroPad(date.getUTCDate(), 2) + "T"
-            + zeroPad(date.getUTCHours(), 2) + ":"
-            + zeroPad(date.getUTCMinutes(), 2) + ":"
-            + zeroPad(date.getUTCSeconds(), 2) + "Z";
+    if (typeof date.toISOString === "function"){
+        return date.toISOString();
+    }
+    else {
+        return  zeroPad(date.getUTCFullYear(), 4) + "-"
+                + zeroPad(date.getUTCMonth() + 1, 2) + "-"
+                + zeroPad(date.getUTCDate(), 2) + "T"
+                + zeroPad(date.getUTCHours(), 2) + ":"
+                + zeroPad(date.getUTCMinutes(), 2) + ":"
+                + zeroPad(date.getUTCSeconds(), 2) + "Z";
+    }
 }
 
 window.SDConverter = new Showdown.converter();
@@ -57,65 +62,62 @@ User.userController = SC.Object.create({
             name = $("#login-username").val();
             pass = $("#login-password").val();
         }
+        
+        IFMAPI.startSession(name, pass, function (err, response){
+            if (err){
+                //TODO: error handling
+            }
 
-        $.ajax("/session", {
-              dataType: "json"
-            , type: "POST"
-            , data: {name: name, password: pass}
-            , success: function (data){
-                if (data.ok){
-                    User.userController.checkLogin();
-                    cb();
-                }
-                else {
-                    cb(data);
-                }
+            if (response.ok){
+                User.userController.checkLogin();
+                cb();
+            }
+            else {
+                cb(data);
             }
         });
     }
     , logout: function (cb){
         if (typeof cb !== "function") cb = function (){};
 
-        $.ajax("/session", {
-              dataType: "json"
-            , type: "DELETE"
-            , success: function (data){
-                if (data.ok){
-                    User.currentUser.setProperties({name: null, roles: [], is_connected: false});
-                    User.userController.checkLogin();
-                    cb();
-                }
-                else {
-                    cb(data);
-                }
+        IFMAPI.deleteSession(function (err, response){
+            if (err){
+                //TODO: error handling
+            }
+
+            if (response.ok){
+                User.currentUser.setProperties({name: null, roles: [], is_connected: false});
+                User.userController.checkLogin();
+                cb();
+            }
+            else {
+                cb(response);
             }
         });
     }
     , checkLogin: function(cb){
         if (typeof cb !== "function") cb = function (){};
-
-        $.ajax("/session", {
-              dataType: "json"
-            , type: "GET"
-            , success: function (data){
-                var userCtx = {
-                      name: null
-                    , roles: []
-                    , is_connected: false
-                }
-
-                if (data.ok){
-                    userCtx = data.userCtx;
-
-                    //console.log(data);
-
-                    if (data.info && data.info.authenticated){
-                        userCtx.is_connected = true;
-                    }
-                }
-                
-                User.currentUser.setProperties(userCtx);
+        
+        IFMAPI.getSession(function (err, response){
+            var userCtx = {
+                  name: null
+                , roles: []
+                , is_connected: false
             }
+
+            if (err){
+                //TODO: error handling
+            }
+
+            if (response.ok){
+                userCtx = response.userCtx;
+
+                if (response.info && response.info.authenticated){
+                    userCtx.is_connected = true;
+                }
+            }
+
+            User.currentUser.setProperties(userCtx);
         });
     } 
 });
