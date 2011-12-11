@@ -5,6 +5,13 @@ window.Blog = SC.Application.create({
     rootElement: $("#blog")
 });
 
+Blog.Router = {
+    index: function (params){
+        App.hideAll();
+        this.get("rootElement").show();
+    }
+}
+
 Blog.Post = SC.Object.extend({
       type: "blog-post"
     , title: null
@@ -23,7 +30,7 @@ Blog.Post = SC.Object.extend({
     , content: function (){
         return SDConverter.makeHtml(this.content_raw || "\n");
     }.property('content_raw')
-    
+
     , authorString: function (){
         if (this.authors && typeof this.authors.join === "function"){
             return this.authors.join(", ");
@@ -32,7 +39,7 @@ Blog.Post = SC.Object.extend({
             return this.authors;
         }
     }.property('authors')
-    
+
     , tagString: function (){
         if (this.tags && this.tags.length){
             _(this.tags).map(function(tag){
@@ -54,7 +61,7 @@ Blog.Post = SC.Object.extend({
             return "";
         }
     }.property('display_date')
-    
+
     , editString: function (){
         if (this.edits && this.edits.length){
             var last = this.edits[this.edits.length - 1];
@@ -104,7 +111,7 @@ Blog.postsController = SC.ArrayController.create({
                     if (err){
                         //TODO: error handling
                     }
-                    
+
                     console.log(response);
 
                     if (response && response.ok){

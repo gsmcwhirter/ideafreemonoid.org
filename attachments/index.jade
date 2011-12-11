@@ -1,13 +1,45 @@
 extends ../layouts/layout
 
 block title
-  | Blog - 
+  | Blog -
+
+block userarea
+  #userbox
+    script(type="text/html")
+      {{#view User.UserView}}
+      {{#if currentUser.is_connected}}
+      |  {{currentUser.name}}
+      |  {{#view SC.Button classBinding="isActive"
+      |    target="User.userController"
+      |    action="logout"}}
+      |    Log Out
+      |  {{/view}}
+      {{else}}
+      |  {{view User.UsernameEntry id="login-username" placeholder="Username"}}
+      |  {{view User.PasswordEntry id="login-password" placeholder="Password"}}
+      |  {{#view SC.Button classBinding="isActive"
+      |    target="User.userController"
+      |    action="login"}}
+      |    Log In
+      |  {{/view}}
+      {{/if}}
+      {{/view}}
+
+block menuarea
+  nav#menu
+    ul
+      li
+        a(href="#") Blog
+      li
+        a(href="#cv") CV
+      li
+        a(href="#gametheory") Game Theory
 
 block maincontent
   #blog
     p
-      | Under re-development (since I was stupid and forgot to check wheat 
-      | compatibility before upgrading node to 0.6, and now I want to play 
+      | Under re-development (since I was stupid and forgot to check wheat
+      | compatibility before upgrading node to 0.6, and now I want to play
       | around with other stuff).
     script(type="text/html")
       {{#collection contentBinding="Blog.postsController" tagName="ul"}}
@@ -31,6 +63,7 @@ block maincontent
   #gametheory
 
 block scripts
+  script(type="text/javascript", src="js/site.user.js")
   script(type="text/javascript", src="js/site.blog.js")
   script(type="text/javascript", src="js/site.cv.js")
   script(type="text/javascript", src="js/site.gametheory.js")

@@ -26,46 +26,18 @@ html(class="no-js", lang="en")
   body
     #container
       header
-        #userbox
-          script(type="text/html")
-            {{#view User.UserView}}
-            {{#if currentUser.is_connected}}
-            |  {{currentUser.name}}
-            |  {{#view SC.Button classBinding="isActive"
-            |    target="User.userController"
-            |    action="logout"}}
-            |    Log Out
-            |  {{/view}}
-            {{else}}
-            |  {{view User.UsernameEntry id="login-username" placeholder="Username"}}
-            |  {{view User.PasswordEntry id="login-password" placeholder="Password"}}
-            |  {{#view SC.Button classBinding="isActive"
-            |    target="User.userController"
-            |    action="login"}}
-            |    Log In
-            |  {{/view}}
-            {{/if}}
-            {{/view}}
+        block userarea
         h1#title IdeaFreeMonoid
-        nav#menu
-          ul
-            li
-              a(href="/") Blog
-            li
-              a(href="/cv") CV
-            li
-              a(href="/gametheory") Game Theory
+        block menuarea
       #main(role="main")
         block maincontent
       footer
 
     script(type="text/javascript", src="js/jquery-1.7.min.js")
     script(type="text/javascript", src="js/showdown.js")
-    script(type="text/javascript", src="js/underscore-min.js")
+    script(type="text/javascript", src="js/underscore.min.js")
     script(type="text/javascript", src="js/sproutcore.min.js")
-    script(type="text/javascript", src="js/jquery.couch.js")
     script(type="text/javascript", src="js/plugins.js")
-    script(type="text/javascript", src="js/runtime.min.js")
     script(type="text/javascript", src="js/site.api.js")
     script(type="text/javascript", src="js/site.main.js")
     block scripts
