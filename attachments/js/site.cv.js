@@ -36,6 +36,8 @@ CV.sectionsController = SC.ArrayProxy.create({
             , last_updated: now
         };
 
+        console.log(section);
+
         var self = this;
 
         IFMAPI.getUUIDs(function (err, response){
@@ -65,7 +67,7 @@ CV.sectionsController = SC.ArrayProxy.create({
 
     }
     , resort: function (){
-        this.set('content', _(this.get('content')).sortBy(function (section){return section.order;}));
+        this.set('content', _(this.get('content')).sortBy(function (section){return section.get('order');}));
     }
 });
 
