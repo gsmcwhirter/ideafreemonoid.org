@@ -31,7 +31,7 @@ CV.sectionsController = SC.ArrayProxy.create({
               type: "cv-section"
             , title: title
             , content_raw: content || "\n"
-            , order: order || ((_(this.get("content")).max(function (doc){return doc.get('order')}) || 0) + 1)
+            , order: order || ((_(this.get("content")).chain().map(function (doc){return doc.get('order')}).max().value() || 0) + 1)
             , created_at: now
             , last_updated: now
         };
