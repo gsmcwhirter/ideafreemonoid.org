@@ -1,8 +1,8 @@
-window.User = SC.Application.create({
+window.User = Ember.Application.create({
     rootElement: $("#userbox")
 });
 
-User.User = SC.Object.extend({
+User.User = Ember.Object.extend({
       name: null
     , roles: []
     , is_connected: false
@@ -10,7 +10,7 @@ User.User = SC.Object.extend({
 
 User.currentUser = User.User.create();
 
-User.userController = SC.Object.create({
+User.userController = Ember.Object.create({
     currentUserBinding: "User.currentUser"
 
     , login: function (name, pass, cb){
@@ -84,18 +84,18 @@ User.userController = SC.Object.create({
     }
 });
 
-User.UserView = SC.View.extend({
+User.UserView = Ember.View.extend({
     currentUserBinding: "User.currentUser"
 });
 
-User.UsernameEntry = SC.TextField.extend({
+User.UsernameEntry = Ember.TextField.extend({
     insertNewline: function (){
         User.userController.login(function (){
         });
     }
 });
 
-User.PasswordEntry = SC.TextField.extend({
+User.PasswordEntry = Ember.TextField.extend({
     type: "password"
     , insertNewline: function (){
         User.userController.login(function (){

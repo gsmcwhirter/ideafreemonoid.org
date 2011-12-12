@@ -1,4 +1,4 @@
-window.CV = SC.Application.create({
+window.CV = Ember.Application.create({
     rootElement: $("#cv")
 });
 
@@ -12,7 +12,7 @@ CV.Router = {
     }
 };
 
-CV.Section = SC.Object.extend({
+CV.Section = Ember.Object.extend({
       type: "cv-section"
     , title: null
     , content_raw: null
@@ -23,7 +23,7 @@ CV.Section = SC.Object.extend({
     , _rev: null
 });
 
-CV.sectionsController = SC.ArrayController.create({
+CV.sectionsController = Ember.ArrayController.create({
     content: []
 
     , createSection: function (title, content, order){

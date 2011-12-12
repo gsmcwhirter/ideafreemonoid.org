@@ -37,19 +37,8 @@ block maincontent
       | Under re-development (since I was stupid and forgot to check wheat
       | compatibility before upgrading node to 0.6, and now I want to play
       | around with other stuff).
-    script(type="text/html")
-      {{#collection contentBinding="Blog.postsController" tagName="ol" class="posts"}}
-      {{#with content}}
-      h2 {{title}}
-      .byline Posted {{formatDate display_date}} by {{{formatAuthors authors}}}
-      .tagline Tags: {{{formatTags tags}}}
-      .content {{{parseMarkdown content_raw}}}
-      .editline {{editString}}
-      |  {{#list edits tagClass="editlist" tagName="ol"}}
-      |    Edited on {{edit_date}} by {{author}}
-      |  {{/list}}
-      {{/with}}
-      {{/collection}}
+    script(type="text/x-handlebars")
+      {{view Blog.BlogView}}
 
   #cv
     script(type="text/html")
@@ -63,6 +52,22 @@ block maincontent
       {{/collection}}
 
   #gametheory
+
+block templates
+  script(type="text/x-handlebars" data-template-name="blog")
+    {{#collection contentBinding="Blog.postsController" tagName="ol" class="posts"}}
+    {{view blogPost content}}
+    {{/collection}}
+
+  script(type="text/x-handlebars" data-template-name="blog-post")
+    h2 {{title}}
+    .byline Posted {{formatDate display_date}} by {{{formatAuthors authors}}}
+    .tagline Tags: {{{formatTags tags}}}
+    .content {{{parseMarkdown content_raw}}}
+    .editline {{editString}}
+    |  {{#list edits tagClass="editlist" tagName="ol"}}
+    |    Edited on {{edit_date}} by {{author}}
+    |  {{/list}}
 
 block scripts
   script(type="text/javascript", src="js/site.api.js")

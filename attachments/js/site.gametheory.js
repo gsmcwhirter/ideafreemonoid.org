@@ -1,4 +1,4 @@
-window.Gametheory = SC.Application.create({
+window.Gametheory = Ember.Application.create({
     rootElement: $("#gametheory")
 });
 

@@ -36,7 +36,7 @@ function dateISOString(date){
 
 window.SDConverter = new Showdown.converter();
 
-window.App = SC.Application.create({
+window.App = Ember.Application.create({
     rootElement: $("h1#title")
 });
 
@@ -60,8 +60,8 @@ App.setTitle = function (title){
     }
 };
 
-SC.Handlebars.registerHelper("formatDate", function (property){
-    var val = SC.getPath(this, property);
+Ember.Handlebars.registerHelper("formatDate", function (property){
+    var val = Ember.getPath(this, property);
     if (val){
         var date = new Date(val);
         return date.toLocaleString();
@@ -71,7 +71,7 @@ SC.Handlebars.registerHelper("formatDate", function (property){
     }
 });
 
-SC.Handlebars.registerHelper("parseMarkdown", function (property){
-    var val = SC.getPath(this, property);
+Ember.Handlebars.registerHelper("parseMarkdown", function (property){
+    var val = Ember.getPath(this, property);
     return SDConverter.makeHtml(val || "\n");
 });
