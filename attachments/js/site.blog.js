@@ -99,7 +99,7 @@ IFMAPI.getView("blogposts", {startkey: [true,0], endkey: [true, 1], include_docs
     }
 
     if (response && response.rows){
-        Blog.postsController.set('content', _(response.rows).pluck('doc').map(function (doc){return Blog.Post.create(doc);}));
+        Blog.postsController.set('content', _(response.rows).chain().pluck('doc').map(function (doc){return Blog.Post.create(doc);}).value());
     }
 });
 

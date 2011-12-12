@@ -75,6 +75,6 @@ IFMAPI.getView("cvsections", {include_docs: true}, function (err, response){
     }
 
     if (response && response.rows){
-        CV.sectionsController.set('content', _(response.rows).pluck('doc').map(function (doc){return CV.Section.create(doc);}));
+        CV.sectionsController.set('content', _(response.rows).chain().pluck('doc').map(function (doc){return CV.Section.create(doc);}).value());
     }
 });
