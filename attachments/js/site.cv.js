@@ -3,12 +3,12 @@ window.CV = SC.Application.create({
 });
 
 CV.Router = {
-    index: function (params){
+    index: function (){
         App.hideAll();
         this.get("rootElement").show();
         App.setTitle("CV");
     }
-}
+};
 
 CV.Section = SC.Object.extend({
       type: "cv-section"
@@ -21,7 +21,7 @@ CV.Section = SC.Object.extend({
     , _rev: null
 });
 
-CV.sectionsController = SC.ArrayProxy.create({
+CV.sectionsController = SC.ArrayController.create({
     content: []
 
     , createSection: function (title, content, order){
@@ -35,8 +35,6 @@ CV.sectionsController = SC.ArrayProxy.create({
             , created_at: now
             , last_updated: now
         };
-
-        console.log(section);
 
         var self = this;
 

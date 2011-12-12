@@ -11,9 +11,7 @@ User.User = SC.Object.extend({
 User.currentUser = User.User.create();
 
 User.userController = SC.Object.create({
-    currentUser: function (){
-        return User.currentUser;
-    }.property("User.currentUser")
+    currentUserBinding: "User.currentUser"
 
     , login: function (name, pass, cb){
         if (typeof name === "function") cb = name, name = null;
@@ -24,13 +22,14 @@ User.userController = SC.Object.create({
             pass = $("#login-password").val();
         }
 
+        var self = this;
         IFMAPI.startSession(name, pass, function (err, response){
             if (err){
                 //TODO: error handling
             }
 
             if (response.ok){
-                User.userController.checkLogin();
+                self.checkLogin();
                 cb();
             }
             else {
@@ -41,14 +40,15 @@ User.userController = SC.Object.create({
     , logout: function (cb){
         if (typeof cb !== "function") cb = function (){};
 
+        var self = this;
         IFMAPI.deleteSession(function (err, response){
             if (err){
                 //TODO: error handling
             }
 
             if (response.ok){
-                User.currentUser.setProperties({name: null, roles: [], is_connected: false});
-                User.userController.checkLogin();
+                self.get('currentUser').setProperties({name: null, roles: [], is_connected: false});
+                self.checkLogin();
                 cb();
             }
             else {
@@ -59,6 +59,7 @@ User.userController = SC.Object.create({
     , checkLogin: function(cb){
         if (typeof cb !== "function") cb = function (){};
 
+        var self = this;
         IFMAPI.getSession(function (err, response){
             var userCtx = {
                   name: null
@@ -78,21 +79,18 @@ User.userController = SC.Object.create({
                 }
             }
 
-            User.currentUser.setProperties(userCtx);
+            self.get('currentUser').setProperties(userCtx);
         });
     }
 });
 
 User.UserView = SC.View.extend({
-    currentUser: function (){
-        return User.currentUser;
-    }.property("User.currentUser")
+    currentUserBinding: "User.currentUser"
 });
 
 User.UsernameEntry = SC.TextField.extend({
     insertNewline: function (){
-        var self = this;
-        User.userController.login(function (err){
+        User.userController.login(function (){
         });
     }
 });
@@ -100,8 +98,7 @@ User.UsernameEntry = SC.TextField.extend({
 User.PasswordEntry = SC.TextField.extend({
     type: "password"
     , insertNewline: function (){
-        var self = this;
-        User.userController.login(function (err){
+        User.userController.login(function (){
         });
     }
 });

@@ -3,7 +3,7 @@ window.Gametheory = SC.Application.create({
 });
 
 Gametheory.Router = {
-    index: function (params){
+    index: function (){
         App.hideAll();
         this.get("rootElement").show();
         App.setTitle("Game Theory");

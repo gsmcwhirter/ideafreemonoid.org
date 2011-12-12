@@ -6,12 +6,12 @@ window.Blog = SC.Application.create({
 });
 
 Blog.Router = {
-    index: function (params){
+    index: function (){
         App.hideAll();
         this.get("rootElement").show();
         App.setTitle("Blog");
     }
-}
+};
 
 Blog.Post = SC.Object.extend({
       type: "blog-post"
@@ -43,7 +43,7 @@ Blog.postsController = SC.ArrayController.create({
     content: []
 
     , createPost: function (title, slug, content, tags, authors){
-        authors = authors || User.currentUser.get('name');
+        authors = authors || User.userController.get('currentUser').get('name');
 
         if (typeof authors === "string"){
             authors = [authors];
@@ -69,6 +69,7 @@ Blog.postsController = SC.ArrayController.create({
         IFMAPI.getUUIDs(function (err, response){
             if (err){
                 //TODO: error handling
+                console.log(response);
             }
 
             if (response && response.uuids){
@@ -77,6 +78,7 @@ Blog.postsController = SC.ArrayController.create({
                 IFMAPI.putDoc(post._id, post, function (err, response){
                     if (err){
                         //TODO: error handling
+                        console.log(response);
                     }
 
                     console.log(response);
@@ -96,6 +98,7 @@ Blog.postsController = SC.ArrayController.create({
 IFMAPI.getView("blogposts", {startkey: [true,0], endkey: [true, 1], include_docs: true, descending: true}, function (err, response){
     if (err){
         //TODO: error handling
+        console.log(response);
     }
 
     if (response && response.rows){
@@ -106,7 +109,7 @@ IFMAPI.getView("blogposts", {startkey: [true,0], endkey: [true, 1], include_docs
 SC.Handlebars.registerHelper("formatTags", function (property){
     var val = SC.getPath(this, property);
     if (val && val.length){
-        _(this.tags).map(function(tag){
+        _(val).map(function(tag){
             return "<a href=\"#!/tag/" + tag + "\">" + tag + "</a>"; //TODO: working links
         }).join(", ");
     }
