@@ -54,12 +54,12 @@ block maincontent
   #gametheory
 
 block templates
-  script(type="text/x-handlebars" data-template-name="blog")
+  script(type="text/x-handlebars", data-template-name="blog")
     {{#collection contentBinding="Blog.postsController" tagName="ol" class="posts"}}
     {{view blogPost content}}
     {{/collection}}
 
-  script(type="text/x-handlebars" data-template-name="blog-post")
+  script(type="text/x-handlebars", data-template-name="blog-post")
     h2 {{title}}
     .byline Posted {{formatDate display_date}} by {{{formatAuthors authors}}}
     .tagline Tags: {{{formatTags tags}}}
