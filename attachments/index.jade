@@ -38,7 +38,7 @@ block maincontent
       | compatibility before upgrading node to 0.6, and now I want to play
       | around with other stuff).
     script(type="text/html")
-      {{#collection contentBinding="Blog.postsController" tagName="ol"}}
+      {{#collection contentBinding="Blog.postsController" tagName="ol" class="posts"}}
       {{#with content}}
       h2 {{title}}
       .byline Posted {{formatDate display_date}} by {{{formatAuthors authors}}}
@@ -53,7 +53,7 @@ block maincontent
 
   #cv
     script(type="text/html")
-      {{#collection contentBinding="CV.sectionsController" tagName="ol"}}
+      {{#collection contentBinding="CV.sectionsController" tagName="ol" class="sections"}}
       {{#with content}}
       .cvsection
         h2 {{title}}
