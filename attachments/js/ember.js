@@ -1608,7 +1608,7 @@ if ('undefined' === typeof SC) {
 /**
   @namespace
   @name SC
-  @version 2.0.beta.3
+  @version 0.9
 
   All SproutCore methods and functions are defined inside of this namespace.
   You generally should not add new properties to this namespace as it may be
@@ -1629,7 +1629,7 @@ SC = {};
 
 // aliases needed to keep minifiers from removing the global context
 if ('undefined' !== typeof window) {
-  window.SC = window.SproutCore = SproutCore = SC;
+  window.Em = window.Ember = window.SC = window.SproutCore = Em = Ember = SproutCore = SC;
 }
 
 }
@@ -1637,10 +1637,10 @@ if ('undefined' !== typeof window) {
 /**
   @static
   @type String
-  @default '2.0.beta.3'
+  @default '0.9'
   @constant
 */
-SC.VERSION = '2.0.beta.3';
+SC.VERSION = '0.9';
 
 /**
   @static
@@ -2350,7 +2350,7 @@ function getPath(target, path) {
   var len = path.length, idx, next, key;
   
   idx = path.indexOf('*');
-  if (idx>0 && path[idx-1]!=='.') {
+  if (idx>0 && path.charAt(idx-1)!=='.') {
     return getPath(getPath(target, path.slice(0, idx)), path.slice(idx+1));
   }
 
@@ -8146,7 +8146,7 @@ t.forEach(function(name) {
 var toString = Object.prototype.toString;
 
 /**
-  Returns a consistant type for the passed item.
+  Returns a consistent type for the passed item.
 
   Use this instead of the built-in SC.typeOf() to get the type of an item.
   It will return the same result across all browsers and includes a bit
@@ -8161,9 +8161,9 @@ var toString = Object.prototype.toString;
   | 'function' | A function |
   | 'array' | An instance of Array |
   | 'class' | A SproutCore class (created using SC.Object.extend()) |
-  | 'object' | A SproutCore object instance |
+  | 'instance' | A SproutCore object instance |
   | 'error' | An instance of the Error object |
-  | 'hash' | A JavaScript object not inheriting from SC.Object |
+  | 'object' | A JavaScript object not inheriting from SC.Object |
 
   @param item {Object} the item to check
   @returns {String} the type
@@ -8685,7 +8685,7 @@ SC.Copyable = SC.Mixin.create({
     if (SC.Freezable && SC.Freezable.detect(this)) {
       return get(this, 'isFrozen') ? this : this.copy().freeze();
     } else {
-      throw new Error(SC.String.fmt("%@ does not support freezing",this));
+      throw new Error(SC.String.fmt("%@ does not support freezing", [this]));
     }
   }
 });
@@ -10840,7 +10840,7 @@ SC.View = SC.Object.extend(
       }
 
       if (!template) {
-        throw new SC.Error(fmt('%@ - Unable to find template "%@".', this, templateName));
+        throw new SC.Error(fmt('%@ - Unable to find template "%@".', [this, templateName]));
       }
     }
 
@@ -11209,8 +11209,9 @@ SC.View = SC.Object.extend(
     passing `isUrgent` to this method will return `"is-urgent"`.
   */
   _classStringForProperty: function(property) {
-    var split = property.split(':'), className = split[1];
-    property = split[0];
+    var split = property.split(':'),
+        property = split[0],
+        className = split[1];
 
     var val = SC.getPath(this, property);
 
@@ -11222,7 +11223,7 @@ SC.View = SC.Object.extend(
       // Normalize property path to be suitable for use
       // as a class name. For exaple, content.foo.barBaz
       // becomes bar-baz.
-      parts = property.split('.');
+      var parts = property.split('.');
       return SC.String.dasherize(parts[parts.length-1]);
 
     // If the value is not NO, undefined, or null, return the current
@@ -12798,7 +12799,7 @@ SC.StateManager = SC.State.extend({
     var action = currentState[event];
 
     if (action) {
-      if (log) { console.log("STORYBOARDS: Sending event '%@' to state %@.".fmt(event, currentState.name)); }
+      if (log) { console.log(fmt("STORYBOARDS: Sending event '%@' to state %@.", [event, currentState.name])); }
       action.call(currentState, this, context);
     } else {
       var parentState = get(currentState, 'parentState');
@@ -14770,11 +14771,17 @@ SC.Handlebars.bindClasses = function(context, classBindings, view, id) {
   // determine which class string to return, based on whether it is
   // a Boolean or not.
   var classStringForProperty = function(property) {
+    var split = property.split(':'),
+        property = split[0],
+        className = split[1];
+
     var val = getPath(context, property);
 
     // If value is a Boolean and true, return the dasherized property
     // name.
     if (val === YES) {
+      if (className) { return className; }
+
       // Normalize property path to be suitable for use
       // as a class name. For exaple, content.foo.barBaz
       // becomes bar-baz.
@@ -14795,7 +14802,7 @@ SC.Handlebars.bindClasses = function(context, classBindings, view, id) {
 
   // For each property passed, loop through and setup
   // an observer.
-  classBindings.split(' ').forEach(function(property) {
+  classBindings.split(' ').forEach(function(binding) {
 
     // Variable in which the old class value is saved. The observer function
     // closes over this variable, so it knows which string to remove when
@@ -14808,13 +14815,13 @@ SC.Handlebars.bindClasses = function(context, classBindings, view, id) {
     // class name.
     observer = function() {
       // Get the current value of the property
-      newClass = classStringForProperty(property);
+      newClass = classStringForProperty(binding);
       elem = id ? view.$("[data-handlebars-id='" + id + "']") : view.$();
 
       // If we can't find the element anymore, a parent template has been
       // re-rendered and we've been nuked. Remove the observer.
       if (elem.length === 0) {
-        SC.removeObserver(context, property, invoker);
+        SC.removeObserver(context, binding, invoker);
       } else {
         // If we had previously added a class to the element, remove it.
         if (oldClass) {
@@ -14836,11 +14843,12 @@ SC.Handlebars.bindClasses = function(context, classBindings, view, id) {
       SC.run.once(observer);
     };
 
+    property = binding.split(':')[0];
     SC.addObserver(context, property, invoker);
 
     // We've already setup the observer; now we just need to figure out the 
     // correct behavior right now on the first pass through.
-    value = classStringForProperty(property);
+    value = classStringForProperty(binding);
 
     if (value) {
       ret.push(value);
