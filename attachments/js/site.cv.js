@@ -43,6 +43,7 @@ CV.sectionsController = SC.ArrayProxy.create({
         IFMAPI.getUUIDs(function (err, response){
             if (err){
                 //TODO: error handling
+                console.log(response);
             }
 
             if (response && response.uuids){
@@ -51,6 +52,7 @@ CV.sectionsController = SC.ArrayProxy.create({
                 IFMAPI.putDoc(section._id, section, function (err, response){
                     if (err){
                         //TODO: error handling
+                        console.log(response);
                     }
 
                     console.log(response);
@@ -74,6 +76,7 @@ CV.sectionsController = SC.ArrayProxy.create({
 IFMAPI.getView("cvsections", {include_docs: true}, function (err, response){
     if (err){
         //TODO: error handling
+        console.log(response);
     }
 
     if (response && response.rows){
