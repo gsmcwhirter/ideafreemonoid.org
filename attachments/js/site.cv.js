@@ -5,8 +5,10 @@ window.CV = SC.Application.create({
 CV.Router = {
     index: function (){
         App.hideAll();
+        this.reloadData();
         this.get("rootElement").show();
         App.setTitle("CV");
+        _gaq.push(["_trackPageview", "#!/cv"]);
     }
 };
 
@@ -71,13 +73,15 @@ CV.sectionsController = SC.ArrayController.create({
     }
 });
 
-IFMAPI.getView("cvsections", {include_docs: true}, function (err, response){
-    if (err){
-        //TODO: error handling
-        console.log(response);
-    }
+CV.reloadData = function (){
+    IFMAPI.getView("cvsections", {include_docs: true}, function (err, response){
+        if (err){
+            //TODO: error handling
+            console.log(response);
+        }
 
-    if (response && response.rows){
-        CV.sectionsController.set('content', _(response.rows).chain().pluck('doc').map(function (doc){return CV.Section.create(doc);}).value());
-    }
-});
+        if (response && response.rows){
+            CV.sectionsController.set('content', _(response.rows).chain().pluck('doc').map(function (doc){return CV.Section.create(doc);}).value());
+        }
+    });
+};

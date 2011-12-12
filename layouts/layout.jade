@@ -23,6 +23,14 @@ html(class="no-js", lang="en")
     link(rel="stylesheet", type="text/css", href="css/layout.css")
 
     script(type="text/javascript", src="js/modernizr.custom.js")
+    script(type="text/javascript")
+      window._gaq = typeof _gaq !== "undefined" ? _gaq || [] : [];
+      _gaq.push(['_setAccount', 'UA-18419792-1']);
+      _gaq.push(['_trackPageview']);
+      _gaq.push(['_trackPageLoadTime']);
+      Modernizr.load({
+        load: ('https:' == location.protocol ? '//ssl' : '//www') + '.google-analytics.com/ga.js'
+      });
   body
     #container
       header
@@ -42,13 +50,3 @@ html(class="no-js", lang="en")
     script(type="text/javascript", src="js/ember.min.js")
     script(type="text/javascript", src="js/plugins.js")
     block scripts
-
-
-    script(type="text/javascript")
-      window._gaq = typeof _gaq !== "undefined" ? _gaq || [] : [];
-      _gaq.push(['_setAccount', 'UA-18419792-1']);
-      _gaq.push(['_trackPageview']);
-      _gaq.push(['_trackPageLoadTime']);
-      Modernizr.load({
-        load: ('https:' == location.protocol ? '//ssl' : '//www') + '.google-analytics.com/ga.js'
-      });

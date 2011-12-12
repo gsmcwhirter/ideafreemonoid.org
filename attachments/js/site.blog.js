@@ -8,8 +8,10 @@ window.Blog = SC.Application.create({
 Blog.Router = {
     index: function (){
         App.hideAll();
+        this.reloadData();
         this.get("rootElement").show();
         App.setTitle("Blog");
+        _gaq.push(['_trackPageview', '#!/blog']);
     }
 };
 
@@ -95,16 +97,18 @@ Blog.postsController = SC.ArrayController.create({
     }
 });
 
-IFMAPI.getView("blogposts", {startkey: [true,0], endkey: [true, 1], include_docs: true, descending: true}, function (err, response){
-    if (err){
-        //TODO: error handling
-        console.log(response);
-    }
+Blog.reloadData = function (){
+    IFMAPI.getView("blogposts", {startkey: [true,0], endkey: [true, 1], include_docs: true, descending: true}, function (err, response){
+        if (err){
+            //TODO: error handling
+            console.log(response);
+        }
 
-    if (response && response.rows){
-        Blog.postsController.set('content', _(response.rows).chain().pluck('doc').map(function (doc){return Blog.Post.create(doc);}).value());
-    }
-});
+        if (response && response.rows){
+            Blog.postsController.set('content', _(response.rows).chain().pluck('doc').map(function (doc){return Blog.Post.create(doc);}).value());
+        }
+    });
+};
 
 SC.Handlebars.registerHelper("formatTags", function (property){
     var val = SC.getPath(this, property);
