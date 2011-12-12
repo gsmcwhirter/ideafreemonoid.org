@@ -10,6 +10,7 @@ var ddoc =
     { _id:'_design/app'
     , rewrites :
         [ {from:"/", to:'index.html'}
+        , {from:"/visualizations/", to:'visualizations/index.html'}
         , {from:"/api", to:'./'}
         , {from:"/api/*", to:'../../*'}
         , {from:"/*", to:'*'}

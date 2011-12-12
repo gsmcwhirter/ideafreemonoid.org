@@ -54,10 +54,14 @@ a {
 }
 h1#title {
   float: left;
-  margin-top: 0;
+  margin-top: 1px;
+  margin-bottom: 0;
+  width: 500px;
+  white-space: nowrap;
 }
 nav#menu {
   float: left;
+  clear: left;
   margin-left: 2em;
 }
 nav#menu ul>li {
@@ -81,18 +85,46 @@ nav#menu ul>li {
 #main {
   clear: both;
 }
-#blog li {
+#blog {
+  padding-top: 1em;
+}
+#blog ol.posts>li {
   list-style-type: none;
   border-bottom: 1px solid #0bf;
   padding-bottom: 1em;
 }
-#blog li .byline,
-#blog li .tagline,
-#blog li .editline {
+#blog ol.posts>li .byline,
+#blog ol.posts>li .tagline,
+#blog ol.posts>li .editline {
   font-size: 93%;
   color: #444;
   padding: 0 1em;
 }
-#blog li .content {
+#blog ol.posts>li .content {
   padding: 1em;
+}
+#cv {
+  padding-top: 1em;
+}
+#cv ol.sections>li {
+  clear: both;
+  list-style-type: none;
+  border-bottom: 1px solid #0bf;
+  padding-bottom: 1em;
+}
+#cv ol.sections>li .updated {
+  text-align: right;
+  font-size: 77%;
+  color: #888;
+}
+#cv ol.sections>li .content {
+  padding: 1em;
+  padding-bottom: 0;
+}
+#cv ol.sections>li .content ul,
+#cv ol.sections>li .content ol {
+  margin-top: 0;
+}
+#gametheory {
+  padding-top: 1em;
 }
