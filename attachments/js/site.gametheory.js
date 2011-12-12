@@ -7,5 +7,6 @@ Gametheory.Router = {
         App.hideAll();
         this.get("rootElement").show();
         App.setTitle("Game Theory");
+        _gaq.push(["_trackPageview", "#!gametheory"]);
     }
 };
