@@ -71,6 +71,7 @@ app.get('/', function (req, res, next){
     var fragment = req.param("_escaped_fragment_");
     if (fragment){
         res.send([fragment, req.url]); //TODO: real functionality
+
     }
     else {
         res.send("not found", 404);
