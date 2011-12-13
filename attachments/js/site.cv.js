@@ -22,6 +22,57 @@ CV.Section = Ember.Object.extend({
     , _id: null
     , _rev: null
     , isEditing: false
+    , _doc: function (){
+        return this.getProperties("type","title","content_raw","order","created_at","last_updated","_id","_rev");
+    }.property("type","title","content_raw","order","created_at","last_updated","_id","_rev")
+    , save: function (callback){
+        if (User.userController.isConnected()){
+            var self = this;
+
+            if (!this.get("_id")){
+                var first = function (second){
+                    IFMAPI.getUUIDs(function (err, response){
+                        if (err){
+                            callback(err, response);
+                        }
+                        else if (response && response.uuids){
+                            self.set("_id", response.uuids[0]);
+                            second();
+                        }
+                        else {
+                            callback(true, response)
+                        }
+                    });
+                }
+            }
+            else {
+                first = function (second){
+                    second();
+                }
+            }
+
+            first(function (){
+                IFMAPI.putDoc(this.get("_id"), this.get("_doc"), function (err, response){
+                    if (err){
+                        callback(err, response);
+                    }
+                    else if (response && response.ok){
+                        self.set("_rev", response.rev);
+
+                        CV.sectionsController.resort();
+
+                        callback(false, self);
+                    }
+                    else {
+                        callback(true, response);
+                    }
+                });
+            });
+        }
+        else {
+            callback({error: "not connected"}, User.userController.get("currentUser"));
+        }
+    }
 });
 
 CV.sectionsController = Ember.ArrayController.create({
@@ -59,41 +110,13 @@ CV.sectionsController = Ember.ArrayController.create({
                 , order: order || ((_(this.get("content")).chain().map(function (doc){return doc.get('order')}).max().value() || 0) + 1)
                 , created_at: now
                 , last_updated: now
+                , isEditing: true
             };
 
-            var self = this;
+            this.pushObject(CV.Section.create(section));
+            this.resort();
 
-            IFMAPI.getUUIDs(function (err, response){
-                if (err){
-                    callback(err, response);
-                }
-                else if (response && response.uuids){
-                    section._id = response.uuids[0];
-
-                    IFMAPI.putDoc(section._id, section, function (err, response){
-                        if (err){
-                            callback(err, response);
-                        }
-                        else if (response && response.ok){
-                            section._rev = response.rev;
-
-                            self.pushObject(CV.Section.create(section));
-                            self.resort();
-
-                            callback(false, section);
-                        }
-                        else {
-                            callback(true, response);
-                        }
-                    });
-                }
-                else {
-                    callback(true, response);
-                }
-            });
-        }
-        else {
-            callback({error: "not connected"}, User.userController.get("currentUser"));
+            callback(false, section);
         }
     }
     , reloadData: function (callback){
@@ -175,6 +198,9 @@ CV.EditFormView = Ember.View.extend({
 
         if (User.userController.isConnected()){
             this.get("content").set("last_updated", dateISOString(new Date()));
+        }
+        else {
+            console.log("Not Connected!");
         }
 
         console.log(this.get("content").get("title"));
