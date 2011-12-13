@@ -63,7 +63,7 @@ block templates
   script(type="text/x-handlebars", data-template-name="cv-section")
     .cvsection
       {{#if content.isEditing}}
-      {{#view CV.EditFormView}}
+      {{#view CV.EditFormView contentBinding="content"}}
       form(method="POST")
         label(for="section-title") Title
         {{view Ember.TextField name="title" valueBinding="content.title" class="title"}}
