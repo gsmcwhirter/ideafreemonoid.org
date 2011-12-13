@@ -25,7 +25,7 @@ CV.Section = Ember.Object.extend({
 
 CV.sectionsController = Ember.ArrayController.create({
       content: []
-    , currentUserBinding = "User.userController.currentUser"
+    , currentUserBinding: "User.userController.currentUser"
 
     , createSection: function (title, content, order){
         if (this.get("currentUser").get("is_connected")){
