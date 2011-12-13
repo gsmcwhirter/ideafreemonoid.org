@@ -168,9 +168,9 @@ CV.EditFormView = Ember.View.extend({
     , submit: function (){
         console.log(this.get("content").get("title"));
         this.get("content").set("isEditing", false);
+        this.get("content").set("last_updated", dateISOString(new Date()));
         console.log(this.get("content").get("title"));
-        //this.get("content").set("isEditing", false);
-        //console.log(this.get("content"));
+
         return false;
     }
 });

@@ -61,16 +61,14 @@ block templates
       {{view CV.AddSectionLink}}
 
   script(type="text/x-handlebars", data-template-name="cv-section")
-    {{#with content}}
     .cvsection
-      {{#if isEditing}}
-      {{view CV.EditFormView contentBinding="this"}}
+      {{#if content.isEditing}}
+      {{view CV.EditFormView contentBinding="content"}}
       {{else}}
-      h2 {{title}}
-      .content {{{parseMarkdown content_raw}}}
-      .updated Last updated {{formatDate last_updated}}
+      h2 {{content.title}}
+      .content {{{parseMarkdown content.content_raw}}}
+      .updated Last updated {{formatDate content.last_updated}}
       {{/if}}
-    {{/with}}
 
   script(type="text/x-handlebars", data-template-name="cv-section-form")
     form(method="POST")
