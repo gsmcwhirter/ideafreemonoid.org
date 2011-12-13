@@ -85,6 +85,9 @@ nav#menu ul>li {
 #main {
   clear: both;
 }
+#templates {
+  display: none;
+}
 #blog {
   padding-top: 1em;
 }

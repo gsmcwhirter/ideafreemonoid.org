@@ -100,10 +100,13 @@ Blog.postsController = Ember.ArrayController.create({
 Blog.BlogView = Ember.View.extend({
     templateName: "blog"
 
-    , blogPost: Ember.View.extend({
+    , blogPostView: Ember.View.extend({
         templateName: "blog-post"
     })
+});
 
+Blog.BlogPostView = Ember.View.extend({
+    templateName: "blog-post"
 });
 
 Blog.reloadData = function (){

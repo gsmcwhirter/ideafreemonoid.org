@@ -73,6 +73,14 @@ CV.sectionsController = Ember.ArrayController.create({
     }
 });
 
+CV.CVView = Ember.View.extend({
+    templateName: "cv"
+
+    , cvSectionView: Ember.View.extend({
+        templateName: "cv-section"
+    })
+});
+
 CV.reloadData = function (){
     IFMAPI.getView("cvsections", {include_docs: true}, function (err, response){
         if (err){

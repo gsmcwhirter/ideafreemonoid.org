@@ -5,21 +5,8 @@ block title
 
 block userarea
   #userbox
-    script(type="text/html")
-      {{#view User.UserView}}
-      {{#if currentUser.is_connected}}
-      |  {{currentUser.name}}
-      |  {{#view SC.Button classBinding="isActive" target="User.userController" action="logout"}}
-      |    Log Out
-      |  {{/view}}
-      {{else}}
-      |  {{view User.UsernameEntry id="login-username" placeholder="Username"}}
-      |  {{view User.PasswordEntry id="login-password" placeholder="Password"}}
-      |  {{#view SC.Button classBinding="isActive" target="User.userController" action="login"}}
-      |    Log In
-      |  {{/view}}
-      {{/if}}
-      {{/view}}
+    script(type="text/x-handlebars")
+      {{view User.UserView}}
 
 block menuarea
   nav#menu
@@ -30,6 +17,8 @@ block menuarea
         a(href="#!cv") CV
       li
         a(href="#!gametheory") Game Theory
+      li
+        a(href="/visualizations/") Visualizations
 
 block maincontent
   #blog
@@ -41,25 +30,19 @@ block maincontent
       {{view Blog.BlogView}}
 
   #cv
-    script(type="text/html")
-      {{#collection contentBinding="CV.sectionsController" tagName="ol" class="sections"}}
-      {{#with content}}
-      .cvsection
-        h2 {{title}}
-        .content {{{parseMarkdown content_raw}}}
-        .updated Last updated {{formatDate last_updated}}
-      {{/with}}
-      {{/collection}}
+    script(type="text/x-handlebars")
+      {{view CV.CVView}}
 
   #gametheory
 
 block templates
   script(type="text/x-handlebars", data-template-name="blog")
     {{#collection contentBinding="Blog.postsController" tagName="ol" class="posts"}}
-    {{view blogPost content}}
+    {{view parentView.parentView.blogPostView contentBinding="content"}}
     {{/collection}}
 
   script(type="text/x-handlebars", data-template-name="blog-post")
+    {{#with content}}
     h2 {{title}}
     .byline Posted {{formatDate display_date}} by {{{formatAuthors authors}}}
     .tagline Tags: {{{formatTags tags}}}
@@ -68,6 +51,39 @@ block templates
     |  {{#list edits tagClass="editlist" tagName="ol"}}
     |    Edited on {{edit_date}} by {{author}}
     |  {{/list}}
+    {{/with}}
+
+  script(type="text/x-handlebars", data-template-name="cv")
+    {{#collection contentBinding="CV.sectionsController" tagName="ol" class="sections"}}
+    {{view parentView.parentView.cvSectionView contentBinding="content"}}
+    {{/collection}}
+
+  script(type="text/x-handlebars", data-template-name="cv-section")
+    {{#with content}}
+    .cvsection
+      h2 {{title}}
+      .content {{{parseMarkdown content_raw}}}
+      .updated Last updated {{formatDate last_updated}}
+    {{/with}}
+
+  script(type="text/x-handlebars", data-template-name="user")
+    {{#if currentUser.is_connected}}
+    {{view userLogoutView contentBinding="this"}}
+    {{else}}
+    {{view userLoginView contentBinding="this"}}
+    {{/if}}
+      
+  script(type="text/x-handlebars", data-template-name="user-login")
+    {{view usernameView id="login-username"}}
+    {{view passwordView id="login-password"}}
+    {{#view loginButton}}Log In{{/view}}
+
+  script(type="text/x-handlebars", data-template-name="user-logout")
+    {{content.currentUser.name}}
+    {{#view logoutButton}}Log Out{{/view}}
+
+  script(type="text/x-handlebars", data-template-name="cv-section-form")
+
 
 block scripts
   script(type="text/javascript", src="js/site.api.js")

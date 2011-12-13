@@ -20,6 +20,8 @@ User.userController = Ember.Object.create({
         if (!name || !pass){
             name = $("#login-username").val();
             pass = $("#login-password").val();
+            //console.log(name);
+            //console.log(pass);
         }
 
         var self = this;
@@ -28,12 +30,13 @@ User.userController = Ember.Object.create({
                 //TODO: error handling
             }
 
-            if (response.ok){
+            if (response && response.ok){
                 self.checkLogin();
                 cb();
             }
             else {
-                cb(data);
+                console.log(response);
+                cb(response);
             }
         });
     }
@@ -46,12 +49,13 @@ User.userController = Ember.Object.create({
                 //TODO: error handling
             }
 
-            if (response.ok){
+            if (response && response.ok){
                 self.get('currentUser').setProperties({name: null, roles: [], is_connected: false});
                 self.checkLogin();
                 cb();
             }
             else {
+                console.log(response);
                 cb(response);
             }
         });
@@ -71,36 +75,65 @@ User.userController = Ember.Object.create({
                 //TODO: error handling
             }
 
-            if (response.ok){
+            if (response && response.ok){
                 userCtx = response.userCtx;
 
                 if (response.info && response.info.authenticated){
                     userCtx.is_connected = true;
                 }
             }
+            else {
+                //TODO: error handling
+                console.log(response);
+            }
 
-            self.get('currentUser').setProperties(userCtx);
+            var user = User.userController.get('currentUser');
+            if (user){
+                user.setProperties(userCtx);
+            }
+            else {
+                console.log("currentUser not registered.");
+                //TODO: handle
+            }
         });
     }
 });
 
 User.UserView = Ember.View.extend({
-    currentUserBinding: "User.currentUser"
-});
+      templateName: "user"
+    , currentUserBinding: "User.currentUser"
 
-User.UsernameEntry = Ember.TextField.extend({
-    insertNewline: function (){
-        User.userController.login(function (){
-        });
-    }
-});
+    , userLoginView: Ember.View.extend({
+        templateName: "user-login"
 
-User.PasswordEntry = Ember.TextField.extend({
-    type: "password"
-    , insertNewline: function (){
-        User.userController.login(function (){
-        });
-    }
+        , usernameView: Ember.TextField.extend({
+              placeholder: "Username"
+            , insertNewline: function (){
+                User.userController.login()
+            }
+        })
+        , passwordView: Ember.TextField.extend({
+              placeholder: "Password"
+            , type: "password"
+            , insertNewline: function (){
+                User.userController.login();
+            }
+        })
+        , loginButton: Ember.Button.extend({
+              classBinding: "isActive"
+            , target: "User.userController"
+            , action: "login"
+        })
+    })
+    , userLogoutView: Ember.View.extend({
+        templateName: "user-logout"
+
+        , logoutButton: Ember.Button.extend({
+              classBinding: "isActive"
+            , target: "User.userController"
+            , action: "logout"
+        })
+    })
 });
 
 User.userController.checkLogin();
