@@ -73,7 +73,7 @@ CV.sectionsController = Ember.ArrayController.create({
     }
     , sectionForm: function (content){
         var cview = CV.EditView.create({
-            contentBinding: content
+            contentBinding: content || CV.Section.create()
         });
         cview.appendTo(this.$());
     }
