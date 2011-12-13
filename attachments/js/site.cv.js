@@ -108,7 +108,7 @@ CV.CVView = Ember.View.extend({
     , cvSectionView: Ember.View.extend({
         templateName: "cv-section"
     })
-    , addSectionLink = Ember.View.extend({
+    , addSectionLink: Ember.View.extend({
         templateName: "cv-add-section-link"
         , currentUserBinding: "CV.sectionsController.currentUser"
         , click: function (event){
