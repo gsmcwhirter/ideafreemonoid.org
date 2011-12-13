@@ -167,9 +167,12 @@ CV.SectionView = Ember.View.extend({
 CV.EditFormView = Ember.View.extend({
       templateName: "cv-section-form"
     , submit: function (){
-        console.log(this.get("content").get("title"));
         this.get("content").set("isEditing", false);
-        this.get("content").set("last_updated", dateISOString(new Date()));
+
+        if (User.userController.isConnected()){
+            this.get("content").set("last_updated", dateISOString(new Date()));
+        }
+
         console.log(this.get("content").get("title"));
 
         return false;
