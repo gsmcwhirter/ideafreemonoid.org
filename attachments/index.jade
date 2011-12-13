@@ -62,23 +62,21 @@ block templates
 
   script(type="text/x-handlebars", data-template-name="cv-section")
     .cvsection
-      {{#if content.isEditing}}
-      {{#view CV.EditFormView contentBinding="content"}}
-      form(method="POST")
-        label(for="section-title") Title
-        {{view Ember.TextField name="title" valueBinding="content.title" class="title"}}
-        label(for="section-content") Content
-        {{view Ember.TextArea name="content_raw" valueBinding="content.content_raw"}}
-        {{#view Ember.Button type="submit"}}Save{{/view}}
-      {{/view}}
-      {{else}}
-      h2 {{content.title}}
-      .content {{{parseMarkdown content.content_raw}}}
-      .updated Last updated {{formatDate content.last_updated}}
-      {{/if}}
+      {{view CV.EditFormView contentBinding="content" classBinding="content.isEditing:editing-form"}}
+      {{view CV.SectionDisplayView contentBinding="content" classBinding="content.isEditing:editing-display"}}
+
+  script(type="text/x-handlebars", data-template-name="cv-section-display")
+    h2 {{content.title}}
+    .content {{{parseMarkdown content.content_raw}}}
+    .updated Last updated {{formatDate content.last_updated}}
 
   script(type="text/x-handlebars", data-template-name="cv-section-form")
-
+    form(method="POST")
+      label(for="section-title") Title
+      {{view Ember.TextField name="title" valueBinding="content.title" class="title"}}
+      label(for="section-content") Content
+      {{view Ember.TextArea name="content_raw" valueBinding="content.content_raw"}}
+      {{#view Ember.Button type="submit"}}Save{{/view}}
 
   script(type="text/x-handlebars", data-template-name="cv-add-section-link")
     {{#if currentUser.is_connected}}
