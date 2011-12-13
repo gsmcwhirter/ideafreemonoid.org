@@ -90,6 +90,7 @@ CV.EditView = Ember.View.extend({
     , submit: function (){
         alert("submitted!");
         console.log(arguments);
+        return false;
     }
 });
 

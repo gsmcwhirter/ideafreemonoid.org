@@ -83,7 +83,7 @@ block templates
     {{#view logoutButton}}Log Out{{/view}}
 
   script(type="text/x-handlebars", data-template-name="cv-section-form")
-    form
+    form(method="POST")
       label(for="section-title") Title
       {{view Ember.TextField valueBinding="content.title" class="title" id="section-title"}}
       label(for="section-content") Content
