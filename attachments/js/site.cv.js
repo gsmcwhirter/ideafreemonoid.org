@@ -165,8 +165,7 @@ CV.SectionView = Ember.View.extend({
 });
 
 CV.EditFormView = Ember.View.extend({
-      templateName: "cv-section-form"
-    , submit: function (){
+      submit: function (){
         this.get("content").set("isEditing", false);
 
         if (User.userController.isConnected()){

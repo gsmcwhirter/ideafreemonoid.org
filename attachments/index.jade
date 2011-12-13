@@ -63,12 +63,14 @@ block templates
   script(type="text/x-handlebars", data-template-name="cv-section")
     .cvsection
       {{#if content.isEditing}}
+      {{#view CV.EditFormView}}
       form(method="POST")
         label(for="section-title") Title
         {{view Ember.TextField name="title" valueBinding="content.title" class="title"}}
         label(for="section-content") Content
         {{view Ember.TextArea name="content_raw" valueBinding="content.content_raw"}}
         {{#view Ember.Button type="submit"}}Save{{/view}}
+      {{/view}}
       {{else}}
       h2 {{content.title}}
       .content {{{parseMarkdown content.content_raw}}}
