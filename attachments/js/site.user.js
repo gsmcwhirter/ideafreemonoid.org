@@ -97,6 +97,9 @@ User.userController = Ember.Object.create({
             }
         });
     }
+    , isConnected: function (){
+        return this.get("currentUser").get("is_connected");
+    }
 });
 
 User.UserView = Ember.View.extend({

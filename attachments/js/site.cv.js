@@ -26,7 +26,6 @@ CV.Section = Ember.Object.extend({
 
 CV.sectionsController = Ember.ArrayController.create({
       content: []
-    , currentUserBinding: "User.userController.currentUser"
 
     , createSection: function (title, content, order, callback){
         if (typeof title === "function"){
@@ -49,7 +48,7 @@ CV.sectionsController = Ember.ArrayController.create({
             callback = function (){};
         }
 
-        if (this.get("currentUser").get("is_connected")){
+        if (User.userController.isConnected()){
 
             var now = dateISOString(new Date());
 
@@ -94,7 +93,7 @@ CV.sectionsController = Ember.ArrayController.create({
             });
         }
         else {
-            callback({error: "not connected"}, this.get("currentUser"));
+            callback({error: "not connected"}, User.userController.get("currentUser"));
         }
     }
     , reloadData: function (callback){
@@ -125,14 +124,14 @@ CV.sectionsController = Ember.ArrayController.create({
     , sectionForm: function (content, callback){
         if (typeof callback !== "function") callback = function (){};
 
-        if (this.get("currentUser").get("is_connected")){
+        if (User.userController.isConnected()){
             var cview = CV.CreateView.create();
             cview.set("content", content);
             cview.appendTo(CV.rootElement);
             callback(false, cview);
         }
         else {
-            callback({error: "not connected"}, this.get("currentUser"));
+            callback({error: "not connected"}, User.userController.get("currentUser"));
         }
     }
 });
@@ -143,7 +142,7 @@ CV.CVView = Ember.View.extend({
 
 CV.AddSectionLink = Ember.View.extend({
       templateName: "cv-add-section-link"
-    , currentUserBinding: "CV.sectionsController.currentUser"
+    , currentUserBinding: "User.userController.currentUser"
     , click: function (event){
         event.preventDefault();
         CV.sectionsController.createSection(function (err, result){
@@ -158,7 +157,9 @@ CV.AddSectionLink = Ember.View.extend({
 CV.SectionView = Ember.View.extend({
       templateName: "cv-section"
     , doubleClick: function (){
-        this.get("content").set("isEditing", true);
+        if (User.userController.isConnected()){
+            this.get("content").set("isEditing", true);
+        }
         return false;
     }
 });

@@ -40,9 +40,8 @@ Blog.Post = Ember.Object.extend({
 
 Blog.postsController = Ember.ArrayController.create({
       content: []
-    , currentUserBinding: "User.userController.currentUser"
     , createPost: function (title, slug, content, tags, authors){
-        if (this.get("currentUser").get("is_connected")){
+        if (User.userController.isConnected()){
             authors = authors || User.userController.get('currentUser').get('name');
 
             if (typeof authors === "string"){
