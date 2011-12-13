@@ -89,6 +89,7 @@ CV.EditView = Ember.View.extend({
     templateName: "cv-section-form"
     , submit: function (){
         alert("submitted!");
+        console.log(arguments);
     }
 });
 
