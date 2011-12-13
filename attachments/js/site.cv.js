@@ -94,6 +94,7 @@ CV.sectionsController = Ember.ArrayController.create({
         content = content || false;
         if (this.get("currentUser").get("is_connected")){
             var cview = CV.CreateView.create();
+            cview.set("content", Ember.Object.create({}));
             cview.appendTo(CV.rootElement);
         }
         else {
