@@ -112,15 +112,12 @@ Blog.postsController = Ember.ArrayController.create({
 
 Blog.BlogView = Ember.View.extend({
     templateName: "blog"
-
-    , blogPostView: Ember.View.extend({
-        templateName: "blog-post"
-    })
 });
 
 Blog.BlogPostView = Ember.View.extend({
     templateName: "blog-post"
 });
+
 
 Ember.Handlebars.registerHelper("formatTags", function (property){
     var val = Ember.getPath(this, property);

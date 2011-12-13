@@ -139,34 +139,34 @@ CV.sectionsController = Ember.ArrayController.create({
 
 CV.CVView = Ember.View.extend({
       templateName: "cv"
+});
 
-    , cvSectionView: Ember.View.extend({
-          templateName: "cv-section"
-        , doubleClick: function (){
-            this.get("content").set("isEditing", true);
-            return false;
-        }
-        , editForm: Ember.View.extend({
-              templateName: "cv-section-form"
-            , submit: function (){
-                //this.remove();
-                this.get("content").set("isEditing", false);
-                return false;
+CV.AddSectionLink = Ember.View.extend({
+      templateName: "cv-add-section-link"
+    , currentUserBinding: "CV.sectionsController.currentUser"
+    , click: function (event){
+        event.preventDefault();
+        CV.sectionsController.createSection(function (err, result){
+            if (err){
+                //TODO: error handling
             }
-        })
-    })
+        });
+        return false;
+    }
+});
 
-    , addSectionLink: Ember.View.extend({
-        templateName: "cv-add-section-link"
-        , currentUserBinding: "CV.sectionsController.currentUser"
-        , click: function (event){
-            event.preventDefault();
-            CV.sectionsController.createSection(function (err, result){
-                if (err){
-                    //TODO: error handling
-                }
-            });
-            return false;
-        }
-    })
+CV.SectionView = Ember.View.extend({
+      templateName: "cv-section"
+    , doubleClick: function (){
+        this.get("content").set("isEditing", true);
+        return false;
+    }
+});
+
+CV.EditFormView = Ember.View.extend({
+      templateName: "cv-section-form"
+    , submit: function (){
+        this.get("content").set("isEditing", false);
+        return false;
+    }
 });

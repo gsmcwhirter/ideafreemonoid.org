@@ -38,7 +38,7 @@ block maincontent
 block templates
   script(type="text/x-handlebars", data-template-name="blog")
     {{#collection contentBinding="Blog.postsController" tagName="ol" class="posts"}}
-    {{view parentView.parentView.blogPostView contentBinding="content"}}
+    {{view Blog.BlogPostView contentBinding="content"}}
     {{/collection}}
 
   script(type="text/x-handlebars", data-template-name="blog-post")
@@ -55,22 +55,35 @@ block templates
 
   script(type="text/x-handlebars", data-template-name="cv")
     {{#collection contentBinding="CV.sectionsController" tagName="ol" class="sections"}}
-    {{view parentView.parentView.cvSectionView contentBinding="content"}}
+    {{view CV.SectionView contentBinding="content"}}
     {{/collection}}
     .actions
-      {{view addSectionLink}}
+      {{view CV.AddSectionLink}}
 
   script(type="text/x-handlebars", data-template-name="cv-section")
     {{#with content}}
     .cvsection
       {{#if isEditing}}
-      {{view editForm contentBinding="this"}}
+      {{view CV.EditFormView contentBinding="this"}}
       {{else}}
       h2 {{title}}
       .content {{{parseMarkdown content_raw}}}
       .updated Last updated {{formatDate last_updated}}
       {{/if}}
     {{/with}}
+
+  script(type="text/x-handlebars", data-template-name="cv-section-form")
+    form(method="POST")
+      label(for="section-title") Title
+      {{view Ember.TextField valueBinding="content.title" class="title" id="section-title"}}
+      label(for="section-content") Content
+      {{#view Ember.TextArea id="section-content"}}{{content.content_raw}}{{/view}}
+      {{#view Ember.Button type="submit"}}Save{{/view}}
+
+  script(type="text/x-handlebars", data-template-name="cv-add-section-link")
+    {{#if currentUser.is_connected}}
+    a(href="#") Add New Section
+    {{/if}}
 
   script(type="text/x-handlebars", data-template-name="user")
     {{#if currentUser.is_connected}}
@@ -87,19 +100,6 @@ block templates
   script(type="text/x-handlebars", data-template-name="user-logout")
     {{content.currentUser.name}}
     {{#view logoutButton}}Log Out{{/view}}
-
-  script(type="text/x-handlebars", data-template-name="cv-section-form")
-    form(method="POST")
-      label(for="section-title") Title
-      {{view Ember.TextField valueBinding="content.title" class="title" id="section-title"}}
-      label(for="section-content") Content
-      {{#view Ember.TextArea id="section-content"}}{{content.content_raw}}{{/view}}
-      {{#view Ember.Button type="submit"}}Save{{/view}}
-
-  script(type="text/x-handlebars", data-template-name="cv-add-section-link")
-    {{#if currentUser.is_connected}}
-    a(href="#") Add New Section
-    {{/if}}
 
 block scripts
   script(type="text/javascript", src="js/site.api.js")
