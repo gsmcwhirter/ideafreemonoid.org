@@ -21,14 +21,36 @@ CV.Section = Ember.Object.extend({
     , last_updated: null
     , _id: null
     , _rev: null
+    , isEditing: false
 });
 
 CV.sectionsController = Ember.ArrayController.create({
       content: []
     , currentUserBinding: "User.userController.currentUser"
 
-    , createSection: function (title, content, order){
+    , createSection: function (title, content, order, callback){
+        if (typeof title === "function"){
+            callback = title;
+            title = null;
+            content = null;
+            order = null;
+        }
+        else if (typeof content === "function"){
+            callback = content;
+            content = null;
+            order = null;
+        }
+        else if (typeof order === "function"){
+            callback = order;
+            order = null;
+        }
+
+        if (typeof callback !== "function"){
+            callback = function (){};
+        }
+
         if (this.get("currentUser").get("is_connected")){
+
             var now = dateISOString(new Date());
 
             var section = {
@@ -44,61 +66,73 @@ CV.sectionsController = Ember.ArrayController.create({
 
             IFMAPI.getUUIDs(function (err, response){
                 if (err){
-                    //TODO: error handling
-                    console.log(response);
+                    callback(err, response);
                 }
-
-                if (response && response.uuids){
+                else if (response && response.uuids){
                     section._id = response.uuids[0];
 
                     IFMAPI.putDoc(section._id, section, function (err, response){
                         if (err){
-                            //TODO: error handling
-                            console.log(response);
+                            callback(err, response);
                         }
-
-                        console.log(response);
-
-                        if (response && response.ok){
+                        else if (response && response.ok){
                             section._rev = response.rev;
 
                             self.pushObject(CV.Section.create(section));
                             self.resort();
+
+                            callback(false, section);
+                        }
+                        else {
+                            callback(true, response);
                         }
                     });
+                }
+                else {
+                    callback(true, response);
                 }
             });
         }
         else {
-            //TODO: error handling
+            callback({error: "not connected"}, this.get("currentUser"));
         }
     }
-    , reloadData: function (){
+    , reloadData: function (callback){
+        if (typeof callback !== "function"){
+            callback = function (){};
+        }
+
         var self = this;
         IFMAPI.getView("cvsections", {include_docs: true}, function (err, response){
             if (err){
-                //TODO: error handling
-                console.log(response);
+                callback(err, response);
             }
 
-            if (response && response.rows){
+            else if (response && response.rows){
                 self.set('content', _(response.rows).chain().pluck('doc').map(function (doc){return CV.Section.create(doc);}).value());
                 self.resort();
+                callback(false, response);
+            }
+
+            else {
+                callback(true, response);
             }
         });
     }
     , resort: function (){
         this.set('content', _(this.get('content')).sortBy(function (section){return section.get('order');}));
     }
-    , sectionForm: function (content){
-        content = content || false;
+    , sectionForm: function (content, callback){
+        if (typeof callback !== "function") callback = function (){};
+
         if (this.get("currentUser").get("is_connected")){
             var cview = CV.CreateView.create();
-            cview.set("content", Ember.Object.create({}));
+            cview.set("content", content);
             cview.appendTo(CV.rootElement);
+            callback(false, cview);
         }
         else {
-            //TODO: error handling
+            callback({error: "not connected"}, this.get("currentUser"));
         }
     }
 });
@@ -107,30 +141,32 @@ CV.CVView = Ember.View.extend({
       templateName: "cv"
 
     , cvSectionView: Ember.View.extend({
-        templateName: "cv-section"
+          templateName: "cv-section"
+        , doubleClick: function (){
+            this.get("content").set("isEditing", true);
+            return false;
+        }
+        , editForm: Ember.View.extend({
+              templateName: "cv-section-form"
+            , submit: function (){
+                //this.remove();
+                this.get("content").set("isEditing", false);
+                return false;
+            }
+        })
     })
+
     , addSectionLink: Ember.View.extend({
         templateName: "cv-add-section-link"
         , currentUserBinding: "CV.sectionsController.currentUser"
         , click: function (event){
             event.preventDefault();
-            CV.sectionsController.sectionForm();
+            CV.sectionsController.createSection(function (err, result){
+                if (err){
+                    //TODO: error handling
+                }
+            });
             return false;
         }
     })
-});
-
-CV.CreateView = Ember.View.extend({
-      templateName: "cv-section-form"
-    , submit: function (event){
-        this.remove();
-        return false;
-    }
-})
-
-CV.EditView = CV.CreateView.extend({
-    submit: function (event){
-
-        return false;
-    }
 });

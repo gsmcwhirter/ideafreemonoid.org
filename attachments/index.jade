@@ -63,9 +63,13 @@ block templates
   script(type="text/x-handlebars", data-template-name="cv-section")
     {{#with content}}
     .cvsection
+      {{#if isEditing}}
+      {{view editForm contentBinding="this"}}
+      {{else}}
       h2 {{title}}
       .content {{{parseMarkdown content_raw}}}
       .updated Last updated {{formatDate last_updated}}
+      {{/if}}
     {{/with}}
 
   script(type="text/x-handlebars", data-template-name="user")
