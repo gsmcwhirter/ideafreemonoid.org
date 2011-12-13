@@ -71,6 +71,10 @@ CV.sectionsController = Ember.ArrayController.create({
     , resort: function (){
         this.set('content', _(this.get('content')).sortBy(function (section){return section.get('order');}));
     }
+    , addSection: function (){
+        var cview = CV.EditView.create();
+        cview.prependTo(this.$);
+    }
 });
 
 CV.CVView = Ember.View.extend({
@@ -79,6 +83,13 @@ CV.CVView = Ember.View.extend({
     , cvSectionView: Ember.View.extend({
         templateName: "cv-section"
     })
+});
+
+CV.EditView = Ember.View.extend({
+    templateName: "cv-section-form"
+    , submit: function (){
+        alert("submitted!");
+    }
 });
 
 CV.reloadData = function (){

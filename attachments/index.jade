@@ -72,7 +72,7 @@ block templates
     {{else}}
     {{view userLoginView contentBinding="this"}}
     {{/if}}
-      
+
   script(type="text/x-handlebars", data-template-name="user-login")
     {{view usernameView id="login-username"}}
     {{view passwordView id="login-password"}}
@@ -83,7 +83,12 @@ block templates
     {{#view logoutButton}}Log Out{{/view}}
 
   script(type="text/x-handlebars", data-template-name="cv-section-form")
-
+    form
+      label(for="section-title") Title
+      {{view Ember.TextField valueBinding="content.title" class="title" id="section-title"}}
+      label(for="section-content") Content
+      {{#view Ember.TextArea id="section-content"}}{{content.content_raw}}{{/view}}
+      {{#view Ember.Button type="submit"}}Save{{/view}}
 
 block scripts
   script(type="text/javascript", src="js/site.api.js")
