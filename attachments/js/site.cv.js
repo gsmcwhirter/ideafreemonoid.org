@@ -85,11 +85,21 @@ CV.CVView = Ember.View.extend({
     })
 });
 
-CV.EditView = Ember.View.extend({
+CV.CreateView = Ember.View.extend({
     templateName: "cv-section-form"
-    , submit: function (){
-        alert("submitted!");
-        console.log(arguments);
+    , submit: function (event){
+        event.stopPropogation();
+        event.preventDefault();
+
+        this.remove();
+        return false;
+    }
+})
+
+CV.EditView = CV.CreateView.extend({
+    submit: function (event){
+        event.stopPropogation();
+        event.preventDefault();
         return false;
     }
 });
