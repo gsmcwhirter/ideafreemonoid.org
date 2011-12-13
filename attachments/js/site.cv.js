@@ -73,7 +73,7 @@ CV.sectionsController = Ember.ArrayController.create({
     }
     , addSection: function (){
         var cview = CV.EditView.create();
-        cview.prependTo(this.$);
+        cview.appendTo(this.$());
     }
 });
 
