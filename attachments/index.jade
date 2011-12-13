@@ -63,7 +63,7 @@ block templates
   script(type="text/x-handlebars", data-template-name="cv-section")
     .cvsection
       {{#if content.isEditing}}
-      {{view CV.EditFormView contentBinding="content"}}
+      {{view CV.EditFormView contentBinding="content" propogatesEvents=true}}
       {{else}}
       h2 {{content.title}}
       .content {{{parseMarkdown content.content_raw}}}
