@@ -75,9 +75,9 @@ block templates
   script(type="text/x-handlebars", data-template-name="cv-section-form")
     form(method="POST")
       label(for="section-title") Title
-      {{view Ember.TextField valueBinding="content.title" class="title"}}
+      {{view Ember.TextField name="title" valueBinding="content.title" class="title"}}
       label(for="section-content") Content
-      {{view Ember.TextArea valueBinding="content.content_raw"}}
+      {{view Ember.TextArea name="content_raw" valueBinding="content.content_raw"}}
       {{#view Ember.Button type="submit"}}Save{{/view}}
 
   script(type="text/x-handlebars", data-template-name="cv-add-section-link")
