@@ -71,8 +71,10 @@ CV.sectionsController = Ember.ArrayController.create({
     , resort: function (){
         this.set('content', _(this.get('content')).sortBy(function (section){return section.get('order');}));
     }
-    , addSection: function (){
-        var cview = CV.EditView.create();
+    , sectionForm: function (content){
+        var cview = CV.EditView.create({
+            contentBinding: content
+        });
         cview.appendTo(this.$());
     }
 });
