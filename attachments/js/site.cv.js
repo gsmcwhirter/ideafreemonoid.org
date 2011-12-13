@@ -73,7 +73,7 @@ CV.sectionsController = Ember.ArrayController.create({
     }
     , sectionForm: function (content){
         var cview = CV.EditView.create({});
-        cview.appendTo(this.$());
+        cview.appendTo(CV.rootElement);
     }
 });
 
@@ -102,6 +102,7 @@ CV.reloadData = function (){
 
         if (response && response.rows){
             CV.sectionsController.set('content', _(response.rows).chain().pluck('doc').map(function (doc){return CV.Section.create(doc);}).value());
+            CV.sectionsController.resort();
         }
     });
 };
