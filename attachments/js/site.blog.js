@@ -322,6 +322,11 @@ Blog.postsController = Ember.ArrayController.create({
         var getStartkey = function (pageSize, page, data){
             var index = pageSize * (page - 1) + 1;
 
+            console.log(pageSize);
+            console.log(page);
+            console.log(index);
+            console.log(data.length);
+
             if (data.length < index + 1){
                 return ['pub', 0];
             }
