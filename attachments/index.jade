@@ -56,7 +56,7 @@ block templates
     {{view Blog.PostDisplayView contentBinding="content" classBinding="content.isEditing:editing-display"}}
     {{#if showComments}}
     #disqus_thread
-    {{#view tagName="script" type="text/javascript"}}
+    {{#view contentBinding="content" tagName="script" type="text/javascript"}}
     |     var disqus_shortname = 'ideafreemonoid';
     |     var disqus_identifier = '{{content.slug}}';
     |     (function() {
