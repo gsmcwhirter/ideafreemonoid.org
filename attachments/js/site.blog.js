@@ -402,8 +402,8 @@ Blog.BlogView = Ember.View.extend({
 
     , pagesLinkData: function (){
         var total = this.get("totalPages") || 1;
-        //var current = this.get("currentPage") || 1;
-        var current = 1;
+        var current = this.get("currentPage") || 1;
+        //var current = 1;
         if (total > 1){
             var ret = [];
             var start = Math.max(1, current - 3);
@@ -417,8 +417,8 @@ Blog.BlogView = Ember.View.extend({
         else {
             return [];
         }
-    //}.property("totalPages", "currentPage")
-    }.property("totalPages")
+    }.property("totalPages", "currentPage")
+    //}.property("totalPages")
 
     , lastHref: function (){
         return "#!blog/" + this.get("totalPages");
