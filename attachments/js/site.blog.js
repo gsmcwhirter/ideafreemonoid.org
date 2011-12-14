@@ -395,9 +395,9 @@ Blog.BlogView = Ember.View.extend({
             var ret = [];
             var start = Math.max(1, this.get("currentPage") - 3);
             var end = Math.min(this.get("totalPages"), this.get("currentPage") + 3);
-            for (var i = start; i <= end; i++){
+            /*for (var i = start; i <= end; i++){
                 ret.push({page: i, href: "#!blog/"+i});
-            }
+            }*/
 
             return ret;
         }
