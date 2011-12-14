@@ -27,6 +27,30 @@ Blog.Post = Ember.Object.extend({
     , _id: null
     , _rev: null
 
+    , formattedAuthors: function (){
+        var val = this.get("authors");
+        if (val && val.length) return val.join(", "); //TODO: links
+        else return "";
+    }.property("authors")
+
+    , formattedContent: function (){
+        return SDConverter.makeHtml(this.get("content_raw") || "\n");
+    }.property("content_raw")
+
+    , formattedDate: function (){
+        var val = this.get("display_date");
+        if (val) return (new Date(val)).toLocaleString();
+        else return "";
+    }.property("display_date")
+
+    , formattedTags: function (){
+        var val = this.get("tags");
+        if (val && val.length) return _(val).map(function(tag){
+                return "<a href=\"#!/tag/" + tag + "\">" + tag + "</a>"; //TODO: working links
+            }).join(", ");
+        else return "";
+    }.property("tags")
+
     , editString: function (){
         if (this.edits && this.edits.length){
             var last = this.edits[this.edits.length - 1];
@@ -115,27 +139,4 @@ Blog.BlogView = Ember.View.extend({
 
 Blog.BlogPostView = Ember.View.extend({
     templateName: "blog-post"
-});
-
-
-Ember.Handlebars.registerHelper("formatTags", function (property){
-    var val = Ember.getPath(this, property);
-    if (val && val.length){
-        _(val).map(function(tag){
-            return "<a href=\"#!/tag/" + tag + "\">" + tag + "</a>"; //TODO: working links
-        }).join(", ");
-    }
-    else {
-        return "";
-    }
-});
-
-Ember.Handlebars.registerHelper("formatAuthors", function (property){
-    var val = Ember.getPath(this, property);
-    if (val && val.length){
-        return val.join(", "); //TODO: links
-    }
-    else {
-        return "";
-    }
 });

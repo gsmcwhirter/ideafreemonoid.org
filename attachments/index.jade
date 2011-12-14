@@ -44,9 +44,9 @@ block templates
   script(type="text/x-handlebars", data-template-name="blog-post")
     {{#with content}}
     h2 {{title}}
-    .byline Posted {{formatDate display_date}} by {{{formatAuthors authors}}}
-    .tagline Tags: {{{formatTags tags}}}
-    .content {{{parseMarkdown content_raw}}}
+    .byline Posted {{formattedDate}} by {{{formattedAuthors}}}
+    .tagline Tags: {{{formattedTags}}}
+    .content {{{formattedContent}}}
     .editline {{editString}}
     |  {{#list edits tagClass="editlist" tagName="ol"}}
     |    Edited on {{edit_date}} by {{author}}
@@ -67,8 +67,8 @@ block templates
 
   script(type="text/x-handlebars", data-template-name="cv-section-display")
     h2 {{content.title}}
-    .content {{{parseMarkdown content.content_raw}}}
-    .updated Last updated {{formatDate content.last_updated}}
+    .content {{{content.formattedContent}}}
+    .updated Last updated {{content.formattedDate}}
 
   script(type="text/x-handlebars", data-template-name="cv-section-form")
     form(method="POST")

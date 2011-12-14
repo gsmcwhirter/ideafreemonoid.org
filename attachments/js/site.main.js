@@ -59,19 +59,3 @@ App.setTitle = function (title){
         document.title = this.defaultPageTitle;
     }
 };
-
-Ember.Handlebars.registerHelper("formatDate", function (property){
-    var val = Ember.getPath(this, property);
-    if (val){
-        var date = new Date(val);
-        return date.toLocaleString();
-    }
-    else {
-        return "";
-    }
-});
-
-Ember.Handlebars.registerHelper("parseMarkdown", function (property){
-    var val = Ember.getPath(this, property);
-    return SDConverter.makeHtml(val || "\n");
-});

@@ -22,9 +22,21 @@ CV.Section = Ember.Object.extend({
     , _id: null
     , _rev: null
     , isEditing: false
+
     , _doc: function (){
         return this.getProperties("type","title","content_raw","order","created_at","last_updated","_id","_rev");
     }.property("type","title","content_raw","order","created_at","last_updated","_id","_rev")
+
+    , formattedDate: function (){
+        var val = this.get("last_updated");
+        if (val) return (new Date(val)).toLocaleString();
+        else return "";
+    }.property("last_updated")
+
+    , formattedContent: function (){
+        return SDConverter.makeHtml(this.get("content_raw") || "\n");
+    }.property("content_raw")
+
     , save: function (callback){
         if (User.userController.isConnected()){
             var self = this;
@@ -198,6 +210,7 @@ CV.EditFormView = Ember.View.extend({
 
         if (User.userController.isConnected()){
             this.get("content").set("last_updated", dateISOString(new Date()));
+            this.get("content").save();
         }
         else {
             console.log("Not Connected!");
