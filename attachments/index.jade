@@ -55,10 +55,11 @@ block templates
     .byline Posted {{formattedDate}} by {{{formattedAuthors}}}
     .tagline Tags: {{{formattedTags}}}
     .content {{{formattedContent}}}
-    .editline {{editString}}
-    |  {{#list formattedEdits tagClass="editlist" tagName="ol"}}
-    |    Edited on {{formattedDate}} by {{author}}
-    |  {{/list}}
+    .editline
+      {{editString}}
+      {{#list formattedEdits tagClass="editlist" tagName="ol"}}
+      Edited on {{formattedDate}} by {{author}}
+      {{/list}}
     {{/with}}
 
   script(type="text/x-handlebars", data-template-name="blog-post-form")
