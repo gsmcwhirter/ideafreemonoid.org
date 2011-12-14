@@ -158,6 +158,7 @@ Blog.Post = Ember.Object.extend({
 Blog.postsController = Ember.ArrayController.create({
       content: []
     , _postData: []
+    , _seenPosts: {}
     , currentPage: 1
     , _totalPosts: 1
     , _pageSize: 1
@@ -355,18 +356,21 @@ Blog.postsController = Ember.ArrayController.create({
 
                 var dataChanges = false;
                 var postData = self.get("_postData").slice();
+                var seenPosts = _.clone(self.get("_seenPosts"));
                 _(response.rows).chain()
                                 .pluck('key')
                                 .each(function (key){
-                                    if (postData.indexOf(key) === -1){
+                                    if (!seenPosts[key[2]]){
                                         dataChanges = true;
                                         postData.push(key);
+                                        seenPosts[key[2]] = true;
                                     }
                                 });
 
                 if (dataChanges){
-                    postData.sort();
+                    postData.sort().reverse();
                     self.set("_postData", postData);
+                    self.set("_seenPosts", seenPosts);
                 }
 
                 var newcontent = _(response.rows).chain()
