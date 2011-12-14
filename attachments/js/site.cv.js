@@ -192,7 +192,7 @@ CV.sectionsController = Ember.ArrayController.create({
 });
 
 CV.CVView = Ember.View.extend({
-      templateName: "cv"
+        templateName: "cv"
 });
 
 CV.AddSectionLink = Ember.View.extend({

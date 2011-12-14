@@ -37,7 +37,7 @@ ddoc.views = {
         map: function (doc){
             if (doc.type === "blog-post" && doc.tags && doc.tags.length){
                 doc.tags.forEach(function (tag){
-                    emit(tag, 1);
+                    emit([tag, 0, doc.is_published ? 'pub' : 'unpub', 0, doc.display_date], 1);
                 });
             }
         }
@@ -56,7 +56,7 @@ ddoc.views = {
         map: function (doc){
             if (doc.type === "blog-post" && doc.authors && doc.authors.length){
                 doc.authors.forEach(function (author){
-                    emit(author, 1);
+                    emit([author, 0, doc.is_published ? 'pub' : 'unpub', 0, doc.display_date], 1);
                 });
             }
         }

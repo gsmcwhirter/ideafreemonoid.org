@@ -3,13 +3,13 @@ window.Blog = Ember.Application.create({
 });
 
 Blog.Router = {
-    index: function (){
-        _gaq.push(['_trackPageview', '#!blog']);
-        Blog.Router.show_page.call(this, {page: 1});
-    }
-    , show_page: function (params){
+    show_page: function (params){
         if (!params.page){
             params.page = 1;
+            _gaq.push(['_trackPageview', '#!blog']);
+        }
+        else {
+            _gaq.push(['_trackPageview', '#!blog/' + params.page]);
         }
 
         App.hideAll();
@@ -22,10 +22,18 @@ Blog.Router = {
             Ember.routes.set('location', '!blog');
         }
         else {
+            if (!params.page){
+                params.page = 1;
+                _gaq.push(['_trackPageview', '#!blog/author/' + params.author]);
+            }
+            else {
+                _gaq.push(['_trackPageview', '#!blog/author/' + params.author + "/" + params.page]);
+            }
+
             App.hideAll();
+            Blog.postsController.loadPage(params.page, "blogauthors", {reduce: false, startkey: [params.author, 1], endkey: [params.author, 0]});
             this.get("rootElement").show();
             App.setTitle("Blog");
-            _gaq.push(['_trackPageview', '#!blog/author/' + params.author]);
         }
     }
     , show_tag: function (params){
@@ -33,10 +41,18 @@ Blog.Router = {
             Ember.routes.set('location', '!blog');
         }
         else {
+            if (!params.page){
+                params.page = 1;
+                _gaq.push(['_trackPageview', '#!blog/tag/' + params.tag]);
+            }
+            else {
+                _gaq.push(['_trackPageview', '#!blog/tag/' + params.tag + "/" + params.page]);
+            }
+
             App.hideAll();
+            Blog.postsController.loadPage(params.page, "blogtags", {reduce: false, startkey: [params.tag, 1], endkey: [params.tag, 0]});
             this.get("rootElement").show();
             App.setTitle("Blog");
-            _gaq.push(['_trackPageview', '#!blog/tag/' + params.tag]);
         }
     }
     , show_post: function (params){
@@ -159,13 +175,14 @@ Blog.postsController = Ember.ArrayController.create({
       content: []
     , _postData: null
     , _seenPosts: {}
+    , _currentView: null
     , currentPage: 1
     , _totalPosts: 1
     , _pageSize: 10
 
     , totalPages: function (){
-        return Math.ceil(this.get("_totalPosts") / this.get("_pageSize"));
-    }.property("_totalPosts", "_pageSize").cacheable()
+        return Math.ceil(this.get("_totalPosts")[this.get("_currentView")] / this.get("_pageSize"));
+    }.property("_totalPosts", "_pageSize", "_currentView").cacheable()
 
     , createPost: function (title, slug, tags, content, callback){
         if (typeof title === "function"){
@@ -299,41 +316,56 @@ Blog.postsController = Ember.ArrayController.create({
         }
     }
 
-    , loadPage: function (page){
+    , loadPage: function (page, view, viewopts){
         var self = this;
         var pageSize = this.get("_pageSize");
         var postData = this.get("_postData");
 
+        view = view || "blogposts";
+
         var first = function (second){second();};
 
-        if (!postData){
+        if (!postData[view]){
             first = function (second){
-                var opts = {
-                    descending: true
-                };
+                var opts = _(viewopts).defaults({
+                      descending: true
+                    , startkey: null
+                    , endkey: null
+                });
 
                 if (!User.userController.isConnected()){
-                    opts.endkey = ['pub', 0];
-                    opts.startkey = ['pub', 1];
+                    if (opts.startkey){
+                        opts.startkey[1] = 0;
+                    }
+                    opts.startkey = (opts.startkey || []).concat(['pub', 1]);
+
+                    opts.endkey = (opts.endkey || []).concat(['pub', 0]);
                 }
 
-                IFMAPI.getView("blogposts", opts, function (err, response){
-                    if (response && response.rows){
-                        self.set("_totalPosts", response.total_rows);
-                        console.log("set total posts");
+                if (!opts.startkey) delete opts.startkey;
+                if (!opts.endkey) delete opts.endkey;
 
-                        var postData = [];
-                        var seenPosts = {};
+                IFMAPI.getView(view, opts, function (err, response){
+                    if (response && response.rows){
+                        var newPostData = _.clone(self.get("_postData"));
+                        var newSeenPosts = _.clone(self.get("_seenPosts"));
+                        var newTotalPosts = _.clone(self.get("_totalPosts"));
+
+                        newPostData[view] = [];
+                        newSeenPosts[view] = {};
+                        newTotalPosts[view] = response.total_rows;
+
                         _(response.rows).chain()
                                         .pluck('key')
                                         .each(function (key){
-                                            postData.push(key);
-                                            seenPosts[key[2]] = true;
+                                            newPostData[view].push(key);
+                                            newSeenPosts[view][key[2]] = true;
                                         });
 
-                        postData.sort().reverse();
-                        self.set("_postData", postData);
-                        self.set("_seenPosts", seenPosts);
+                        newPostData[view].sort().reverse();
+                        self.set("_postData", newPostData);
+                        self.set("_seenPosts", newSeenPosts);
+                        self.set("_totalPosts", newTotalPosts);
                     }
                     else {
                         //TODO: error handling
@@ -344,6 +376,8 @@ Blog.postsController = Ember.ArrayController.create({
         }
 
         first(function (){
+            self.set("_currentView", view);
+
             if (!page || page < 1){
                 page = 1;
             }
@@ -354,11 +388,11 @@ Blog.postsController = Ember.ArrayController.create({
                 page = lastPage;
             }
 
-            var opts = {
+            var opts = _(viewopts).defaults({
                   include_docs: true
                 , descending: true
                 , limit: pageSize + 1
-            };
+            });
 
             var getStartkey = function (pageSize, page, data){
                 var index = pageSize * (page - 1);
@@ -371,22 +405,33 @@ Blog.postsController = Ember.ArrayController.create({
                 }
             };
 
+
+
             if (!User.userController.isConnected()){
                 //start and end need to be reversed due to descending
-                opts.endkey = ['pub', 0];
+                opts.endkey = (opts.endkey || []).concat(['pub', 0]);
 
+                var startkey;
                 if (page > 1){
-                    opts.startkey = getStartkey(pageSize, page, self.get("_postData"));
+                    startkey = getStartkey(pageSize, page, self.get("_postData"));
                 }
                 else {
-                    opts.startkey = ['pub', 1];
+                    startkey = ['pub', 1];
                 }
+
+                if (opts.startkey){
+                    opts.startkey[1] = 0;
+                }
+                opts.startkey = (opts.startkey || []).concat(startkey);
             }
             else if (page > 1) {
-                opts.startkey = getStartkey(pageSize, page, self.get("_postData"));
+                opts.startkey = (opts.startkey || []).concat(getStartkey(pageSize, page, self.get("_postData")));
             }
 
-            IFMAPI.getView("blogposts", opts, function (err, response){
+            if (!opts.startkey) delete opts.startkey;
+            if (!opts.endkey) delete opts.endkey;
+
+            IFMAPI.getView(view, opts, function (err, response){
                 if (err){
                     //TODO: error handling
                     console.log(response);
