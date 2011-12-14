@@ -166,32 +166,6 @@ Blog.postsController = Ember.ArrayController.create({
         return Math.ceil(this.get("_totalPosts") / this.get("_pageSize"));
     }.property("_totalPosts", "_pageSize")
 
-    , pagesLinkData: function (){
-        var total = this.get("totalPages") || 1;
-        //var current = this.get("currentPage") || 1;
-        var current = 1;
-        var start = Math.max(1, current - 3);
-        var end = Math.min(total, current + 3);
-        /*if (total > 1){
-            var ret = [];
-            var start = Math.max(1, current - 3);
-            var end = Math.min(total, current + 3);
-            console.log(start);
-            console.log(end);
-            for (var i = start; i <= end; i++){
-                ret.push({page: i, href: "#!blog/" + i});
-            }
-
-            return ret;
-        }
-        else {*/
-            console.log(start);
-            console.log(end);
-            return [];
-        //}
-    //}.property("totalPages", "currentPage")
-    }.property("totalPages")
-
     , createPost: function (title, slug, tags, content, callback){
         if (typeof title === "function"){
             callback = title;
@@ -421,11 +395,28 @@ Blog.BlogView = Ember.View.extend({
       templateName: "blog"
     , currentPageBinding: "Blog.postsController.currentPage"
     , totalPagesBinding: "Blog.postsController.totalPages"
-    , pagesLinkDataBinding: "Blog.postsController.pagesToLink"
 
     , hasManyPages: function (){
         return this.get("totalPages") > 1;
     }.property("totalPages")
+
+    , pagesLinkData: function (){
+        var total = this.get("totalPages") || 1;
+        var current = this.get("currentPage") || 1;
+        if (total > 1){
+            var ret = [];
+            var start = Math.max(1, current - 3);
+            var end = Math.min(total, current + 3);
+            for (var i = start; i <= end; i++){
+                ret.push({page: i, href: "#!blog/" + i});
+            }
+
+            return ret;
+        }
+        else {
+            return [];
+        }
+    }.property("totalPages", "currentPage")
 
     , lastHref: function (){
         return "#!blog/" + this.get("totalPages");
