@@ -117,9 +117,10 @@ Blog.Post = Ember.Object.extend({
     }).property("tags")
 
     , editString: function (){
-        if (this.edits && this.edits.length){
-            var last = this.edits[this.edits.length - 1];
-            return "Edited " + this.edits.length + " times, most recently by " + last.author + " on " + last.edit_date_formatted;
+        var edits = this.get("formattedEdits");
+        if (edits && edits.length){
+            var last = edits[edits.length - 1];
+            return "Edited " + edits.length + " times, most recently by " + last.author + " on " + last.formattedDate;
         }
         else {
             return "";
