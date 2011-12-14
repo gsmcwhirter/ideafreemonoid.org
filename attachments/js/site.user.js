@@ -28,6 +28,9 @@ User.userController = Ember.Object.create({
         IFMAPI.startSession(name, pass, function (err, response){
             if (err){
                 //TODO: error handling
+                console.log("Error!");
+                console.log(err)
+                console.log(response);
             }
 
             if (response && response.ok){
@@ -47,6 +50,9 @@ User.userController = Ember.Object.create({
         IFMAPI.deleteSession(function (err, response){
             if (err){
                 //TODO: error handling
+                console.log("Error!");
+                console.log(err)
+                console.log(response);
             }
 
             if (response && response.ok){
@@ -73,6 +79,9 @@ User.userController = Ember.Object.create({
 
             if (err){
                 //TODO: error handling
+                console.log("Error!");
+                console.log(err)
+                console.log(response);
             }
 
             if (response && response.ok){
@@ -84,10 +93,12 @@ User.userController = Ember.Object.create({
             }
             else {
                 //TODO: error handling
+                console.log("Error!");
+                console.log(err)
                 console.log(response);
             }
 
-            var user = User.userController.get('currentUser');
+            var user = self.get('currentUser');
             if (user){
                 user.setProperties(userCtx);
             }
