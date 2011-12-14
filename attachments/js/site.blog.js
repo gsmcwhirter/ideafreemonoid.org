@@ -128,7 +128,7 @@ Blog.Post = Ember.Object.extend({
         else {
             return "";
         }
-    }.property('edits')
+    }.property("edits")
 });
 
 Blog.postsController = Ember.ArrayController.create({
@@ -198,7 +198,7 @@ Blog.postsController = Ember.ArrayController.create({
         if (User.userController.isConnected()){
 
             if (post.get("is_published")){
-                var newedits = post.get("edits");
+                var newedits = post.get("edits").slice();
                 newedits.push({
                       author: User.userController.get("currentUser").get("name")
                     , edit_date: dateISOString(new Date())

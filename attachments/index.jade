@@ -57,9 +57,6 @@ block templates
     .content {{{formattedContent}}}
     .editline
       {{editString}}
-      {{#list formattedEdits tagClass="editlist" tagName="ol"}}
-      Edited on {{formattedDate}} by {{author}}
-      {{/list}}
     {{/with}}
 
   script(type="text/x-handlebars", data-template-name="blog-post-form")
