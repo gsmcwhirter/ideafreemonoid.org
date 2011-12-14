@@ -140,7 +140,13 @@ CV.sectionsController = Ember.ArrayController.create({
             }
 
             first(function (){
-                IFMAPI.putDoc(section.get("_id"), section.get("_doc"), function (err, response){
+                var doc = section.get("_doc");
+
+                if (!doc._rev){
+                    delete doc._rev;
+                }
+
+                IFMAPI.putDoc(section.get("_id"), doc, function (err, response){
                     if (err){
                         callback(err, response);
                     }
