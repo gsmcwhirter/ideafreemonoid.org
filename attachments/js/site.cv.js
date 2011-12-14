@@ -216,7 +216,11 @@ CV.EditFormView = Ember.View.extend({
 
         if (User.userController.isConnected()){
             this.get("content").set("last_updated", dateISOString(new Date()));
-            this.get("content").save();
+            CV.sectionsController.saveSection(this.get("content"), function (err){
+                if (err){
+                    //TODO: error handling
+                }
+            });
         }
         else {
             console.log("Not Connected!");
