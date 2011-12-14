@@ -217,17 +217,7 @@ Blog.postsController = Ember.ArrayController.create({
 });
 
 Blog.BlogView = Ember.View.extend({
-      templateName: "blog"
-    , doubleClick: function (){
-        if (User.userController.isConnected()){
-            this.get("content").set("isEditing", true);
-        }
-        return false;
-    }
-});
-
-Blog.BlogPostView = Ember.View.extend({
-    templateName: "blog-post"
+    templateName: "blog"
 });
 
 Blog.AddPostLink = Ember.View.extend({
@@ -244,6 +234,15 @@ Blog.AddPostLink = Ember.View.extend({
     }
 });
 
+Blog.BlogPostView = Ember.View.extend({
+      templateName: "blog-post"
+    , doubleClick: function (){
+        if (User.userController.isConnected()){
+            this.get("content").set("isEditing", true);
+        }
+        return false;
+    }
+});
 
 Blog.PostDisplayView = Ember.View.extend({
       templateName: "blog-post-display"
