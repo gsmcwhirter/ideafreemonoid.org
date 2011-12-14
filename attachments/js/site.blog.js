@@ -269,8 +269,8 @@ Blog.postsController = Ember.ArrayController.create({
         }
 
         if (!User.userController.isConnected()){
-            opts.startkey = ['pub', 0];
-            opts.endkey = ['pub', 1];
+            opts.start_key = ['pub', 0];
+            opts.end_key = ['pub', 1];
         }
 
         IFMAPI.getView("blogposts", opts, function (err, response){
