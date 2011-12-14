@@ -74,7 +74,7 @@ block templates
       {{#view saveButton contentBinding="content"}}Save{{/view}}
 
   script(type="text/x-handlebars", data-template-name="cv")
-    {{#collection contentBinding="CV.sectionsController.contentSorted" tagName="ol" class="sections"}}
+    {{#collection contentBinding="CV.sectionsController" tagName="ol" class="sections"}}
     {{view CV.SectionView contentBinding="content"}}
     {{/collection}}
     .actions
