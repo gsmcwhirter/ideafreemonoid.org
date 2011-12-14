@@ -36,57 +36,6 @@ CV.Section = Ember.Object.extend({
     , formattedContent: function (){
         return SDConverter.makeHtml(this.get("content_raw") || "\n");
     }.property("content_raw")
-
-    , save: function (callback){
-        if (typeof callback !== "function") callback = function (){};
-
-        if (User.userController.isConnected()){
-            var self = this;
-
-            if (!this.get("_id")){
-                var first = function (second){
-                    IFMAPI.getUUIDs(function (err, response){
-                        if (err){
-                            callback(err, response);
-                        }
-                        else if (response && response.uuids){
-                            self.set("_id", response.uuids[0]);
-                            second();
-                        }
-                        else {
-                            callback(true, response)
-                        }
-                    });
-                }
-            }
-            else {
-                first = function (second){
-                    second();
-                }
-            }
-
-            first(function (){
-                IFMAPI.putDoc(this.get("_id"), this.get("_doc"), function (err, response){
-                    if (err){
-                        callback(err, response);
-                    }
-                    else if (response && response.ok){
-                        self.set("_rev", response.rev);
-
-                        CV.sectionsController.resort();
-
-                        callback(false, self);
-                    }
-                    else {
-                        callback(true, response);
-                    }
-                });
-            });
-        }
-        else {
-            callback({error: "not connected"}, User.userController.get("currentUser"));
-        }
-    }
 });
 
 CV.sectionsController = Ember.ArrayController.create({
@@ -158,6 +107,59 @@ CV.sectionsController = Ember.ArrayController.create({
     , resort: function (){
         this.set('content', _(this.get('content')).sortBy(function (section){return section.get('order');}));
     }
+
+    , saveSection: function (section, callback){
+        var self = this;
+        if (typeof callback !== "function") callback = function (){};
+
+        if (User.userController.isConnected()){
+
+            var first;
+            if (!section.get("_id")){
+                first = function (second){
+                    IFMAPI.getUUIDs(function (err, response){
+                        if (err){
+                            callback(err, response);
+                        }
+                        else if (response && response.uuids){
+                            section.set("_id", response.uuids[0]);
+                            second();
+                        }
+                        else {
+                            callback(true, response);
+                        }
+                    });
+                };
+            }
+            else {
+                first = function (second){
+                    second();
+                };
+            }
+
+            first(function (){
+                IFMAPI.putDoc(section.get("_id"), section.get("_doc"), function (err, response){
+                    if (err){
+                        callback(err, response);
+                    }
+                    else if (response && response.ok){
+                        section.set("_rev", response.rev);
+
+                        self.resort();
+
+                        callback(false, section);
+                    }
+                    else {
+                        callback(true, response);
+                    }
+                });
+            });
+        }
+        else {
+            callback({error: "not connected"}, User.userController.get("currentUser"));
+        }
+    }
+
     , sectionForm: function (content, callback){
         if (typeof callback !== "function") callback = function (){};
 
