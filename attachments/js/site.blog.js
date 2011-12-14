@@ -319,7 +319,7 @@ Blog.postsController = Ember.ArrayController.create({
     , loadPage: function (page, view, viewopts){
         var self = this;
         var pageSize = this.get("_pageSize");
-        var postData = this.get("_postData");
+        var postData = this.get("_postData") || {};
 
         view = view || "blogposts";
 
