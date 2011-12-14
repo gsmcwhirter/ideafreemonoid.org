@@ -347,6 +347,8 @@ Blog.postsController = Ember.ArrayController.create({
                 if (!opts.startkey) delete opts.startkey;
                 if (!opts.endkey) delete opts.endkey;
 
+                console.log(opts);
+
                 IFMAPI.getView(view, opts, function (err, response){
                     if (response && response.rows){
                         var newPostData = _.clone(self.get("_postData") || {});
