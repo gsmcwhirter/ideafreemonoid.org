@@ -168,7 +168,7 @@ Blog.Post = Ember.Object.extend({
         else {
             this.set("tags", _(value.split(",")).map(function (tag){return $.trim(tag);}));
         }
-    }).property("tags").cacheable()
+    }).property("tags")
 });
 
 Blog.postsController = Ember.ArrayController.create({
