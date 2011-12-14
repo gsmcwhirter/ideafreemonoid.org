@@ -166,14 +166,14 @@ Blog.postsController = Ember.ArrayController.create({
         return Math.floor(this.get("_totalPosts") / this.get("_pageSize") + 1);
     }.property("_totalPosts", "_pageSize")
 
-    , hasManyPages: true
     , pagesToLink: [{page: 1, href: "#!blog/1"}]
     , lastHref: "#!blog/1"
 
-    /*, hasManyPages: function (){
+    , hasManyPages: function (){
         return this.get("totalPages") > 1;
     }.property("totalPages")
 
+    /*
     , pagesToLink: function (){
         if (this.get("totalPages") > 1){
             var ret = [];
