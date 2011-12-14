@@ -161,9 +161,37 @@ Blog.postsController = Ember.ArrayController.create({
     , currentPage: 1
     , _totalPosts: 1
     , _pageSize: 1
+
     , totalPages: function (){
         return Math.floor(this.get("_totalPosts") / this.get("_pageSize") + 1);
     }.property("_totalPosts", "_pageSize")
+
+    , hasManyPages: function (){
+        return this.get("totalPages") > 1;
+    }.property("totalPages")
+
+    , pagesToLink: function (){
+        if (this.get("totalPages") > 1){
+            var ret = [];
+            var start = Math.max(1, this.get("currentPage") - 3);
+            var end = Math.min(this.get("totalPages"), this.get("currentPage") + 3);
+            console.log(start);
+            console.log(end);
+            for (var i = start; i <= end; i++){
+                ret.push({page: i, href: "#!blog/"+i});
+            }
+
+            return ret;
+        }
+        else {
+            return [];
+        }
+    }.property("currentPage", "totalPages")
+
+    , lastHref: function (){
+        return "#!blog/" + this.get("totalPages");
+    }.property("totalPages")
+
     , createPost: function (title, slug, tags, content, callback){
         if (typeof title === "function"){
             callback = title;
@@ -387,29 +415,9 @@ Blog.BlogView = Ember.View.extend({
       templateName: "blog"
     , currentPageBinding: "Blog.postsController.currentPage"
     , totalPagesBinding: "Blog.postsController.totalPages"
-    , hasManyPages: function (){
-        return this.get("totalPages") > 1;
-    }.property("totalPages")
-    , pagesToLink: function (){
-        if (this.get("totalPages") > 1){
-            var ret = [];
-            var start = Math.max(1, this.get("currentPage") - 3);
-            var end = Math.min(this.get("totalPages"), this.get("currentPage") + 3);
-            console.log(start);
-            console.log(end);
-            /*for (var i = start; i <= end; i++){
-                ret.push({page: i, href: "#!blog/"+i});
-            }*/
-
-            return ret;
-        }
-        else {
-            return [];
-        }
-    }.property("currentPage", "totalPages")
-    , lastHref: function (){
-        return "#!blog/" + this.get("totalPages");
-    }.property("totalPages")
+    , hasManyPagesBinding: "Blog.postsController.hasManyPages"
+    , pagesToLinkBinding: "Blog.postsController.pagesToLink"
+    , lastHrefBinding: "Blog.postsController.lastHref"
 });
 
 Blog.AddPostLink = Ember.View.extend({
