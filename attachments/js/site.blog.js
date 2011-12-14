@@ -166,18 +166,17 @@ Blog.postsController = Ember.ArrayController.create({
         return Math.ceil(this.get("_totalPosts") / this.get("_pageSize"));
     }.property("_totalPosts", "_pageSize")
 
-    , pagesToLink: [{page: 1, href: "#!blog/1"}]
-
-    /*
     , pagesToLink: function (){
-        if (this.get("totalPages") > 1){
+        var total = this.get("totalPages") || 1;
+        var current = this.get("currentPage") || 1;
+        if (total > 1){
             var ret = [];
-            var start = Math.max(1, this.get("currentPage") - 3);
-            var end = Math.min(this.get("totalPages"), this.get("currentPage") + 3);
+            var start = Math.max(1, current - 3);
+            var end = Math.min(total, current + 3);
             console.log(start);
             console.log(end);
             for (var i = start; i <= end; i++){
-                ret.push({page: i, href: "#!blog/"+i});
+                ret.push({page: i, href: "#!blog/" + i});
             }
 
             return ret;
@@ -185,7 +184,7 @@ Blog.postsController = Ember.ArrayController.create({
         else {
             return [];
         }
-    }.property("currentPage", "totalPages")*/
+    }.property("totalPages", "currentPage")
 
     , createPost: function (title, slug, tags, content, callback){
         if (typeof title === "function"){
@@ -390,13 +389,19 @@ Blog.postsController = Ember.ArrayController.create({
                     self.set("_postData", postData);
                 }
 
-                self.set('content', _(response.rows).chain()
-                                                    .pluck('doc')
-                                                    .map(function (doc){
-                                                        delete doc.slug;
-                                                        return Blog.Post.create(doc);
-                                                    })
-                                                    .value());
+                var newcontent = _(response.rows).chain()
+                                                 .pluck('doc')
+                                                 .map(function (doc){
+                                                    delete doc.slug;
+                                                    return Blog.Post.create(doc);
+                                                 })
+                                                 .value();
+
+                if (newcontent.length === pageSize + 1){
+                    newcontent = _(newcontent).initial();
+                }
+
+                self.set('content', newcontent);
                 self.set('currentPage', page);
             }
             else {
