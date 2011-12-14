@@ -8,7 +8,7 @@ CV.Router = {
         CV.sectionsController.reloadData();
         this.get("rootElement").show();
         App.setTitle("CV");
-        _gaq.push(["_trackPageview", "#!/cv"]);
+        _gaq.push(["_trackPageview", "#!cv"]);
     }
 };
 

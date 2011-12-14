@@ -8,7 +8,40 @@ Blog.Router = {
         Blog.postsController.reloadData();
         this.get("rootElement").show();
         App.setTitle("Blog");
-        _gaq.push(['_trackPageview', '#!/blog']);
+        _gaq.push(['_trackPageview', '#!blog']);
+    }
+    , show_author: function (params){
+        if (!params.author){
+            Ember.routes.set('location', '!blog');
+        }
+        else {
+            App.hideAll();
+            this.get("rootElement").show();
+            App.setTitle("Blog");
+            _gaq.push(['_trackPageview', '#!blog/author/' + params.author]);
+        }
+    }
+    , show_tag: function (params){
+        if (!params.tag){
+            Ember.routes.set('location', '!blog');
+        }
+        else {
+            App.hideAll();
+            this.get("rootElement").show();
+            App.setTitle("Blog");
+            _gaq.push(['_trackPageview', '#!blog/tag/' + params.tag]);
+        }
+    }
+    , show_post: function (params){
+        if (!params.post){
+            Ember.routes.set('location', '!blog');
+        }
+        else {
+            App.hideAll();
+            this.get("rootElement").show();
+            App.setTitle("Blog");
+            _gaq.push(['_trackPageview', '#!blog/' + params.post]);
+        }
     }
 };
 
@@ -29,7 +62,9 @@ Blog.Post = Ember.Object.extend({
 
     , formattedAuthors: function (){
         var val = this.get("authors");
-        if (val && val.length) return val.join(", "); //TODO: links
+        if (val && val.length) return _(val).map(function (author){
+            return "<a href=\"#!blog/author/" + author + "\">" + author + "</a>";
+        }).join(", "); //TODO: links
         else return "";
     }.property("authors")
 
@@ -45,8 +80,8 @@ Blog.Post = Ember.Object.extend({
 
     , formattedTags: function (){
         var val = this.get("tags");
-        if (val && val.length) return _(val).map(function(tag){
-                return "<a href=\"#!/tag/" + tag + "\">" + tag + "</a>"; //TODO: working links
+        if (val && val.length) return _(val).map(function (tag){
+                return "<a href=\"#!blog/tag/" + tag + "\">" + tag + "</a>";
             }).join(", ");
         else return "";
     }.property("tags")
