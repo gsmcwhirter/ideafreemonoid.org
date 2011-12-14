@@ -13,7 +13,7 @@ Blog.Router = {
         }
 
         App.hideAll();
-        Blog.postsController.loadPage(params.page);
+        Blog.postsController.loadPage(params.page, params);
         this.get("rootElement").show();
         App.setTitle("Blog");
     }
@@ -31,7 +31,7 @@ Blog.Router = {
             }
 
             App.hideAll();
-            Blog.postsController.loadPage(params.page, "blogauthors", {reduce: false, startkey: [params.author, 1], endkey: [params.author, 0]});
+            Blog.postsController.loadPage(params.page, params, "blogauthors", {reduce: false, startkey: [params.author, 1], endkey: [params.author, 0]});
             this.get("rootElement").show();
             App.setTitle("Blog");
         }
@@ -50,7 +50,7 @@ Blog.Router = {
             }
 
             App.hideAll();
-            Blog.postsController.loadPage(params.page, "blogtags", {reduce: false, startkey: [params.tag, 1], endkey: [params.tag, 0]});
+            Blog.postsController.loadPage(params.page, params, "blogtags", {reduce: false, startkey: [params.tag, 1], endkey: [params.tag, 0]});
             this.get("rootElement").show();
             App.setTitle("Blog");
         }
@@ -176,6 +176,7 @@ Blog.postsController = Ember.ArrayController.create({
     , _postData: {}
     , _seenPosts: {}
     , _currentView: null
+    , _currentParams: {}
     , currentPage: 1
     , _totalPosts: {}
     , _pageSize: 10
@@ -185,6 +186,24 @@ Blog.postsController = Ember.ArrayController.create({
         var psize = this.get("_pageSize");
         return Math.ceil(posts / psize);
     }.property("_totalPosts", "_pageSize", "_currentView").cacheable()
+
+    , baseURL: function (){
+        var view = this.get("_currentView") || "";
+        var params = this.get("_currentParams") || {};
+
+        if (view === "blogauthors"){
+            return "!blog/author/" + (params.author || "");
+        }
+        else if (view === "blogtags"){
+            return "!blog/tag/" + (params.tag || "");
+        }
+        else if (view === "blogposts"){
+            return "!blog";
+        }
+        else {
+            return "";
+        }
+    }.property("_currentView","_currentParams").cacheable()
 
     , createPost: function (title, slug, tags, content, callback){
         if (typeof title === "function"){
@@ -318,10 +337,11 @@ Blog.postsController = Ember.ArrayController.create({
         }
     }
 
-    , loadPage: function (page, view, viewopts){
+    , loadPage: function (page, params, view, viewopts){
         var self = this;
         var pageSize = this.get("_pageSize");
         var postData = this.get("_postData") || {};
+        params = params || {};
 
         view = view || "blogposts";
 
@@ -378,6 +398,7 @@ Blog.postsController = Ember.ArrayController.create({
 
         first(function (){
             self.set("_currentView", view);
+            self.set("_currentParams", params);
 
             if (!page || page < 1){
                 page = 1;
@@ -466,6 +487,7 @@ Blog.BlogView = Ember.View.extend({
       templateName: "blog"
     , currentPageBinding: "Blog.postsController.currentPage"
     , totalPagesBinding: "Blog.postsController.totalPages"
+    , baseURLBinding: "Blog.postsController.baseURL"
 
     , hasManyPages: function (){
         return this.get("totalPages") > 1;
@@ -474,12 +496,13 @@ Blog.BlogView = Ember.View.extend({
     , pagesLinkData: function (){
         var total = this.get("totalPages") || 1;
         var current = this.get("currentPage") || 1;
+        var baseURL = this.get("baseURL") || "";
         if (total > 1){
             var ret = [];
             var start = Math.max(1, current - 3);
             var end = Math.min(total, current + 3);
             for (var i = start; i <= end; i++){
-                ret.push({page: i, pageHref: "#!blog/" + i});
+                ret.push({page: i, pageHref: baseURL + "/" + i});
             }
 
             return ret;
@@ -487,11 +510,11 @@ Blog.BlogView = Ember.View.extend({
         else {
             return [];
         }
-    }.property("totalPages", "currentPage").cacheable()
+    }.property("totalPages", "currentPage", "baseURL").cacheable()
 
     , lastHref: function (){
-        return "#!blog/" + this.get("totalPages");
-    }.property("totalPages").cacheable()
+        return this.get("baseURL") + "/" + this.get("totalPages");
+    }.property("totalPages", "baseURL").cacheable()
 });
 
 Blog.AddPostLink = Ember.View.extend({
