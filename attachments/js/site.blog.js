@@ -319,7 +319,7 @@ Blog.EditFormView = Ember.View.extend({
             this.get("content").set("isEditing", false);
 
             if (User.userController.isConnected()){
-                Blog.postsController.saveSection(this.get("content"), function (err, resp){
+                Blog.postsController.savePost(this.get("content"), function (err, resp){
                     if (err){
                         //TODO: error handling
                         console.log(err);
@@ -345,7 +345,7 @@ Blog.EditFormView = Ember.View.extend({
             this.get("content").set("isEditing", false);
 
             if (User.userController.isConnected()){
-                Blog.postsController.saveSection(this.get("content"), true, function (err, resp){
+                Blog.postsController.savePost(this.get("content"), true, function (err, resp){
                     if (err){
                         //TODO: error handling
                         console.log(err);
