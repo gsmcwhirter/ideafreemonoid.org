@@ -84,8 +84,8 @@ Blog.Post = Ember.Object.extend({
 
     , formattedEdits: function (){
         var edits = this.get("edits");
-        if (edits && edits.length) return _(val).map(function (edit){
-            edit.formattedDate = (new Date(val)).toLocaleString();
+        if (edits && edits.length) return _(edits).map(function (edit){
+            edit.formattedDate = (new Date(edit.edit_date)).toLocaleString();
             return edit;
         });
         else return [];
@@ -125,7 +125,7 @@ Blog.Post = Ember.Object.extend({
         else {
             return "";
         }
-    }.property('edits')
+    }.property('formattedEdits')
 });
 
 Blog.postsController = Ember.ArrayController.create({
