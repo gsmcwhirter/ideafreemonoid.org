@@ -327,7 +327,7 @@ Blog.postsController = Ember.ArrayController.create({
 
         if (!postData[view]){
             first = function (second){
-                var opts = _(viewopts).defaults({
+                var opts = _(viewopts || {}).defaults({
                       descending: true
                     , startkey: null
                     , endkey: null
@@ -388,7 +388,7 @@ Blog.postsController = Ember.ArrayController.create({
                 page = lastPage;
             }
 
-            var opts = _(viewopts).defaults({
+            var opts = _(viewopts || {}).defaults({
                   include_docs: true
                 , descending: true
                 , limit: pageSize + 1
