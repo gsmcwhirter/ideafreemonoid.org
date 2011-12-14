@@ -555,7 +555,11 @@ Blog.BlogPostView = Ember.View.extend({
 
 Blog.PostDisplayView = Ember.View.extend({
       templateName: "blog-post-display"
-    , didInsertElement: function(){
+    , willInsertElement: function (){
+        $("#disqus_thread").remove();
+    }
+    , didInsertElement: function (){
+        this._super()
         var disqus_identifier = this.getPath('content.slug');
         var disqus_title = this.getPath('content.title');
         DISQUS.reset({
