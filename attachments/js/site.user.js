@@ -2,7 +2,9 @@ window.User = Ember.Application.create({
       rootElement: $("#userbox")
     , ready: function (){
         this._super();
-        User.userController.checkLogin();
+        setTimeout(function (){
+            User.userController.checkLogin();
+        }, 500);
     }
 });
 
