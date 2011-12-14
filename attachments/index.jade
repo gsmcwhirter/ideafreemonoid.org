@@ -37,7 +37,7 @@ block templates
     .actions
       {{view Blog.AddPostLink}}
     {{#collection contentBinding="Blog.postsController" tagName="ol" class="posts"}}
-    {{view Blog.BlogPostView contentBinding="content" classBinding="isDraft:blog-draft"}}
+    {{view Blog.BlogPostView contentBinding="content" classBinding="content.isDraft:blog-draft"}}
     {{/collection}}
 
   script(type="text/x-handlebars", data-template-name="blog-add-post-link")
