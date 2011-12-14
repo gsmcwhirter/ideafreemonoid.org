@@ -35,14 +35,15 @@ block templates
     {{#collection contentBinding="Blog.postsController" tagName="ol" class="posts"}}
     {{view Blog.BlogPostView contentBinding="content" classBinding="content.isDraft:blog-draft"}}
     {{/collection}}
-    {{#if hasManyPages}}
-    .pagination
-      a(href="#!blog/1") &laquo;first
-      {{#each pagesToLink}}
-      <a {{bindAttr href="href"}}>{{page}}</a>
-      {{/each}}
-      <a {{bindAttr href="lastHref"}}>&raquo;last</a>
-    {{/if}}
+    //
+      {{#if hasManyPages}}
+      .pagination
+        a(href="#!blog/1") &laquo;first
+        {{#each pagesToLink}}
+        <a {{bindAttr href="href"}}>{{page}}</a>
+        {{/each}}
+        <a {{bindAttr href="lastHref"}}>&raquo;last</a>
+      {{/if}}
 
   script(type="text/x-handlebars", data-template-name="blog-add-post-link")
     {{#if currentUser.is_connected}}
