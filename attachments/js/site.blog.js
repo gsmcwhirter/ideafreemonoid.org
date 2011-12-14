@@ -347,7 +347,7 @@ Blog.postsController = Ember.ArrayController.create({
                 page = 1;
             }
 
-            var lastPage = this.get("totalPages");
+            var lastPage = self.get("totalPages");
 
             if (page > 1 && page > lastPage){
                 page = lastPage;
@@ -362,11 +362,6 @@ Blog.postsController = Ember.ArrayController.create({
             var getStartkey = function (pageSize, page, data){
                 var index = pageSize * (page - 1);
 
-                console.log(pageSize);
-                console.log(page);
-                console.log(index);
-                console.log(data.length);
-
                 if (data.length < index + 1){
                     return ['pub', 0];
                 }
@@ -380,14 +375,14 @@ Blog.postsController = Ember.ArrayController.create({
                 opts.endkey = ['pub', 0];
 
                 if (page > 1){
-                    opts.startkey = getStartkey(pageSize, page, this.get("_postData"));
+                    opts.startkey = getStartkey(pageSize, page, self.get("_postData"));
                 }
                 else {
                     opts.startkey = ['pub', 1];
                 }
             }
             else if (page > 1) {
-                opts.startkey = getStartkey(pageSize, page, this.get("_postData"));
+                opts.startkey = getStartkey(pageSize, page, self.get("_postData"));
             }
 
             IFMAPI.getView("blogposts", opts, function (err, response){
