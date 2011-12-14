@@ -38,6 +38,8 @@ CV.Section = Ember.Object.extend({
     }.property("content_raw")
 
     , save: function (callback){
+        if (typeof callback !== "function") callback = function (){};
+
         if (User.userController.isConnected()){
             var self = this;
 
