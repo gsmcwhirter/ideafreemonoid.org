@@ -150,7 +150,7 @@ Blog.Post = Ember.Object.extend({
           return sub.join("").replace(/\s{2,}/g, " ").replace(/ /g,"-");
         }
 
-        return id.substring(0, 6) + "-" + slugify(title);
+        return id.substring(id.length - 6) + "-" + slugify(title);
     }.property("_id", "title").cacheable()
 
     , tagString: Ember.computed(function (key, value){
