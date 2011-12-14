@@ -412,10 +412,10 @@ Blog.BlogView = Ember.View.extend({
                 ret.push({page: i, href: "#!blog/" + i});
             }
 
-            return ret.toString();
+            return ret;
         }
         else {
-            return [].toString();
+            return [];
         }
     }.property("totalPages", "currentPage")
     //}.property("totalPages")
