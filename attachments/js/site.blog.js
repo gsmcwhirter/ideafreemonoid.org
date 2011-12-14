@@ -161,7 +161,7 @@ Blog.postsController = Ember.ArrayController.create({
     , _seenPosts: {}
     , currentPage: 1
     , _totalPosts: 1
-    , _pageSize: 1
+    , _pageSize: 10
 
     , totalPages: function (){
         return Math.ceil(this.get("_totalPosts") / this.get("_pageSize"));
