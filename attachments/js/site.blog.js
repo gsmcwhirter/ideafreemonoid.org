@@ -60,10 +60,12 @@ Blog.Router = {
             Ember.routes.set('location', '!blog');
         }
         else {
+            _gaq.push(['_trackPageview', '#!blog/' + params.post]);
+
             App.hideAll();
+            Blog.postsController.loadPage(1, params, "blogslugs", {key: params.post});
             this.get("rootElement").show();
             App.setTitle("Blog");
-            _gaq.push(['_trackPageview', '#!blog/' + params.post]);
         }
     }
 };
@@ -347,7 +349,7 @@ Blog.postsController = Ember.ArrayController.create({
 
         var first = function (second){second();};
 
-        if (!postData[view]){
+        if (view !== "blogslugs" && !postData[view]){
             first = function (second){
 
                 var opts = _.clone(viewopts || {});
@@ -428,26 +430,27 @@ Blog.postsController = Ember.ArrayController.create({
             };
 
 
+            if (view !== "blogslugs"){
+                if (!User.userController.isConnected()){
+                    //start and end need to be reversed due to descending
+                    opts.endkey = (opts.endkey || []).concat(['pub', 0]);
 
-            if (!User.userController.isConnected()){
-                //start and end need to be reversed due to descending
-                opts.endkey = (opts.endkey || []).concat(['pub', 0]);
+                    var startkey;
+                    if (page > 1){
+                        startkey = getStartkey(pageSize, page, self.get("_postData"));
+                    }
+                    else {
+                        startkey = ['pub', 1];
+                    }
 
-                var startkey;
-                if (page > 1){
-                    startkey = getStartkey(pageSize, page, self.get("_postData"));
+                    if (opts.startkey){
+                        opts.startkey[1] = 0;
+                    }
+                    opts.startkey = (opts.startkey || []).concat(startkey);
                 }
-                else {
-                    startkey = ['pub', 1];
+                else if (page > 1) {
+                    opts.startkey = (opts.startkey || []).concat(getStartkey(pageSize, page, self.get("_postData")));
                 }
-
-                if (opts.startkey){
-                    opts.startkey[1] = 0;
-                }
-                opts.startkey = (opts.startkey || []).concat(startkey);
-            }
-            else if (page > 1) {
-                opts.startkey = (opts.startkey || []).concat(getStartkey(pageSize, page, self.get("_postData")));
             }
 
             if (!opts.startkey) delete opts.startkey;
