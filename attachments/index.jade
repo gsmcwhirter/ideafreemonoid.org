@@ -56,17 +56,6 @@ block templates
     {{view Blog.PostDisplayView contentBinding="content" classBinding="content.isEditing:editing-display"}}
     {{#if showComments}}
     #disqus_thread
-    {{#view tagName="script" type="text/javascript"}}
-    |     var thisPost = Blog.postsController.get("thisPost");
-    |     var disqus_shortname = 'ideafreemonoid';
-    |     var disqus_identifier = thisPost ? thisPost.get("slug") : "";
-    |     var disqus_title = thisPost ? thisPost.get("title") : "";
-    |     (function() {
-    |         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-    |         dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
-    |         (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    |     })();
-    {{/view}}
     a.dsq-brlink(href="http://disqus.com")
       | blog comments powered by
       span.logo-disqus Disqus
@@ -153,3 +142,4 @@ block scripts
   script(type="text/javascript", src="js/site.cv.js")
   script(type="text/javascript", src="js/site.gametheory.js")
   script(type="text/javascript", src="js/site.routes.js")
+  script(type="text/javascript", src="https://ideafreemonoid.disqus.com/embed.js")

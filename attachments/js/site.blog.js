@@ -215,15 +215,6 @@ Blog.postsController = Ember.ArrayController.create({
         return this.get("_currentView") === "blogslugs";
     }.property("_currentView").cacheable()
 
-    , thisPost: function (){
-        if (this.get("showComments")){
-            return (this.get("content") || [null])[0];
-        }
-        else {
-            return null;
-        }
-    }.property("showComments").cacheable()
-
     , createPost: function (title, slug, tags, content, callback){
         if (typeof title === "function"){
             callback = title;
@@ -560,11 +551,22 @@ Blog.BlogPostView = Ember.View.extend({
         return false;
     }
     , showCommentsBinding: "Blog.postsController.showComments"
-    , thisPostBinding: "Blog.postsController.thisPost"
 });
 
 Blog.PostDisplayView = Ember.View.extend({
       templateName: "blog-post-display"
+    , didInsertElement: function(){
+        var disqus_identifier = this.getPath('content.slug');
+        var disqus_title = this.getPath('content.title');
+        DISQUS.reset({
+          reload: true,
+          config: function () {
+            this.page.identifier = disqus_identifier;
+            this.page.url = window.location.href;
+            this.page.title = disqus_title;
+          }
+        });
+    }
 });
 
 Blog.EditFormView = Ember.View.extend({
