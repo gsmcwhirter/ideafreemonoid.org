@@ -139,4 +139,6 @@ User.UserView = Ember.View.extend({
     })
 });
 
-User.userController.checkLogin();
+User.ready = function (){
+    User.userController.checkLogin();
+}

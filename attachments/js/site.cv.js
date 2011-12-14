@@ -145,7 +145,7 @@ CV.sectionsController = Ember.ArrayController.create({
                     else if (response && response.ok){
                         section.set("_rev", response.rev);
 
-                        self.resort();
+                        //self.resort();
 
                         callback(false, section);
                     }
