@@ -64,6 +64,17 @@ Blog.Post = Ember.Object.extend({
         return this.getProperties("type","title","slug","authors","content_raw","display_date","created_at","is_published","tags","edits","_id","_rev");
     }.property("type","title","slug","authors","content_raw","display_date","created_at","is_published","tags","edits","_id","_rev")
 
+    , editString: function (){
+        var edits = this.get("edits");
+        if (edits && edits.length){
+            var last = edits[edits.length - 1];
+            return "Edited " + edits.length + " times, most recently by " + last.author + " on " + (new Date(last.edit_date)).toLocaleString();
+        }
+        else {
+            return "";
+        }
+    }.property("edits")
+
     , formattedAuthors: function (){
         var val = this.get("authors");
         if (val && val.length) return _(val).map(function (author){
@@ -102,7 +113,11 @@ Blog.Post = Ember.Object.extend({
         else return "";
     }.property("tags")
 
-    , tags_string: Ember.computed(function (key, value){
+    , isDraft: function (){
+        return !this.get("is_published");
+    }.property("is_published")
+
+    , tagString: Ember.computed(function (key, value){
         //getter
         if (arguments.length === 1){
             var tags = this.get("tags");
@@ -118,17 +133,6 @@ Blog.Post = Ember.Object.extend({
             this.set("tags", _(value.split(",")).map(function (tag){return $.trim(tag);}));
         }
     }).property("tags")
-
-    , editString: function (){
-        var edits = this.get("edits");
-        if (edits && edits.length){
-            var last = edits[edits.length - 1];
-            return "Edited " + edits.length + " times, most recently by " + last.author + " on " + (new Date(last.edit_date)).toLocaleString();
-        }
-        else {
-            return "";
-        }
-    }.property("edits")
 });
 
 Blog.postsController = Ember.ArrayController.create({

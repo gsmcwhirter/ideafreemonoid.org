@@ -37,7 +37,7 @@ block templates
     .actions
       {{view Blog.AddPostLink}}
     {{#collection contentBinding="Blog.postsController" tagName="ol" class="posts"}}
-    {{view Blog.BlogPostView contentBinding="content"}}
+    {{view Blog.BlogPostView contentBinding="content" classBinding="isDraft:blog-draft"}}
     {{/collection}}
 
   script(type="text/x-handlebars", data-template-name="blog-add-post-link")
@@ -66,7 +66,7 @@ block templates
       label Slug
       {{view Ember.TextField name="slug" valueBinding="content.slug"}}
       label Tags
-      {{view Ember.TextField name="tags_string" valueBinding="content.tags_string"}}
+      {{view Ember.TextField name="tagString" valueBinding="content.tagString"}}
       label Content
       {{view Ember.TextArea name="content_raw" valueBinding="content.content_raw"}}
       {{#view saveButton contentBinding="content"}}Save{{/view}}
