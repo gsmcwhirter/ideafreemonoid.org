@@ -13,9 +13,7 @@ Blog.Router = {
         }
 
         App.hideAll();
-        $(function (){
-            Blog.postsController.loadPage(params.page, params);
-        });
+        Blog.postsController.loadPage(params.page, params);
         this.get("rootElement").show();
         App.setTitle("Blog");
     }
@@ -33,9 +31,7 @@ Blog.Router = {
             }
 
             App.hideAll();
-            $(function (){
-                Blog.postsController.loadPage(params.page, params, "blogauthors", {reduce: false, startkey: [params.author, 1], endkey: [params.author, 0]});
-            });
+            Blog.postsController.loadPage(params.page, params, "blogauthors", {reduce: false, startkey: [params.author, 1], endkey: [params.author, 0]});
             this.get("rootElement").show();
             App.setTitle("Blog");
         }
@@ -54,9 +50,7 @@ Blog.Router = {
             }
 
             App.hideAll();
-            $(function (){
-                Blog.postsController.loadPage(params.page, params, "blogtags", {reduce: false, startkey: [params.tag, 1], endkey: [params.tag, 0]});
-            });
+            Blog.postsController.loadPage(params.page, params, "blogtags", {reduce: false, startkey: [params.tag, 1], endkey: [params.tag, 0]});
             this.get("rootElement").show();
             App.setTitle("Blog");
         }
@@ -69,9 +63,7 @@ Blog.Router = {
             _gaq.push(['_trackPageview', '#!blog/' + params.post]);
 
             App.hideAll();
-            $(function (){
-                Blog.postsController.loadPage(1, params, "blogslugs", {key: params.post});
-            });
+            Blog.postsController.loadPage(1, params, "blogslugs", {key: params.post});
             this.get("rootElement").show();
             App.setTitle("Blog");
         }

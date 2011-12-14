@@ -135,13 +135,6 @@ block templates
     {{#view User.LogoutButton}}Log Out{{/view}}
 
 block scripts
-  script(type="text/javascript", src="js/site.api.js")
-  script(type="text/javascript", src="js/site.main.js")
-  script(type="text/javascript", src="js/site.user.js")
-  script(type="text/javascript", src="js/site.blog.js")
-  script(type="text/javascript", src="js/site.cv.js")
-  script(type="text/javascript", src="js/site.gametheory.js")
-  script(type="text/javascript", src="js/site.routes.js")
   script(type="text/javascript")
     var disqus_shortname = 'ideafreemonoid';
     (function() {
@@ -149,3 +142,11 @@ block scripts
         dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
         (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
     })();
+  script(type="text/javascript", src="js/site.api.js")
+  script(type="text/javascript", src="js/site.main.js")
+  script(type="text/javascript", src="js/site.user.js")
+  script(type="text/javascript", src="js/site.blog.js")
+  script(type="text/javascript", src="js/site.cv.js")
+  script(type="text/javascript", src="js/site.gametheory.js")
+  script(type="text/javascript", src="js/site.routes.js")
+
