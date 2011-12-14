@@ -210,7 +210,7 @@ Blog.postsController = Ember.ArrayController.create({
             }
 
             var first;
-            if (!section.get("_id")){
+            if (!post.get("_id")){
                 console.log("Saving new...");
                 first = function (second){
                     IFMAPI.getUUIDs(function (err, response){
@@ -248,7 +248,7 @@ Blog.postsController = Ember.ArrayController.create({
                     else if (response && response.ok){
                         post.set("_rev", response.rev);
 
-                        callback(false, section);
+                        callback(false, post);
                     }
                     else {
                         callback(true, response);
