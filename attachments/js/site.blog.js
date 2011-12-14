@@ -269,8 +269,9 @@ Blog.postsController = Ember.ArrayController.create({
         }
 
         if (!User.userController.isConnected()){
-            opts.start_key = ['pub', 0];
-            opts.end_key = ['pub', 1];
+            //start and end need to be reversed due to descending
+            opts.end_key = ['pub', 0];
+            opts.start_key = ['pub', 1];
         }
 
         IFMAPI.getView("blogposts", opts, function (err, response){
