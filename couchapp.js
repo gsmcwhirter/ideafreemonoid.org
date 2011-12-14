@@ -29,7 +29,7 @@ ddoc.views = {
     , blogposts: {
         map: function (doc){
             if (doc.type === "blog-post"){
-                emit([doc.is_published, 0, doc.display_date], 1);
+                emit([doc.is_published ? 'pub' : 'unpub', 0, doc.display_date], 1);
             }
         }
     }
@@ -65,7 +65,7 @@ ddoc.views = {
         }
     }
     /*, projects: {
-        
+
     }*/
 };
 
