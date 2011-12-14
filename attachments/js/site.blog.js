@@ -329,11 +329,10 @@ Blog.postsController = Ember.ArrayController.create({
 
         if (!postData[view]){
             first = function (second){
-                var opts = _(viewopts || {}).defaults({
-                      descending: true
-                    , startkey: null
-                    , endkey: null
-                });
+
+                var opts = _.clone(viewopts);
+
+                opts.descending = true;
 
                 if (!User.userController.isConnected()){
                     if (opts.startkey){
@@ -392,11 +391,11 @@ Blog.postsController = Ember.ArrayController.create({
                 page = lastPage;
             }
 
-            var opts = _(viewopts || {}).defaults({
-                  include_docs: true
-                , descending: true
-                , limit: pageSize + 1
-            });
+            var opts = _.clone(viewopts);
+
+            opts.descending = true;
+            opts.include_docs = true;
+            opts.limit = pageSize + 1;
 
             var getStartkey = function (pageSize, page, data){
                 var index = pageSize * (page - 1);
