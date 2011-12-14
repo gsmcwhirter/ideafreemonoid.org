@@ -209,25 +209,27 @@ CV.SectionDisplayView = Ember.View.extend({
 
 CV.EditFormView = Ember.View.extend({
       templateName: "cv-section-form"
-    , submit: function (){
-        this.preventDefault();
+    , saveButton: Ember.Button.extend({
+          target: null
+        , action: null
+        , click: function (){
+            this.get("content").set("isEditing", false);
 
-        this.get("content").set("isEditing", false);
+            if (User.userController.isConnected()){
+                this.get("content").set("last_updated", dateISOString(new Date()));
+                CV.sectionsController.saveSection(this.get("content"), function (err){
+                    if (err){
+                        //TODO: error handling
+                    }
+                });
+            }
+            else {
+                console.log("Not Connected!");
+            }
 
-        if (User.userController.isConnected()){
-            this.get("content").set("last_updated", dateISOString(new Date()));
-            CV.sectionsController.saveSection(this.get("content"), function (err){
-                if (err){
-                    //TODO: error handling
-                }
-            });
+            console.log(this.get("content").get("title"));
+
+            return false;
         }
-        else {
-            console.log("Not Connected!");
-        }
-
-        console.log(this.get("content").get("title"));
-
-        return false;
-    }
+    })
 });

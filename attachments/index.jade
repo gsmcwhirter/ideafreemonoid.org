@@ -71,12 +71,12 @@ block templates
     .updated Last updated {{content.formattedDate}}
 
   script(type="text/x-handlebars", data-template-name="cv-section-form")
-    form(method="POST")
+    form
       label(for="section-title") Title
       {{view Ember.TextField name="title" valueBinding="content.title" class="title"}}
       label(for="section-content") Content
       {{view Ember.TextArea name="content_raw" valueBinding="content.content_raw"}}
-      {{#view Ember.Button type="submit"}}Save{{/view}}
+      {{#view saveButton contentBinding="content"}}Save{{/view}}
 
   script(type="text/x-handlebars", data-template-name="cv-add-section-link")
     {{#if currentUser.is_connected}}
