@@ -37,8 +37,19 @@ block templates
     {{#collection contentBinding="Blog.postsController" tagName="ol" class="posts"}}
     {{view Blog.BlogPostView contentBinding="content"}}
     {{/collection}}
+    .actions
+      {{view Blog.AddPostLink}}
+
+  script(type="text/x-handlebars", data-template-name="blog-add-post-link")
+    {{#if currentUser.is_connected}}
+    a(href="#") Add New Post
+    {{/if}}
 
   script(type="text/x-handlebars", data-template-name="blog-post")
+    {{view Blog.EditFormView contentBinding="content" classBinding="content.isEditing:editing-form"}}
+    {{view Blog.PostDisplayView contentBinding="content" classBinding="content.isEditing:editing-display"}}
+
+  script(type="text/x-handlebars", data-template-name="blog-post-display")
     {{#with content}}
     h2 {{title}}
     .byline Posted {{formattedDate}} by {{{formattedAuthors}}}
@@ -50,8 +61,20 @@ block templates
     |  {{/list}}
     {{/with}}
 
+  script(type="text/x-handlebars", data-template-name="blog-post-form")
+    form
+      label Title
+      {{view Ember.TextField name="title" valueBinding="content.title" class="title"}}
+      label Slug
+      {{view Ember.TextField name="slug" valueBinding="content.slug"}}
+      label Tags
+      {{view Ember.TextField name="tags_string" valueBinding="content.tags_string"}}
+      label Content
+      {{view Ember.TextArea name="content_raw" valueBinding="content.content_raw"}}
+      {{#view saveButton contentBinding="content"}}Save{{/view}}
+
   script(type="text/x-handlebars", data-template-name="cv")
-    {{#collection contentBinding="CV.sectionsController" tagName="ol" class="sections"}}
+    {{#collection contentBinding="CV.sectionsController.contentSorted" tagName="ol" class="sections"}}
     {{view CV.SectionView contentBinding="content"}}
     {{/collection}}
     .actions
@@ -69,9 +92,9 @@ block templates
 
   script(type="text/x-handlebars", data-template-name="cv-section-form")
     form
-      label(for="section-title") Title
+      label Title
       {{view Ember.TextField name="title" valueBinding="content.title" class="title"}}
-      label(for="section-content") Content
+      label Content
       {{view Ember.TextArea name="content_raw" valueBinding="content.content_raw"}}
       {{#view saveButton contentBinding="content"}}Save{{/view}}
 

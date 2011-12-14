@@ -59,6 +59,7 @@ Blog.Post = Ember.Object.extend({
     , _deleted: false
     , _id: null
     , _rev: null
+    , isEditing: false
 
     , formattedAuthors: function (){
         var val = this.get("authors");
@@ -85,6 +86,23 @@ Blog.Post = Ember.Object.extend({
             }).join(", ");
         else return "";
     }.property("tags")
+
+    , tags_string: Ember.computed(function (key, value){
+        //getter
+        if (arguments.length === 1){
+            var tags = this.get("tags");
+            if (tags && tags.length){
+                return tags.join(", ");
+            }
+            else {
+                return "";
+            }
+        }
+        //setter
+        else {
+            this.set("tags", _(value.split(",")).map(function (tag){return $.trim(tag);}));
+        }
+    }).property("tags")
 
     , editString: function (){
         if (this.edits && this.edits.length){
@@ -116,12 +134,15 @@ Blog.postsController = Ember.ArrayController.create({
                 , authors: authors
                 , created_at: now
                 , display_date: now
-                , content_raw: content || lipsum || "\n" /*REMOVE lipsum*/
-                , is_published: true /*REMOVE*/
-                , tags: tags || ["testing"] /*REMOVE*/
+                , content_raw: content || "\n"
+                , is_published: false
+                , tags: tags
+                , isEditing: true
             };
 
-            var self = this;
+            this.unshiftObject(Blog.Post.create(post));
+
+            /*var self = this;
 
             IFMAPI.getUUIDs(function (err, response){
                 if (err){
@@ -147,12 +168,17 @@ Blog.postsController = Ember.ArrayController.create({
                         }
                     });
                 }
-            });
+            });*/
         }
         else {
             //TODO: error handling
         }
     }
+
+    , savePost: function (post, callback){
+
+    }
+
     , reloadData: function (){
         var self = this;
         IFMAPI.getView("blogposts", {startkey: [true,0], endkey: [true, 1], include_docs: true, descending: true}, function (err, response){
@@ -174,4 +200,54 @@ Blog.BlogView = Ember.View.extend({
 
 Blog.BlogPostView = Ember.View.extend({
     templateName: "blog-post"
+});
+
+Blog.AddPostLink = Ember.View.extend({
+      templateName: "blog-add-post-link"
+    , currentUserBinding: "User.userController.currentUser"
+    , click: function (event){
+        event.preventDefault();
+        Blog.postsController.createPost(function (err, result){
+            if (err){
+                //TODO: error handling
+            }
+        });
+        return false;
+    }
+});
+
+
+Blog.SectionDisplayView = Ember.View.extend({
+      templateName: "blog-post-display"
+});
+
+Blog.EditFormView = Ember.View.extend({
+      templateName: "blog-post-form"
+    , saveButton: Ember.Button.extend({
+          target: null
+        , action: null
+        , click: function (event){
+            event.preventDefault();
+
+            this.get("content").set("isEditing", false);
+
+            if (User.userController.isConnected()){
+                this.get("content").set("last_updated", dateISOString(new Date()));
+                /*CV.sectionsController.saveSection(this.get("content"), function (err, resp){
+                    if (err){
+                        //TODO: error handling
+                        console.log(err);
+                        console.log(resp);
+                    }
+                });*/
+            }
+            else {
+                console.log("Not Connected!");
+            }
+
+            console.log(this.get("content").get("title"));
+
+            return false;
+        }
+    })
 });

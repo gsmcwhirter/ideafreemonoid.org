@@ -41,6 +41,12 @@ CV.Section = Ember.Object.extend({
 CV.sectionsController = Ember.ArrayController.create({
       content: []
 
+    , contentSorted: function (){
+        return _(this.get("content")).sortBy(function (section){
+            return section.get("order") || 0;
+        });
+    }.property("content")
+
     , createSection: function (title, content, order, callback){
         if (typeof title === "function"){
             callback = title;
@@ -109,7 +115,6 @@ CV.sectionsController = Ember.ArrayController.create({
     }
 
     , saveSection: function (section, callback){
-        var self = this;
         if (typeof callback !== "function") callback = function (){};
 
         if (User.userController.isConnected()){
@@ -152,8 +157,6 @@ CV.sectionsController = Ember.ArrayController.create({
                     }
                     else if (response && response.ok){
                         section.set("_rev", response.rev);
-
-                        //self.resort();
 
                         callback(false, section);
                     }
