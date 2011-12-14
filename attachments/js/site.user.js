@@ -1,5 +1,9 @@
 window.User = Ember.Application.create({
-    rootElement: $("#userbox")
+      rootElement: $("#userbox")
+    , ready: function (){
+        this._super();
+        User.userController.checkLogin();
+    }
 });
 
 User.User = Ember.Object.extend({
@@ -14,6 +18,7 @@ User.userController = Ember.Object.create({
     currentUserBinding: "User.currentUser"
 
     , login: function (name, pass, cb){
+        console.log("Logging in...");
         if (typeof name === "function") cb = name, name = null;
         if (typeof cb !== "function") cb = function (){};
 
@@ -43,7 +48,10 @@ User.userController = Ember.Object.create({
             }
         });
     }
-    , logout: function (cb){
+    , logout: function (){
+
+        var cb;
+        console.log("Logging out...");
         if (typeof cb !== "function") cb = function (){};
 
         var self = this;
@@ -115,7 +123,7 @@ User.userController = Ember.Object.create({
 
 User.UserView = Ember.View.extend({
       templateName: "user"
-    , currentUserBinding: "User.currentUser"
+    , currentUserBinding: "User.userController.currentUser"
 
     , userLoginView: Ember.View.extend({
         templateName: "user-login"
@@ -142,14 +150,12 @@ User.UserView = Ember.View.extend({
     , userLogoutView: Ember.View.extend({
         templateName: "user-logout"
 
-        , logoutButton: Ember.Button.extend({
-              classBinding: "isActive"
-            , target: "User.userController"
-            , action: "logout"
-        })
     })
 });
 
-User.ready = function (){
-    User.userController.checkLogin();
-}
+User.LogoutButton = Ember.Button.extend({
+      classBinding: "isActive"
+    , target: "User.userController"
+    , action: "logout"
+});
+

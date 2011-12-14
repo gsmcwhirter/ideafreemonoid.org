@@ -52,6 +52,42 @@ h6 {
 a {
   color: #00b7ff;
 }
+form {
+  margin-top: 1em;
+  padding: 1em;
+  border: 1px dotted #888;
+  border-radius: 10px;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+}
+label,
+input,
+input[type="text"],
+select,
+textarea {
+  display: block;
+  width: 80%;
+  margin-bottom: 1em;
+}
+label {
+  font-weight: bold;
+  margin-bottom: 0;
+}
+input.title {
+  font-size: 138.5%;
+}
+textarea {
+  height: 6em;
+}
+form {
+  display: none;
+}
+.editing-form form {
+  display: block;
+}
+.editing-display {
+  display: none;
+}
 h1#title {
   float: left;
   margin-top: 1px;
@@ -75,6 +111,11 @@ nav#menu ul>li {
   float: right;
   font-size: 85%;
   margin-top: 15px;
+}
+#userbox button,
+#userbox input {
+  display: inline;
+  margin-bottom: 0;
 }
 #userbox button {
   font-size: 85%;

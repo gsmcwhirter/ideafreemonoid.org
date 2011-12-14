@@ -82,9 +82,9 @@ block templates
 
   script(type="text/x-handlebars", data-template-name="user")
     {{#if currentUser.is_connected}}
-    {{view userLogoutView contentBinding="this"}}
+    {{view userLogoutView currentUserBinding="currentUser"}}
     {{else}}
-    {{view userLoginView contentBinding="this"}}
+    {{view userLoginView currentUserBinding="currentUser"}}
     {{/if}}
 
   script(type="text/x-handlebars", data-template-name="user-login")
@@ -93,8 +93,8 @@ block templates
     {{#view loginButton}}Log In{{/view}}
 
   script(type="text/x-handlebars", data-template-name="user-logout")
-    {{content.currentUser.name}}
-    {{#view logoutButton}}Log Out{{/view}}
+    {{currentUser.name}}
+    {{#view User.LogoutButton}}Log Out{{/view}}
 
 block scripts
   script(type="text/javascript", src="js/site.api.js")

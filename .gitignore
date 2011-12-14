@@ -2,3 +2,4 @@ node_modules
 config.live.js
 attachments/*.html
 *.out
+attachments/visualizations
