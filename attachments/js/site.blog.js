@@ -160,6 +160,10 @@ Blog.postsController = Ember.ArrayController.create({
     , _postData: []
     , currentPage: 1
     , _totalPosts: 1
+    , _pageSize: 1
+    , totalPages: function (){
+        return Math.floor(this.get("_totalPosts") / this.get("_pageSize") + 1);
+    }.propety("_totalPosts", "_pageSize")
     , createPost: function (title, slug, tags, content, callback){
         if (typeof title === "function"){
             callback = title;
@@ -294,13 +298,13 @@ Blog.postsController = Ember.ArrayController.create({
 
     , loadPage: function (page){
         var self = this;
-        var pageSize = 10;
+        var pageSize = this.get("_pageSize");
 
         if (!page || page < 1){
             page = 1;
         }
 
-        var lastPage = Math.floor(this.get("_totalPosts") / pageSize);
+        var lastPage = this.get("totalPages");
 
         if (page > 1 && page > lastPage){
             page = lastPage;
@@ -310,7 +314,7 @@ Blog.postsController = Ember.ArrayController.create({
               include_docs: true
             , descending: true
             , limit: pageSize + 1
-        }
+        };
 
         var getStartkey = function (pageSize, page, data){
             var index = pageSize * (page - 1) + 1;
@@ -321,7 +325,7 @@ Blog.postsController = Ember.ArrayController.create({
             else {
                 return data[index];
             }
-        }
+        };
 
         if (!User.userController.isConnected()){
             //start and end need to be reversed due to descending
@@ -351,7 +355,7 @@ Blog.postsController = Ember.ArrayController.create({
                 var postData = self.get("_postData").slice();
                 _(response.rows).chain()
                                 .pluck('key')
-                                .each(function (key, index){
+                                .each(function (key){
                                     if (postData.indexOf(key) === -1){
                                         dataChanges = true;
                                         postData.push(key);
@@ -382,6 +386,25 @@ Blog.postsController = Ember.ArrayController.create({
 Blog.BlogView = Ember.View.extend({
       templateName: "blog"
     , currentPageBinding: "Blog.postsController.currentPage"
+    , totalPagesBinding: "Blog.postsController.totalPages"
+    , pagesToLink: function (){
+        if (totalPages === 1){
+            return [];
+        }
+        else {
+            var ret = [];
+            var start = Math.max(1, this.get("currentPage") - 3);
+            var end = Math.min(this.get("totalPages"), this.get("currentPage") + 3);
+            for (var i = start; i <= end; i++){
+                ret.push({page: i, href: "#!blog/"+i});
+            }
+
+            return ret;
+        }
+    }.property("currentPage", "totalPages")
+    , lastHref: function (){
+        return "#!blog/" + this.get("totalPages");
+    }.property("totalPages")
 });
 
 Blog.AddPostLink = Ember.View.extend({
