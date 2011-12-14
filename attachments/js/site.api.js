@@ -1,8 +1,17 @@
 window.IFMAPI = {
-    getView: function (view, options, callback){
+      parseOpts: function (opts){
+        for (var key in opts){
+            if (opts.hasOwnProperty(key)){
+                opts[key] = JSON.stringify(opts[key]);
+            }
+        }
+        return opts;
+    }
+
+    , getView: function (view, options, callback){
         if (typeof options  === "function") callback = options, options = {};
 
-        $.ajax("/api/_design/app/_view/" + view + "/?" + $.param(options), {
+        $.ajax("/api/_design/app/_view/" + view + "/?" + $.param(IFMAPI.parseOpts(options)), {
               dataType: "json"
             , type: "GET"
             , success: function (response){
@@ -54,7 +63,7 @@ window.IFMAPI = {
     , getUUIDs: function (options, callback){
         if (typeof options  === "function") callback = options, options = {};
 
-        $.ajax("/api/_uuids/?" + $.param(options), {
+        $.ajax("/api/_uuids/?" + $.param(IFMAPI.parseOpts(options)), {
               dataType: "json"
             , type: "GET"
             , success: function (response){
@@ -67,8 +76,8 @@ window.IFMAPI = {
     }
     , getDoc: function (id, options, callback){
         if (typeof options  === "function") callback = options, options = {};
-        
-        $.ajax("/api/" + id + "/?" + $.param(options), {
+
+        $.ajax("/api/" + id + "/?" + $.param(IFMAPI.parseOpts(options)), {
               dataType: "json"
             , type: "GET"
             , success: function (response){
@@ -92,5 +101,5 @@ window.IFMAPI = {
                 callback(true, response);
             }
         });
-    } 
+    }
 }
