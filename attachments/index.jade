@@ -80,7 +80,7 @@ block templates
 
   script(type="text/x-handlebars", data-template-name="cv")
     ol.sections
-      {{#each CV.sectionsController.content}}
+      {{#each CV.sectionsController.contentSorted}}
       li
         {{view CV.SectionView contentBinding="this"}}
       {{/each}}
