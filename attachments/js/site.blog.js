@@ -302,100 +302,120 @@ Blog.postsController = Ember.ArrayController.create({
     , loadPage: function (page){
         var self = this;
         var pageSize = this.get("_pageSize");
+        var postData = this.get("_postData");
 
-        if (!page || page < 1){
-            page = 1;
+        var first = function (second){second();};
+
+        if (!postData){
+            first = function (second){
+                var opts = {
+                    descending: true
+                };
+
+                if (!User.userController.isConnected()){
+                    opts.endkey = ['pub', 0];
+                    opts.startkey = ['pub', 1];
+                }
+
+                IFMAPI.getView("blogposts", opts, function (err, response){
+                    if (response && response.rows){
+                        self.set("_totalPosts", response.total_rows);
+
+                        var postData = [];
+                        var seenPosts = {};
+                        _(response.rows).chain()
+                                        .pluck('key')
+                                        .each(function (key){
+                                            postData.push(key);
+                                            seenPosts[key[2]] = true;
+                                        });
+
+                        postData.sort().reverse();
+                        self.set("_postData", postData);
+                        self.set("_seenPosts", seenPosts);
+                    }
+                    else {
+                        //TODO: error handling
+                    }
+                    second();
+                });
+            };
         }
 
-        var lastPage = this.get("totalPages");
-
-        if (page > 1 && page > lastPage){
-            page = lastPage;
-        }
-
-        var opts = {
-              include_docs: true
-            , descending: true
-            , limit: pageSize + 1
-        };
-
-        var getStartkey = function (pageSize, page, data){
-            var index = pageSize * (page - 1);
-
-            console.log(pageSize);
-            console.log(page);
-            console.log(index);
-            console.log(data.length);
-
-            if (data.length < index + 1){
-                return ['pub', 0];
+        first(function (){
+            if (!page || page < 1){
+                page = 1;
             }
-            else {
-                return data[index];
+
+            var lastPage = this.get("totalPages");
+
+            if (page > 1 && page > lastPage){
+                page = lastPage;
             }
-        };
 
-        if (!User.userController.isConnected()){
-            //start and end need to be reversed due to descending
-            opts.endkey = ['pub', 0];
+            var opts = {
+                  include_docs: true
+                , descending: true
+                , limit: pageSize + 1
+            };
 
-            if (page > 1){
+            var getStartkey = function (pageSize, page, data){
+                var index = pageSize * (page - 1);
+
+                console.log(pageSize);
+                console.log(page);
+                console.log(index);
+                console.log(data.length);
+
+                if (data.length < index + 1){
+                    return ['pub', 0];
+                }
+                else {
+                    return data[index];
+                }
+            };
+
+            if (!User.userController.isConnected()){
+                //start and end need to be reversed due to descending
+                opts.endkey = ['pub', 0];
+
+                if (page > 1){
+                    opts.startkey = getStartkey(pageSize, page, this.get("_postData"));
+                }
+                else {
+                    opts.startkey = ['pub', 1];
+                }
+            }
+            else if (page > 1) {
                 opts.startkey = getStartkey(pageSize, page, this.get("_postData"));
             }
-            else {
-                opts.startkey = ['pub', 1];
-            }
-        }
-        else if (page > 1) {
-            opts.startkey = getStartkey(pageSize, page, this.get("_postData"));
-        }
 
-        IFMAPI.getView("blogposts", opts, function (err, response){
-            if (err){
-                //TODO: error handling
-                console.log(response);
-            }
-
-            if (response && response.rows){
-                self.set("_totalPosts", response.total_rows);
-
-                var dataChanges = false;
-                var postData = self.get("_postData").slice();
-                var seenPosts = _.clone(self.get("_seenPosts"));
-                _(response.rows).chain()
-                                .pluck('key')
-                                .each(function (key){
-                                    if (!seenPosts[key[2]]){
-                                        dataChanges = true;
-                                        postData.push(key);
-                                        seenPosts[key[2]] = true;
-                                    }
-                                });
-
-                if (dataChanges){
-                    postData.sort().reverse();
-                    self.set("_postData", postData);
-                    self.set("_seenPosts", seenPosts);
+            IFMAPI.getView("blogposts", opts, function (err, response){
+                if (err){
+                    //TODO: error handling
+                    console.log(response);
                 }
 
-                var newcontent = _(response.rows).chain()
-                                                 .pluck('doc')
-                                                 .map(function (doc){
-                                                    delete doc.slug;
-                                                    return Blog.Post.create(doc);
-                                                 })
-                                                 .value();
+                if (response && response.rows){
+                    var newcontent = _(response.rows).chain()
+                                                     .pluck('doc')
+                                                     .map(function (doc){
+                                                        delete doc.slug;
+                                                        return Blog.Post.create(doc);
+                                                     })
+                                                     .value();
 
-                if (newcontent.length === pageSize + 1){
-                    newcontent = _(newcontent).initial();
+                    if (newcontent.length === pageSize + 1){
+                        newcontent = _(newcontent).initial();
+                    }
+
+                    self.set('content', newcontent);
+                    self.set('currentPage', page);
                 }
-
-                self.set('content', newcontent);
-                self.set('currentPage', page);
-            }
-            else {
-                //TODO: error handling
-            }
+                else {
+                    //TODO: error handling
+                }
+            });
         });
     }
 });
