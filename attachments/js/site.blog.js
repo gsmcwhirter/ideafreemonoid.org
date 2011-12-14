@@ -173,15 +173,17 @@ Blog.Post = Ember.Object.extend({
 
 Blog.postsController = Ember.ArrayController.create({
       content: []
-    , _postData: null
+    , _postData: {}
     , _seenPosts: {}
     , _currentView: null
     , currentPage: 1
-    , _totalPosts: 1
+    , _totalPosts: {}
     , _pageSize: 10
 
     , totalPages: function (){
-        return Math.ceil(this.get("_totalPosts")[this.get("_currentView")] / this.get("_pageSize"));
+        var posts = this.get("_totalPosts")[this.get("_currentView")] || 0;
+        var psize = this.get("_pageSize");
+        return Math.ceil(posts / psize);
     }.property("_totalPosts", "_pageSize", "_currentView").cacheable()
 
     , createPost: function (title, slug, tags, content, callback){
@@ -347,9 +349,9 @@ Blog.postsController = Ember.ArrayController.create({
 
                 IFMAPI.getView(view, opts, function (err, response){
                     if (response && response.rows){
-                        var newPostData = _.clone(self.get("_postData"));
-                        var newSeenPosts = _.clone(self.get("_seenPosts"));
-                        var newTotalPosts = _.clone(self.get("_totalPosts"));
+                        var newPostData = _.clone(self.get("_postData") || {});
+                        var newSeenPosts = _.clone(self.get("_seenPosts") || {});
+                        var newTotalPosts = _.clone(self.get("_totalPosts") || {});
 
                         newPostData[view] = [];
                         newSeenPosts[view] = {};
