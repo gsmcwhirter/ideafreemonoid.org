@@ -157,7 +157,7 @@ Blog.Post = Ember.Object.extend({
 
 Blog.postsController = Ember.ArrayController.create({
       content: []
-    , _postData: []
+    , _postData: null
     , _seenPosts: {}
     , currentPage: 1
     , _totalPosts: 1
@@ -320,6 +320,7 @@ Blog.postsController = Ember.ArrayController.create({
                 IFMAPI.getView("blogposts", opts, function (err, response){
                     if (response && response.rows){
                         self.set("_totalPosts", response.total_rows);
+                        console.log("set total posts");
 
                         var postData = [];
                         var seenPosts = {};
