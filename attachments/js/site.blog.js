@@ -56,10 +56,13 @@ Blog.Post = Ember.Object.extend({
     , is_published: false
     , tags: []
     , edits: []
-    , _deleted: false
     , _id: null
     , _rev: null
     , isEditing: false
+
+    , _doc: function (){
+        return this.getProperties("type","title","slug","authors","content_raw","display_date","created_at","is_published","tags","edits","_id","_rev");
+    }.property("type","title","slug","authors","content_raw","display_date","created_at","is_published","tags","edits","_id","_rev")
 
     , formattedAuthors: function (){
         var val = this.get("authors");
@@ -78,6 +81,15 @@ Blog.Post = Ember.Object.extend({
         if (val) return (new Date(val)).toLocaleString();
         else return "";
     }.property("display_date")
+
+    , formattedEdits: function (){
+        var val = this.get("edits");
+        if (edits && edits.length) return _(val).map(function (edit){
+            edit.formattedDate = (new Date(val)).toLocaleString();
+            return edit;
+        });
+        else return [];
+    }
 
     , formattedTags: function (){
         var val = this.get("tags");
@@ -122,7 +134,7 @@ Blog.postsController = Ember.ArrayController.create({
             callback = title;
             title = null;
             slug = null;
-            tags = null
+            tags = null;
             content = null;
         }
         else if (typeof slug === "function"){
@@ -150,8 +162,7 @@ Blog.postsController = Ember.ArrayController.create({
             var now = dateISOString(new Date());
 
             var post = {
-                  type: "blog-post"
-                , title: title
+                  title: title
                 , slug: slug
                 , authors: [User.userController.get('currentUser').get('name')]
                 , created_at: now
@@ -162,43 +173,92 @@ Blog.postsController = Ember.ArrayController.create({
                 , isEditing: true
             };
 
-            this.unshiftObject(Blog.Post.create(post));
+            post = Blog.Post.create(post);
+            this.unshiftObject(post);
 
-            /*var self = this;
-
-            IFMAPI.getUUIDs(function (err, response){
-                if (err){
-                    //TODO: error handling
-                    console.log(response);
-                }
-
-                if (response && response.uuids){
-                    post._id = response.uuids[0];
-
-                    IFMAPI.putDoc(post._id, post, function (err, response){
-                        if (err){
-                            //TODO: error handling
-                            console.log(response);
-                        }
-
-                        console.log(response);
-
-                        if (response && response.ok){
-                            post._rev = response.rev;
-
-                            self.unshiftObject(Blog.Post.create(post));
-                        }
-                    });
-                }
-            });*/
+            callback(false, post);
         }
         else {
-            //TODO: error handling
+            callback({error: "not connected"}, User.userController.get("currentUser"));
         }
     }
 
-    , savePost: function (post, callback){
+    , savePost: function (post, force_publish, callback){
+        if (typeof force_publish === "function"){
+            callback = force_publish;
+            force_publish = false;
+        }
 
+        if (typeof callback !== "function") callback = function (){};
+
+        if (User.userController.isConnected()){
+
+            if (post.get("is_published")){
+                var newedits = post.get("edits");
+                newedits.push({
+                      author: User.userController.get("currentUser").get("name")
+                    , edit_date: dateISOString(new Date())
+                });
+                post.set("edits", newedits);
+            }
+            else {
+                post.set("display_date", dateISOString(new Date()));
+            }
+
+            if (force_publish){
+                post.set("is_published", true);
+            }
+
+            var first;
+            if (!section.get("_id")){
+                console.log("Saving new...");
+                first = function (second){
+                    IFMAPI.getUUIDs(function (err, response){
+                        if (err){
+                            callback(err, response);
+                        }
+                        else if (response && response.uuids){
+                            post.set("_id", response.uuids[0]);
+                            second();
+                        }
+                        else {
+                            callback(true, response);
+                        }
+                    });
+                };
+            }
+            else {
+                console.log("Saving existing...");
+                first = function (second){
+                    second();
+                };
+            }
+
+            first(function (){
+                var doc = post.get("_doc");
+
+                if (!doc._rev){
+                    delete doc._rev;
+                }
+
+                IFMAPI.putDoc(post.get("_id"), doc, function (err, response){
+                    if (err){
+                        callback(err, response);
+                    }
+                    else if (response && response.ok){
+                        post.set("_rev", response.rev);
+
+                        callback(false, section);
+                    }
+                    else {
+                        callback(true, response);
+                    }
+                });
+            });
+        }
+        else {
+            callback({error: "not connected"}, User.userController.get("currentUser"));
+        }
     }
 
     , reloadData: function (){
@@ -259,14 +319,39 @@ Blog.EditFormView = Ember.View.extend({
             this.get("content").set("isEditing", false);
 
             if (User.userController.isConnected()){
-                this.get("content").set("last_updated", dateISOString(new Date()));
-                /*CV.sectionsController.saveSection(this.get("content"), function (err, resp){
+                Blog.postsController.saveSection(this.get("content"), function (err, resp){
                     if (err){
                         //TODO: error handling
                         console.log(err);
                         console.log(resp);
                     }
-                });*/
+                });
+            }
+            else {
+                console.log("Not Connected!");
+            }
+
+            console.log(this.get("content").get("title"));
+
+            return false;
+        }
+    })
+    , publishButton: Ember.Button.extend({
+          target: null
+        , action: null
+        , click: function (event){
+            event.preventDefault();
+
+            this.get("content").set("isEditing", false);
+
+            if (User.userController.isConnected()){
+                Blog.postsController.saveSection(this.get("content"), true, function (err, resp){
+                    if (err){
+                        //TODO: error handling
+                        console.log(err);
+                        console.log(resp);
+                    }
+                });
             }
             else {
                 console.log("Not Connected!");

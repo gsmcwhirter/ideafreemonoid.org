@@ -73,8 +73,7 @@ CV.sectionsController = Ember.ArrayController.create({
             var now = dateISOString(new Date());
 
             var section = {
-                  type: "cv-section"
-                , title: title
+                  title: title
                 , content_raw: content || "\n"
                 , order: order || ((_(this.get("content")).chain().map(function (doc){return doc.get('order')}).max().value() || 0) + 1)
                 , created_at: now
@@ -82,10 +81,14 @@ CV.sectionsController = Ember.ArrayController.create({
                 , isEditing: true
             };
 
-            this.pushObject(CV.Section.create(section));
+            section = CV.Section.create(section);
+            this.pushObject(section);
             this.resort();
 
             callback(false, section);
+        }
+        else {
+            callback({error: "not connected"}, User.userController.get("currentUser"));
         }
     }
     , reloadData: function (callback){
@@ -118,6 +121,8 @@ CV.sectionsController = Ember.ArrayController.create({
         if (typeof callback !== "function") callback = function (){};
 
         if (User.userController.isConnected()){
+
+            section.set("last_updated", dateISOString(new Date()));
 
             var first;
             if (!section.get("_id")){
@@ -229,7 +234,6 @@ CV.EditFormView = Ember.View.extend({
             this.get("content").set("isEditing", false);
 
             if (User.userController.isConnected()){
-                this.get("content").set("last_updated", dateISOString(new Date()));
                 CV.sectionsController.saveSection(this.get("content"), function (err, resp){
                     if (err){
                         //TODO: error handling

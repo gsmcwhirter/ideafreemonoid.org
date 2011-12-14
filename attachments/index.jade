@@ -56,8 +56,8 @@ block templates
     .tagline Tags: {{{formattedTags}}}
     .content {{{formattedContent}}}
     .editline {{editString}}
-    |  {{#list edits tagClass="editlist" tagName="ol"}}
-    |    Edited on {{edit_date}} by {{author}}
+    |  {{#list formattedEdits tagClass="editlist" tagName="ol"}}
+    |    Edited on {{formattedDate}} by {{author}}
     |  {{/list}}
     {{/with}}
 
@@ -72,6 +72,9 @@ block templates
       label Content
       {{view Ember.TextArea name="content_raw" valueBinding="content.content_raw"}}
       {{#view saveButton contentBinding="content"}}Save{{/view}}
+      {{#unless content.is_published}}
+      {{#view publishButton contentBinding="content"}}Publish{{/view}}
+      {{/unless}}
 
   script(type="text/x-handlebars", data-template-name="cv")
     {{#collection contentBinding="CV.sectionsController" tagName="ol" class="sections"}}
