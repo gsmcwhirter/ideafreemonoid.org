@@ -163,7 +163,7 @@ Blog.postsController = Ember.ArrayController.create({
     , _pageSize: 1
     , totalPages: function (){
         return Math.floor(this.get("_totalPosts") / this.get("_pageSize") + 1);
-    }.propety("_totalPosts", "_pageSize")
+    }.property("_totalPosts", "_pageSize")
     , createPost: function (title, slug, tags, content, callback){
         if (typeof title === "function"){
             callback = title;
