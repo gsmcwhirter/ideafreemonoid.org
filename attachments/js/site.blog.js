@@ -4,11 +4,18 @@ window.Blog = Ember.Application.create({
 
 Blog.Router = {
     index: function (){
+        _gaq.push(['_trackPageview', '#!blog']);
+        Blog.Router.show_page.call(this, {page: 1});
+    }
+    , show_page: function (params){
+        if (!params.page){
+            params.page = 1;
+        }
+
         App.hideAll();
-        Blog.postsController.reloadData();
+        Blog.postsController.loadPage(params.page);
         this.get("rootElement").show();
         App.setTitle("Blog");
-        _gaq.push(['_trackPageview', '#!blog']);
     }
     , show_author: function (params){
         if (!params.author){
@@ -48,7 +55,6 @@ Blog.Router = {
 Blog.Post = Ember.Object.extend({
       type: "blog-post"
     , title: null
-    , slug: null
     , authors: []
     , content_raw: ''
     , display_date: null
@@ -117,6 +123,20 @@ Blog.Post = Ember.Object.extend({
         return !this.get("is_published");
     }.property("is_published")
 
+    , slug: function (){
+        var id = this.get("_id") || "";
+        var title = this.get("title");
+
+        var slug_chars = "abcdefghijklmnopqrstuvwxyz0123456789-_ ";
+
+        var slugify = function (title){
+          var sub = _(title.toLowerCase().split("")).select(function (item){ return slug_chars.indexOf(item) > -1; });
+          return sub.join("").replace(/\s{2,}/g, " ").replace(/ /g,"-");
+        }
+
+        return id.substring(0, 6) + "-" + slugify(title);
+    }.property("_id", "title")
+
     , tagString: Ember.computed(function (key, value){
         //getter
         if (arguments.length === 1){
@@ -137,6 +157,9 @@ Blog.Post = Ember.Object.extend({
 
 Blog.postsController = Ember.ArrayController.create({
       content: []
+    , _postData: []
+    , currentPage: 1
+    , _totalPosts: 1
     , createPost: function (title, slug, tags, content, callback){
         if (typeof title === "function"){
             callback = title;
@@ -269,17 +292,50 @@ Blog.postsController = Ember.ArrayController.create({
         }
     }
 
-    , reloadData: function (){
+    , loadPage: function (page){
         var self = this;
+        var pageSize = 10;
+
+        if (!page || page < 1){
+            page = 1;
+        }
+
+        var lastPage = Math.floor(this.get("_totalPosts") / pageSize);
+
+        if (page > 1 && page > lastPage){
+            page = lastPage;
+        }
+
         var opts = {
               include_docs: true
             , descending: true
+            , limit: pageSize + 1
+        }
+
+        var getStartkey = function (pageSize, page, data){
+            var index = pageSize * (page - 1) + 1;
+
+            if (data.length < index){
+                return ['pub', 0];
+            }
+            else {
+                return data[index];
+            }
         }
 
         if (!User.userController.isConnected()){
             //start and end need to be reversed due to descending
-            opts.end_key = ['pub', 0];
-            opts.start_key = ['pub', 1];
+            opts.endkey = ['pub', 0];
+
+            if (page > 1){
+                opts.startkey = getStartkey(pageSize, page, this.get("_postData"));
+            }
+            else {
+                opts.startkey = ['pub', 1];
+            }
+        }
+        else if (page > 1) {
+            opts.startkey = getStartkey(pageSize, page, this.get("_postData"));
         }
 
         IFMAPI.getView("blogposts", opts, function (err, response){
@@ -289,10 +345,29 @@ Blog.postsController = Ember.ArrayController.create({
             }
 
             if (response && response.rows){
+                self.set("_totalPosts", response.total_rows);
+
+                var dataChanges = false;
+                var postData = this.get("_postData").slice();
+                _(response.rows).chain()
+                                .pluck('key')
+                                .each(function (key, index){
+                                    if (postData.indexOf(key) === -1){
+                                        dataChanges = true;
+                                        postData.push(key);
+                                    }
+                                });
+
+                if (dataChanges){
+                    postData.sort();
+                    this.set("_postData", postData);
+                }
+
                 self.set('content', _(response.rows).chain()
                                                     .pluck('doc')
                                                     .map(function (doc){return Blog.Post.create(doc);})
                                                     .value());
+                self.set('currentPage', page);
             }
             else {
                 //TODO: error handling
@@ -302,7 +377,8 @@ Blog.postsController = Ember.ArrayController.create({
 });
 
 Blog.BlogView = Ember.View.extend({
-    templateName: "blog"
+      templateName: "blog"
+    , currentPageBinding = "Blog.postsController.currentPage"
 });
 
 Blog.AddPostLink = Ember.View.extend({

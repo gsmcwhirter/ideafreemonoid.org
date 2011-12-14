@@ -108,8 +108,8 @@ block templates
     {{/if}}
 
   script(type="text/x-handlebars", data-template-name="user-login")
-    {{view usernameView id="login-username"}}
-    {{view passwordView id="login-password"}}
+    {{view usernameView id="login-username" name="username"}}
+    {{view passwordView id="login-password" name="password"}}
     {{#view loginButton}}Log In{{/view}}
 
   script(type="text/x-handlebars", data-template-name="user-logout")
