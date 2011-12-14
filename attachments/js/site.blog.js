@@ -387,6 +387,9 @@ Blog.BlogView = Ember.View.extend({
       templateName: "blog"
     , currentPageBinding: "Blog.postsController.currentPage"
     , totalPagesBinding: "Blog.postsController.totalPages"
+    , hasManyPages: function (){
+        return this.get("totalPages") > 1;
+    }.property("totalPages")
     , pagesToLink: function (){
         if (totalPages === 1){
             return [];

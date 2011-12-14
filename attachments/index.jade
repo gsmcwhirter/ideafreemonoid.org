@@ -35,7 +35,7 @@ block templates
     {{#collection contentBinding="Blog.postsController" tagName="ol" class="posts"}}
     {{view Blog.BlogPostView contentBinding="content" classBinding="content.isDraft:blog-draft"}}
     {{/collection}}
-    {{#if totalPages > 1}}
+    {{#if hasManyPages}}
     .pagination
       a(href="#!blog/1") &laquo;first
       {{#each pagesToLink}}
