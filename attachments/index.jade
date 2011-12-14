@@ -1,10 +1,5 @@
 extends ../layouts/layout
 
-block userarea
-  #userbox
-    script(type="text/x-handlebars")
-      {{view User.UserView}}
-
 block menuarea
   nav#menu
     ul
@@ -17,12 +12,13 @@ block menuarea
       li
         a(href="/visualizations/") Visualizations
 
+block userarea
+  #userbox
+    script(type="text/x-handlebars")
+      {{view User.UserView}}
+
 block maincontent
   #blog
-    p
-      | Under re-development (since I was stupid and forgot to check wheat
-      | compatibility before upgrading node to 0.6, and now I want to play
-      | around with other stuff).
     script(type="text/x-handlebars")
       {{view Blog.BlogView}}
 
