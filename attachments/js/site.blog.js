@@ -83,7 +83,7 @@ Blog.Post = Ember.Object.extend({
     }.property("display_date")
 
     , formattedEdits: function (){
-        var val = this.get("edits");
+        var edits = this.get("edits");
         if (edits && edits.length) return _(val).map(function (edit){
             edit.formattedDate = (new Date(val)).toLocaleString();
             return edit;
