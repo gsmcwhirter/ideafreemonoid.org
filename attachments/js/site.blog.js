@@ -155,10 +155,6 @@ Blog.Post = Ember.Object.extend({
         return id.substring(id.length - 6) + "-" + slugify(title);
     }.property("_id", "title").cacheable()
 
-    , disqus_url: function (){
-        return 'var disqus_url = "https://www.ideafreemonoid.org/#!blog/view/' + this.get("slug") + '";';
-    }.property("slug").cacheable()
-
     , tagString: Ember.computed(function (key, value){
         //getter
         if (arguments.length === 1){

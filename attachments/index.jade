@@ -54,29 +54,6 @@ block templates
   script(type="text/x-handlebars", data-template-name="blog-post")
     {{view Blog.EditFormView contentBinding="content" classBinding="content.isEditing:editing-form"}}
     {{view Blog.PostDisplayView contentBinding="content" classBinding="content.isEditing:editing-display"}}
-    {{#if showComments}}
-    hr(style="clear:both;")
-    #disqus_thread.body
-    script(type="text/javascript")
-      {{content.disqus_url}}
-    script(src="https://disqus.com/forums/ideafreemonoid/embed.js", type="text/javascript")
-    a(href="http://disqus.com/forums/ideafreemonoid/?url=ref") View the discussion thread.
-    br
-    a.dsq-brlink(href="http://disqus.com")
-      | blog comments powered by
-      span.logo-disqus &nbsp;Disqus
-    script(type="text/javascript")
-      (function() {
-        var links = document.getElementsByTagName('a');
-        var query = '?';
-        for(var i = 0; i < links.length; i++) {
-          if(links[i].href.indexOf('#disqus_thread') >= 0) {
-            query += 'url' + i + '=' + encodeURIComponent(links[i].href) + '&amp;';
-          }
-        }
-        document.write('<script charset="utf-8" type="text/javascript" src="https://disqus.com/forums/ideafreemonoid/get_num_replies.js' + query + '"></' + 'script>');
-      })();
-    {{/if}}
 
   script(type="text/x-handlebars", data-template-name="blog-post-display")
     {{#with content}}
