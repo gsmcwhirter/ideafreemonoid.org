@@ -327,6 +327,7 @@ Blog.postsController = Ember.ArrayController.create({
                         _(response.rows).chain()
                                         .pluck('key')
                                         .each(function (key){
+                                            console.log(key);
                                             postData.push(key);
                                             seenPosts[key[2]] = true;
                                         });
