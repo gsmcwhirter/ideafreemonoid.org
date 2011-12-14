@@ -56,7 +56,7 @@ block templates
     {{view Blog.PostDisplayView contentBinding="content" classBinding="content.isEditing:editing-display"}}
     {{#if showComments}}
     #disqus_thread
-    script(type="text/javascript")
+    {{#view Ember.View tagName="script" type="text/javascript"}}
         var disqus_shortname = 'ideafreemonoid';
         var disqus_identifier = '{{content.slug}}';
         (function() {
@@ -64,6 +64,7 @@ block templates
             dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
             (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
         })();
+    {{/view}}
     a.dsq-brlink(href="http://disqus.com")
       | blog comments powered by
       span.logo-disqus Disqus
