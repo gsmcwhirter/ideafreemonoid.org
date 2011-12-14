@@ -168,7 +168,8 @@ Blog.postsController = Ember.ArrayController.create({
 
     , pagesToLink: function (){
         var total = this.get("totalPages") || 1;
-        var current = this.get("currentPage") || 1;
+        //var current = this.get("currentPage") || 1;
+        var current = 1;
         var start = Math.max(1, current - 3);
         var end = Math.min(total, current + 3);
         /*if (total > 1){
@@ -188,7 +189,8 @@ Blog.postsController = Ember.ArrayController.create({
             console.log(end);
             return [];
         //}
-    }.property("totalPages", "currentPage")
+    //}.property("totalPages", "currentPage")
+    }.property("totalPages")
 
     , createPost: function (title, slug, tags, content, callback){
         if (typeof title === "function"){
