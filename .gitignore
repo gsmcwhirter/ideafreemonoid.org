@@ -3,3 +3,4 @@ config.live.js
 attachments/*.html
 *.out
 attachments/visualizations
+attachments/css/layout.css
