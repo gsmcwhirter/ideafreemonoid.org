@@ -117,13 +117,35 @@ Blog.Post = Ember.Object.extend({
 
 Blog.postsController = Ember.ArrayController.create({
       content: []
-    , createPost: function (title, slug, content, tags, authors){
-        if (User.userController.isConnected()){
-            authors = authors || User.userController.get('currentUser').get('name');
+    , createPost: function (title, slug, tags, content, callback){
+        if (typeof title === "function"){
+            callback = title;
+            title = null;
+            slug = null;
+            tags = null
+            content = null;
+        }
+        else if (typeof slug === "function"){
+            callback = slug;
+            slug = null;
+            tags = null;
+            content = null;
+        }
+        else if (typeof tags === "function"){
+            callback = tags;
+            tags = null;
+            content = null;
+        }
+        else if (typeof content === "function"){
+            callback = content;
+            content = null;
+        }
 
-            if (typeof authors === "string"){
-                authors = [authors];
-            }
+        if (typeof callback !== "function"){
+            callback = function (){};
+        }
+
+        if (User.userController.isConnected()){
 
             var now = dateISOString(new Date());
 
@@ -131,7 +153,7 @@ Blog.postsController = Ember.ArrayController.create({
                   type: "blog-post"
                 , title: title
                 , slug: slug
-                , authors: authors
+                , authors: [User.userController.get('currentUser').get('name')]
                 , created_at: now
                 , display_date: now
                 , content_raw: content || "\n"
@@ -195,7 +217,13 @@ Blog.postsController = Ember.ArrayController.create({
 });
 
 Blog.BlogView = Ember.View.extend({
-    templateName: "blog"
+      templateName: "blog"
+    , doubleClick: function (){
+        if (User.userController.isConnected()){
+            this.get("content").set("isEditing", true);
+        }
+        return false;
+    }
 });
 
 Blog.BlogPostView = Ember.View.extend({

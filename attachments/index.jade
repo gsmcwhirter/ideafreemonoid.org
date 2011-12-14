@@ -34,11 +34,11 @@ block maincontent
 
 block templates
   script(type="text/x-handlebars", data-template-name="blog")
+    .actions
+      {{view Blog.AddPostLink}}
     {{#collection contentBinding="Blog.postsController" tagName="ol" class="posts"}}
     {{view Blog.BlogPostView contentBinding="content"}}
     {{/collection}}
-    .actions
-      {{view Blog.AddPostLink}}
 
   script(type="text/x-handlebars", data-template-name="blog-add-post-link")
     {{#if currentUser.is_connected}}
