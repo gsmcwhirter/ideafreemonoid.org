@@ -98,8 +98,6 @@ ddoc.templates = couchapp.loadFiles(path.join(__dirname, "templates"), {
     ]
 });
 
-ddoc.changes = require("./couchwatcher");
-
 run(["jade", path.join(__dirname, "attachments")].join(" "));
 run(["stylus", path.join(__dirname, "attachments", "css", "layout.styl")].join(" "));
 
