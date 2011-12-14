@@ -320,7 +320,7 @@ Blog.postsController = Ember.ArrayController.create({
         };
 
         var getStartkey = function (pageSize, page, data){
-            var index = pageSize * (page - 1) + 1;
+            var index = pageSize * (page - 1);
 
             console.log(pageSize);
             console.log(page);
