@@ -32,10 +32,11 @@ block templates
   script(type="text/x-handlebars", data-template-name="blog")
     .actions
       {{view Blog.AddPostLink}}
-    {{#each Blog.postsController.content tagName="ol" class="posts"}}
-    li
-      {{view Blog.BlogPostView contentBinding="this" classBinding="isDraft:blog-draft"}}
-    {{/each}}
+    ol.posts
+      {{#each Blog.postsController.content}}
+      li
+        {{view Blog.BlogPostView contentBinding="this" classBinding="isDraft:blog-draft"}}
+      {{/each}}
     {{#if hasManyPages}}
     .pagination
       a(href="#!blog/1") &laquo;first
@@ -78,10 +79,11 @@ block templates
       {{/unless}}
 
   script(type="text/x-handlebars", data-template-name="cv")
-    {{#each CV.sectionsController.content tagName="ol" class="sections"}}
-    li
-      {{view CV.SectionView contentBinding="this"}}
-    {{/each}}
+    ol.sections
+      {{#each CV.sectionsController.content}}
+      li
+        {{view CV.SectionView contentBinding="this"}}
+      {{/each}}
     .actions
       {{view CV.AddSectionLink}}
 
