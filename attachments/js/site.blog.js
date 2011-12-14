@@ -166,7 +166,7 @@ Blog.postsController = Ember.ArrayController.create({
         return Math.ceil(this.get("_totalPosts") / this.get("_pageSize"));
     }.property("_totalPosts", "_pageSize")
 
-    , pagesToLink: function (){
+    , pagesLinkData: function (){
         var total = this.get("totalPages") || 1;
         //var current = this.get("currentPage") || 1;
         var current = 1;
@@ -421,7 +421,7 @@ Blog.BlogView = Ember.View.extend({
       templateName: "blog"
     , currentPageBinding: "Blog.postsController.currentPage"
     , totalPagesBinding: "Blog.postsController.totalPages"
-    , pagesToLinkBinding: "Blog.postsController.pagesToLink"
+    , pagesLinkDataBinding: "Blog.postsController.pagesToLink"
 
     , hasManyPages: function (){
         return this.get("totalPages") > 1;
