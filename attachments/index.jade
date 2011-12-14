@@ -38,7 +38,9 @@ block templates
     {{#if hasManyPages}}
     .pagination
       a(href="#!blog/1") &laquo;first
-      {{pagesLinkData}}
+      {{#each pagesLinkData}}
+      | <a {{bindAttr href="pageHref"}}>{{page}}</a>
+      {{/each}}
       <a {{bindAttr href="lastHref"}}>last&raquo;</a>
     {{/if}}
 
