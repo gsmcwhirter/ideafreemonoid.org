@@ -207,6 +207,10 @@ Blog.postsController = Ember.ArrayController.create({
         }
     }.property("_currentView","_currentParams").cacheable()
 
+    , showComments: function (){
+        return this.get("_currentView") === "blogslugs";
+    }.property("_currentView").cacheable()
+
     , createPost: function (title, slug, tags, content, callback){
         if (typeof title === "function"){
             callback = title;
@@ -542,6 +546,7 @@ Blog.BlogPostView = Ember.View.extend({
         }
         return false;
     }
+    , showCommentsBinding: "Blog.postsController.showComments"
 });
 
 Blog.PostDisplayView = Ember.View.extend({

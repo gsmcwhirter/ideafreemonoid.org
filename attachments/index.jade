@@ -54,7 +54,7 @@ block templates
   script(type="text/x-handlebars", data-template-name="blog-post")
     {{view Blog.EditFormView contentBinding="content" classBinding="content.isEditing:editing-form"}}
     {{view Blog.PostDisplayView contentBinding="content" classBinding="content.isEditing:editing-display"}}
-    {{#if content.showComments}}
+    {{#if showComments}}
     hr(style="clear:both;")
     #disqus_thread.body
     script(type="text/javascript")
