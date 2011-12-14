@@ -56,9 +56,10 @@ block templates
     {{view Blog.PostDisplayView contentBinding="content" classBinding="content.isEditing:editing-display"}}
     {{#if showComments}}
     #disqus_thread
-    {{#view contentBinding="content" tagName="script" type="text/javascript"}}
+    {{#view Ember.View contentBinding="content" tagName="script" type="text/javascript"}}
     |     var disqus_shortname = 'ideafreemonoid';
     |     var disqus_identifier = '{{content.slug}}';
+    |     var disqus_title = '{{content.title}}';
     |     (function() {
     |         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
     |         dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
