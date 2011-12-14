@@ -365,7 +365,10 @@ Blog.postsController = Ember.ArrayController.create({
 
                 self.set('content', _(response.rows).chain()
                                                     .pluck('doc')
-                                                    .map(function (doc){return Blog.Post.create(doc);})
+                                                    .map(function (doc){
+                                                        delete doc.slug;
+                                                        return Blog.Post.create(doc);
+                                                    })
                                                     .value());
                 self.set('currentPage', page);
             }

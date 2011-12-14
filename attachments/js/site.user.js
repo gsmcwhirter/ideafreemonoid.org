@@ -132,8 +132,8 @@ User.UserView = Ember.View.extend({
 
         , usernameView: Ember.TextField.extend({
               placeholder: "Username"
-            , name: "username"
-            , attributeBindings: ['type', 'value', 'name']
+            /*, name: "username"
+            , attributeBindings: ['type', 'value', 'name']*/
             , insertNewline: function (){
                 User.userController.login()
             }
