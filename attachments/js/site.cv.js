@@ -116,6 +116,7 @@ CV.sectionsController = Ember.ArrayController.create({
 
             var first;
             if (!section.get("_id")){
+                console.log("Saving new...");
                 first = function (second){
                     IFMAPI.getUUIDs(function (err, response){
                         if (err){
@@ -132,6 +133,7 @@ CV.sectionsController = Ember.ArrayController.create({
                 };
             }
             else {
+                console.log("Saving existing...");
                 first = function (second){
                     second();
                 };
@@ -212,14 +214,18 @@ CV.EditFormView = Ember.View.extend({
     , saveButton: Ember.Button.extend({
           target: null
         , action: null
-        , click: function (){
+        , click: function (event){
+            event.preventDefault();
+
             this.get("content").set("isEditing", false);
 
             if (User.userController.isConnected()){
                 this.get("content").set("last_updated", dateISOString(new Date()));
-                CV.sectionsController.saveSection(this.get("content"), function (err){
+                CV.sectionsController.saveSection(this.get("content"), function (err, resp){
                     if (err){
                         //TODO: error handling
+                        console.log(err);
+                        console.log(resp);
                     }
                 });
             }
