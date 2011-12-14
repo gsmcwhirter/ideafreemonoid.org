@@ -330,7 +330,7 @@ Blog.postsController = Ember.ArrayController.create({
         if (!postData[view]){
             first = function (second){
 
-                var opts = _.clone(viewopts);
+                var opts = _.clone(viewopts || {});
 
                 opts.descending = true;
 
@@ -345,8 +345,6 @@ Blog.postsController = Ember.ArrayController.create({
 
                 if (!opts.startkey) delete opts.startkey;
                 if (!opts.endkey) delete opts.endkey;
-
-                console.log(opts);
 
                 IFMAPI.getView(view, opts, function (err, response){
                     if (response && response.rows){
@@ -391,7 +389,7 @@ Blog.postsController = Ember.ArrayController.create({
                 page = lastPage;
             }
 
-            var opts = _.clone(viewopts);
+            var opts = _.clone(viewopts || {});
 
             opts.descending = true;
             opts.include_docs = true;
