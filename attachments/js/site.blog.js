@@ -217,7 +217,7 @@ Blog.AddPostLink = Ember.View.extend({
 });
 
 
-Blog.SectionDisplayView = Ember.View.extend({
+Blog.PostDisplayView = Ember.View.extend({
       templateName: "blog-post-display"
 });
 
