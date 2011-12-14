@@ -75,6 +75,8 @@ block templates
   script(type="text/x-handlebars", data-template-name="blog-post-display")
     {{#with content}}
     h2 {{title}}
+    .permalink
+      | <a {{bindAttr href="permalink"}}>permalink</a>
     .byline Posted {{formattedDate}} by {{{formattedAuthors}}}
     .tagline Tags: {{{formattedTags}}}
     .content {{{formattedContent}}}

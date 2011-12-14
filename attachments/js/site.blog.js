@@ -141,6 +141,10 @@ Blog.Post = Ember.Object.extend({
         return !this.get("is_published");
     }.property("is_published").cacheable()
 
+    , permalink: function (){
+        return "#!blog/view/" + this.get("slug");
+    }.property("slug")
+
     , slug: function (){
         var id = this.get("_id") || "";
         var title = this.get("title");
