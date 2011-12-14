@@ -436,7 +436,7 @@ Blog.BlogView = Ember.View.extend({
                 ret.push({page: i, pageHref: "#!blog/" + i});
             }
 
-            return JSON.stringify(ret);
+            return ret;
         }
         else {
             return [];
