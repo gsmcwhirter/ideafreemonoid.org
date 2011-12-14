@@ -263,14 +263,30 @@ Blog.postsController = Ember.ArrayController.create({
 
     , reloadData: function (){
         var self = this;
-        IFMAPI.getView("blogposts", {startkey: [true,0], endkey: [true, 1], include_docs: true, descending: true}, function (err, response){
+        var opts = {
+              include_docs: true
+            , descending: true
+        }
+
+        if (!User.userController.isConnected()){
+            opts.startkey = [true, 0];
+            opts.endkey = [true, 1];
+        }
+
+        IFMAPI.getView("blogposts", opts, function (err, response){
             if (err){
                 //TODO: error handling
                 console.log(response);
             }
 
             if (response && response.rows){
-                self.set('content', _(response.rows).chain().pluck('doc').map(function (doc){return Blog.Post.create(doc);}).value());
+                self.set('content', _(response.rows).chain()
+                                                    .pluck('doc')
+                                                    .map(function (doc){return Blog.Post.create(doc);})
+                                                    .value());
+            }
+            else {
+                //TODO: error handling
             }
         });
     }
