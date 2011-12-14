@@ -348,7 +348,7 @@ Blog.postsController = Ember.ArrayController.create({
                 self.set("_totalPosts", response.total_rows);
 
                 var dataChanges = false;
-                var postData = this.get("_postData").slice();
+                var postData = self.get("_postData").slice();
                 _(response.rows).chain()
                                 .pluck('key')
                                 .each(function (key, index){
@@ -360,7 +360,7 @@ Blog.postsController = Ember.ArrayController.create({
 
                 if (dataChanges){
                     postData.sort();
-                    this.set("_postData", postData);
+                    self.set("_postData", postData);
                 }
 
                 self.set('content', _(response.rows).chain()
