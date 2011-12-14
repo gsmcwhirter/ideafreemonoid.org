@@ -25,17 +25,17 @@ CV.Section = Ember.Object.extend({
 
     , _doc: function (){
         return this.getProperties("type","title","content_raw","order","created_at","last_updated","_id","_rev");
-    }.property("type","title","content_raw","order","created_at","last_updated","_id","_rev")
+    }.property("type","title","content_raw","order","created_at","last_updated","_id","_rev").cacheable()
 
     , formattedDate: function (){
         var val = this.get("last_updated");
         if (val) return (new Date(val)).toLocaleString();
         else return "";
-    }.property("last_updated")
+    }.property("last_updated").cacheable()
 
     , formattedContent: function (){
         return SDConverter.makeHtml(this.get("content_raw") || "\n");
-    }.property("content_raw")
+    }.property("content_raw").cacheable()
 });
 
 CV.sectionsController = Ember.ArrayController.create({
@@ -45,7 +45,7 @@ CV.sectionsController = Ember.ArrayController.create({
         return _(this.get("content")).sortBy(function (section){
             return section.get("order") || 0;
         });
-    }.property("content")
+    }.property("content").cacheable()
 
     , createSection: function (title, content, order, callback){
         if (typeof title === "function"){

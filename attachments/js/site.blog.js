@@ -68,7 +68,7 @@ Blog.Post = Ember.Object.extend({
 
     , _doc: function (){
         return this.getProperties("type","title","slug","authors","content_raw","display_date","created_at","is_published","tags","edits","_id","_rev");
-    }.property("type","title","slug","authors","content_raw","display_date","created_at","is_published","tags","edits","_id","_rev")
+    }.property("type","title","slug","authors","content_raw","display_date","created_at","is_published","tags","edits","_id","_rev").cacheable()
 
     , editString: function (){
         var edits = this.get("edits");
@@ -79,7 +79,7 @@ Blog.Post = Ember.Object.extend({
         else {
             return "";
         }
-    }.property("edits")
+    }.property("edits").cacheable()
 
     , formattedAuthors: function (){
         var val = this.get("authors");
@@ -87,17 +87,17 @@ Blog.Post = Ember.Object.extend({
             return "<a href=\"#!blog/author/" + author + "\">" + author + "</a>";
         }).join(", "); //TODO: links
         else return "";
-    }.property("authors")
+    }.property("authors").cacheable()
 
     , formattedContent: function (){
         return SDConverter.makeHtml(this.get("content_raw") || "\n");
-    }.property("content_raw")
+    }.property("content_raw").cacheable()
 
     , formattedDate: function (){
         var val = this.get("display_date");
         if (val) return (new Date(val)).toLocaleString();
         else return "";
-    }.property("display_date")
+    }.property("display_date").cacheable()
 
     , formattedEdits: function (){
         var edits = this.get("edits");
@@ -109,7 +109,7 @@ Blog.Post = Ember.Object.extend({
             };
         });
         else return [];
-    }.property("edits")
+    }.property("edits").cacheable()
 
     , formattedTags: function (){
         var val = this.get("tags");
@@ -117,11 +117,11 @@ Blog.Post = Ember.Object.extend({
                 return "<a href=\"#!blog/tag/" + tag + "\">" + tag + "</a>";
             }).join(", ");
         else return "";
-    }.property("tags")
+    }.property("tags").cacheable()
 
     , isDraft: function (){
         return !this.get("is_published");
-    }.property("is_published")
+    }.property("is_published").cacheable()
 
     , slug: function (){
         var id = this.get("_id") || "";
@@ -135,7 +135,7 @@ Blog.Post = Ember.Object.extend({
         }
 
         return id.substring(0, 6) + "-" + slugify(title);
-    }.property("_id", "title")
+    }.property("_id", "title").cacheable()
 
     , tagString: Ember.computed(function (key, value){
         //getter
@@ -152,7 +152,7 @@ Blog.Post = Ember.Object.extend({
         else {
             this.set("tags", _(value.split(",")).map(function (tag){return $.trim(tag);}));
         }
-    }).property("tags")
+    }).property("tags").cacheable()
 });
 
 Blog.postsController = Ember.ArrayController.create({
@@ -165,7 +165,7 @@ Blog.postsController = Ember.ArrayController.create({
 
     , totalPages: function (){
         return Math.ceil(this.get("_totalPosts") / this.get("_pageSize"));
-    }.property("_totalPosts", "_pageSize")
+    }.property("_totalPosts", "_pageSize").cacheable()
 
     , createPost: function (title, slug, tags, content, callback){
         if (typeof title === "function"){
@@ -423,7 +423,7 @@ Blog.BlogView = Ember.View.extend({
 
     , hasManyPages: function (){
         return this.get("totalPages") > 1;
-    }.property("totalPages")
+    }.property("totalPages").cacheable()
 
     , pagesLinkData: function (){
         var total = this.get("totalPages") || 1;
@@ -441,11 +441,11 @@ Blog.BlogView = Ember.View.extend({
         else {
             return [];
         }
-    }.property("totalPages", "currentPage")
+    }.property("totalPages", "currentPage").cacheable()
 
     , lastHref: function (){
         return "#!blog/" + this.get("totalPages");
-    }.property("totalPages")
+    }.property("totalPages").cacheable()
 });
 
 Blog.AddPostLink = Ember.View.extend({
