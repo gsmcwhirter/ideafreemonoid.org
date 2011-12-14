@@ -89,7 +89,7 @@ Blog.Post = Ember.Object.extend({
             return edit;
         });
         else return [];
-    }
+    }.property("edits")
 
     , formattedTags: function (){
         var val = this.get("tags");
