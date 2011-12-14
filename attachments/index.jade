@@ -58,8 +58,8 @@ block templates
     hr(style="clear:both;")
     #disqus_thread.body
     script(type="text/javascript")
-      var disqus_url = "http://ideafreemonoid.org/#!blog/view/{{content.slug}}";
-    script(src="http://disqus.com/forums/ideafreemonoid/embed.js", type="text/javascript")
+      var disqus_url = "https://www.ideafreemonoid.org/#!blog/view/{{content.slug}}";
+    script(src="https://disqus.com/forums/ideafreemonoid/embed.js", type="text/javascript")
     a(href="http://disqus.com/forums/ideafreemonoid/?url=ref") View the discussion thread.
     br
     a.dsq-brlink(href="http://disqus.com")
@@ -74,7 +74,7 @@ block templates
             query += 'url' + i + '=' + encodeURIComponent(links[i].href) + '&amp;';
           }
         }
-        document.write('<script charset="utf-8" type="text/javascript" src="http://disqus.com/forums/ideafreemonoid/get_num_replies.js' + query + '"></' + 'script>');
+        document.write('<script charset="utf-8" type="text/javascript" src="https://disqus.com/forums/ideafreemonoid/get_num_replies.js' + query + '"></' + 'script>');
       })();
     {{/if}}
 
