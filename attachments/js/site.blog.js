@@ -378,7 +378,7 @@ Blog.postsController = Ember.ArrayController.create({
 
 Blog.BlogView = Ember.View.extend({
       templateName: "blog"
-    , currentPageBinding = "Blog.postsController.currentPage"
+    , currentPageBinding: "Blog.postsController.currentPage"
 });
 
 Blog.AddPostLink = Ember.View.extend({
