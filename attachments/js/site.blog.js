@@ -391,7 +391,7 @@ Blog.BlogView = Ember.View.extend({
         return this.get("totalPages") > 1;
     }.property("totalPages")
     , pagesToLink: function (){
-        if (this.get("hasManyPages")){
+        if (this.get("totalPages") > 1){
             var ret = [];
             var start = Math.max(1, this.get("currentPage") - 3);
             var end = Math.min(this.get("totalPages"), this.get("currentPage") + 3);
