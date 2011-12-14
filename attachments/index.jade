@@ -58,7 +58,7 @@ block templates
     hr(style="clear:both;")
     #disqus_thread.body
     script(type="text/javascript")
-      var disqus_url = "https://www.ideafreemonoid.org/#!blog/view/{{content.slug}}";
+      {{content.disqus_url}}
     script(src="https://disqus.com/forums/ideafreemonoid/embed.js", type="text/javascript")
     a(href="http://disqus.com/forums/ideafreemonoid/?url=ref") View the discussion thread.
     br
