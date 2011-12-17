@@ -30,7 +30,8 @@ function dateISOString(date){
                 + zeroPad(date.getUTCDate(), 2) + "T"
                 + zeroPad(date.getUTCHours(), 2) + ":"
                 + zeroPad(date.getUTCMinutes(), 2) + ":"
-                + zeroPad(date.getUTCSeconds(), 2) + "Z";
+                + zeroPad(date.getUTCSeconds(), 2) + "."
+                + zeroPad(date.getUTCMilliseconds(), 3) + "Z";
     }
 }
 
