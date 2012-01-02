@@ -52,6 +52,7 @@ App.Router = {
 App.defaultPageTitle = "" + document.title;
 
 App.hideAll = function (){
+    App.get("rootElement").hide();
     Blog.get("rootElement").hide();
     CV.get("rootElement").hide();
     Gametheory.get("rootElement").hide();
