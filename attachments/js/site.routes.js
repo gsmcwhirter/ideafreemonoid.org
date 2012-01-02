@@ -1,4 +1,7 @@
-Ember.routes.add('', Blog, Blog.Router.show_page);
+Ember.routes.add('', App, App.Router.index);
+Ember.routes.add('!', App, App.Router.index);
+Ember.routes.add('!home', App, App.Router.index);
+
 Ember.routes.add('!blog', Blog, Blog.Router.show_page);
 Ember.routes.add('!blog/:page', Blog, Blog.Router.show_page);
 Ember.routes.add('!blog/tag/:tag', Blog, Blog.Router.show_tag);
