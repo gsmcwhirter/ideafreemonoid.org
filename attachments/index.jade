@@ -4,6 +4,8 @@ block menuarea
   nav#menu
     ul
       li
+        a(href="#") Home
+      li
         a(href="#!blog") Blog
       li
         a(href="#!cv") CV
@@ -18,6 +20,40 @@ block userarea
       {{view User.UserView}}
 
 block maincontent
+  #home
+    h2.alt Gregory McWhirter
+    h3.top.alt2 University of California, Irvine
+    h4.top.alt Graduate Student, Department of Logic and Philosophy of Science
+
+    dl
+      dt Office
+      dd SST 704
+      dt E-Mail
+      dd gmcwhirt -at- uci -dot- edu
+
+    #about
+      h3.header.alt.loud Research Interests
+
+      h3.header.alt.loud Current Projects
+
+    #links
+      h3.header.alt.loud Files
+        ul
+          li
+            a(href="files/cv.pdf") Curriculum Vita
+            | (PDF)
+      h3.header.alt.loud Links and Social Networks
+        ul
+          li
+            a(href="http://github.com/gsmcwhirter/gametheory") GitHub Game Theory Code
+          li
+            a(href="http://www.mendeley.com/profiles/gregory-mcwhirter/") Mendeley
+          li
+            a(href="http://philpapers.org/profile/2940") PhilPapers
+          li
+            a(href="http://www.linkedin.com/in/gsmcwhirter") LinkedIn
+          li
+            a(href="http://uci.academia.edu/GregoryMcWhirter") Academia.edu
   #blog
     script(type="text/x-handlebars")
       {{view Blog.BlogView}}

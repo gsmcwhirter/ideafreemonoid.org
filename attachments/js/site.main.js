@@ -38,8 +38,16 @@ function dateISOString(date){
 window.SDConverter = new Showdown.converter();
 
 window.App = Ember.Application.create({
-    rootElement: $("h1#title")
+    rootElement: $("#home")
 });
+
+App.Router = {
+    index: function (){
+        App.hideAll();
+        this.get("rootElement").show();
+        App.setTitle("Home");
+    }
+}
 
 App.defaultPageTitle = "" + document.title;
 
