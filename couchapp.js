@@ -563,9 +563,9 @@ ddoc.lists = {
                         , "<author>"
                         , "<name>" + row.doc.authors.join(", ") + "</name>"
                         , "</author>"
-                        , "<summary type=\"html\">"
+                        , "<content type=\"html\">"
                         , SDConverter.makeHtml(row.doc.content_raw || "\n")
-                        , "</summary>"
+                        , "</content>"
                         ].join("\n")
             }
             else {
