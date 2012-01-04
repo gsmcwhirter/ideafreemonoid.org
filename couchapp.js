@@ -10,7 +10,7 @@ var ddoc =
     { _id:'_design/app'
     , rewrites :
         [ {from:"/", to:'index.html'}
-        , {from:"/atom", to:'./_list/atomfeed/blogposts?startkey=["pub",1]&endkey=["pub",0]&descending=true&include_docs=true'}
+        , {from:"/atom", to:'./_list/atomfeed/blogposts', query:{startkey: ["pub", 1], endkey: ["pub", 0], descending: true, include_docs: true}}
         , {from:"/visualizations/", to:'visualizations/index.html'}
         , {from:"/api", to:'./'}
         , {from:"/api/*", to:'../../*'}
