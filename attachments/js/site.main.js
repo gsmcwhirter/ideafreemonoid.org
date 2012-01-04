@@ -1,23 +1,23 @@
 function zeroPad(str, length){
-        length = length || 2;
+    length = length || 2;
 
-        if (str){
-            str = "" + str;
-        }
-        else {
-            str = "";
+    if (str){
+        str = "" + str;
+    }
+    else {
+        str = "";
+    }
+
+    if (str.length >= length){
+        return str;
+    }
+    else {
+        while (str.length < length){
+            str = "0" + str;
         }
 
-        if (str.length >= length){
-            return str;
-        }
-        else {
-            while (str.length < length){
-                str = "0" + str;
-            }
-
-            return str;
-        }
+        return str;
+    }
 }
 
 function dateISOString(date){
