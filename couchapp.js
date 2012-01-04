@@ -550,14 +550,14 @@ ddoc.lists = {
             if (row.doc){
                 return  [ "<entry>"
                         , "<title>" + row.doc.title + "</title>"
-                        , "<link type=\"text/html\" href=\"https://www.ideafreemonoid.org/#!blog/view/" + row.doc.slug + "\" id=\"" + row.doc._id + "\"/>"
+                        , "<link type=\"text/html\" href=\"https://www.ideafreemonoid.org/#!blog/view/" + row.doc.slug + "\"/>"
                         , "<id>tag:ideafreemonoid.org,2011:https://www.ideafreemonoid.org/#!blog/view/" + row.doc.slug + "</id>"
                         , "<updated>" + date3339String(new Date(row.doc.display_date)) + "</updated>"
                         , "<author>"
                         , "<name>" + row.doc.authors.join(", ") + "</name>"
                         , "</author>"
                         , "<content type=\"html\">"
-                        , SDConverter.makeHtml(row.doc.content_raw || "\n")
+                        , SDConverter.makeHtml(row.doc.content_raw || "\n").replace(/</, '&lt;')
                         , "</content>"
                         , "</entry>"
                         ].join("\n")
