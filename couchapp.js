@@ -538,9 +538,7 @@ ddoc.lists = {
                     , "<name>Gregory McWhirter</name>"
                     , "<email>greg@ideafreemonoid.org</email>"
                     , "</author>"
-                    , "<id>"
-                    , "tag:ideafreemonoid.org,2011:https://www.ideafreemonoid.org/atom"
-                    , "</id>"
+                    , "<id>tag:ideafreemonoid.org,2011:https://www.ideafreemonoid.org/atom</id>"
                     ].join("\n");
         };
 
@@ -553,19 +551,15 @@ ddoc.lists = {
                 return  [ "<entry>"
                         , "<title>" + row.doc.title + "</title>"
                         , "<link type=\"text/html\" href=\"https://www.ideafreemonoid.org/#!blog/view/" + row.doc.slug + "\" id=\"" + row.doc._id + "\"/>"
-                        , "</entry>"
-                        , "<id>"
-                        , "tag:ideafreemonoid.org,2011:https://www.ideafreemonoid.org/#!blog/view/" + row.doc.slug
-                        , "</id>"
-                        , "<updated>"
-                        , date3339String(new Date(row.doc.display_date))
-                        , "</updated>"
+                        , "<id>tag:ideafreemonoid.org,2011:https://www.ideafreemonoid.org/#!blog/view/" + row.doc.slug + "</id>"
+                        , "<updated>" + date3339String(new Date(row.doc.display_date)) + "</updated>"
                         , "<author>"
                         , "<name>" + row.doc.authors.join(", ") + "</name>"
                         , "</author>"
                         , "<content type=\"html\">"
                         , SDConverter.makeHtml(row.doc.content_raw || "\n")
                         , "</content>"
+                        , "</entry>"
                         ].join("\n")
             }
             else {
