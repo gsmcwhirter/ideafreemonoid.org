@@ -557,7 +557,7 @@ ddoc.lists = {
                         , "<name>" + row.doc.authors.join(", ") + "</name>"
                         , "</author>"
                         , "<content type=\"html\">"
-                        , SDConverter.makeHtml(row.doc.content_raw || "\n").replace(/</g, '&lt;')
+                        , SDConverter.makeHtml(row.doc.content_raw || "\n").replace(/&/g, '&amp;').replace(/</g, '&lt;')
                         , "</content>"
                         , "</entry>"
                         ].join("\n")
