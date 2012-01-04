@@ -10,7 +10,7 @@ var ddoc =
     { _id:'_design/app'
     , rewrites :
         [ {from:"/", to:'index.html'}
-        , {from:"/atom", to:'./_list/atomfeed/blogposts', query:{startkey: ['pub',1], endkey: ['pub',0], descending: 'true', include_docs: 'true'}}
+        , {from:"atom.xml", to:'./_list/atomfeed/blogposts', query:{startkey: ['pub',1], endkey: ['pub',0], descending: 'true', include_docs: 'true'}}
         , {from:"/visualizations/", to:'visualizations/index.html'}
         , {from:"/api", to:'./'}
         , {from:"/api/*", to:'../../*'}
@@ -531,14 +531,14 @@ ddoc.lists = {
                     , "<feed xml:lang=\"en-US\" xmlns=\"http://www.w3.org/2005/Atom\">"
                     , "<title>IdeaFreeMonoid</title>"
                     , "<subtitle>Blog posts from IdeaFreeMonoid.</subtitle>"
-                    , "<link href=\"https://www.ideafreemonoid.org/atom\" rel=\"self\"/>"
+                    , "<link href=\"https://www.ideafreemonoid.org/atom.xml\" rel=\"self\"/>"
                     , "<link type=\"text/html\" href=\"https://www.ideafreemonoid.org/#!blog\" />"
                     , "<updated>" + date3339String() + "</updated>"
                     , "<author>"
                     , "<name>Gregory McWhirter</name>"
                     , "<email>greg@ideafreemonoid.org</email>"
                     , "</author>"
-                    , "<id>tag:ideafreemonoid.org,2011:https://www.ideafreemonoid.org/atom</id>"
+                    , "<id>tag:ideafreemonoid.org,2011:https://www.ideafreemonoid.org/atom.xml</id>"
                     ].join("\n");
         };
 
