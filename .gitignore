@@ -1,5 +1,5 @@
 node_modules
-builder/config.live.js
+config.live.js
 couchapp/attachments/js/*
 couchapp/attachments/*.html
 couchapp/attachments/visualizations
