@@ -1,5 +1,4 @@
 var redis = require('redis')
-    , config = require('./config.live')
     ;
 
 var rclient = redis.createClient();
@@ -19,7 +18,7 @@ rclient.on("message", function (channel, message){
 });
 
 rclient.on("ready", function (){
-    rclient.subscribe(config.builder.redis_channel || "build tasks");
+    rclient.subscribe(process.env.redis_channel || "build tasks");
 });
 
-console.log("Build worker is now on the job.");
+console.log("Build worker is now on the job. Listening to " + process.env.redis_channel);

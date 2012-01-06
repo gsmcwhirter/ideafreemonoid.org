@@ -3,7 +3,6 @@
  */
 
 var express = require('express')
-    , config = require('../config.live')
     , redis = require('redis')
     ;
 
@@ -57,7 +56,7 @@ function rclient_op(task){
     }
 
     var nexttask = rclient_queue.shift();
-    if (rclient.publish(config.builder.redis_channel || "build tasks", JSON.stringify(nexttask)) === false){
+    if (rclient.publish(process.env.redis_channel || "build tasks", JSON.stringify(nexttask)) === false){
         console.log("Pausing redis publication.");
         rclient_paused = true;
     }

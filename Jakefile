@@ -145,8 +145,11 @@ namespace("notifier", function (){
         var env = environ || config.forever.environment || 'development';
         var host = process.env.host || config.forever.host || 'INADDR_ANY';
         var port = process.env.port || config.forever.port || 7060;
+        var logDir = config.forever.logDir || "./log";
+        var redis_channel = process.env.redis_channel || config.builder.redis_channel || "build tasks";
 
         console.log("Starting build notifier at " + host + ":" + port + " in " + env + " mode...");
+        console.log("Logging to " + logDir + "...");
 
         var child = forever.startDaemon("builder/buildnotifier.js", {
               silent: false
@@ -159,10 +162,11 @@ namespace("notifier", function (){
                   NODE_ENV: env
                 , port: port
                 , host: host
+                , redis_channel: redis_channel
             }
-            , logFile: [config.forever.logDir || "./log", "notifier_forever.log"].join("/")
-            , outFile: [config.forever.logDir || "./log", "notifier_out.log"].join("/")
-            , errFile: [config.forever.logDir || "./log", "notifier_forever.log"].join("/")
+            , logFile: [logDir, "notifier_forever.log"].join("/")
+            , outFile: [logDir, "notifier_out.log"].join("/")
+            , errFile: [logDir, "notifier_error.log"].join("/")
             , appendLog: true
         });
 
@@ -223,22 +227,82 @@ namespace("notifier", function (){
 
 namespace("worker", function (){
     desc("Starts the worker backend.");
-    task("start", function (){
+    task("start", function (environ){
+        var env = environ || config.forever.environment || 'development';
+        var logDir = config.forever.logDir || "./log";
+        var redis_channel = process.env.redis_channel || config.builder.redis_channel || "build tasks";
 
+        console.log("Starting build worker in " + env + " mode...");
+        console.log("Logging to " + logDir + "...");
+
+        var child = forever.startDaemon("builder/buildworker.js", {
+              silent: false
+            , forever: true
+            , uid: config.forever.uid
+            , spawnWith: {
+                  env: process.env
+            }
+            , env: {
+                  NODE_ENV: env
+                , redis_channel: redis_channel
+            }
+            , logFile: [logDir, "worker_forever.log"].join("/")
+            , outFile: [logDir, "worker_out.log"].join("/")
+            , errFile: [logDir, "worker_error.log"].join("/")
+            , appendLog: true
+        });
+
+        child.on('exit', function (){
+            console.log("Worker: exiting forever process.");
+        });
+
+        child.on('error', function (err){
+            console.log("Worker: error on forever process:");
+            console.log(err);
+        });
+
+        child.on('start', function (){
+            console.log("Worker: started forever process");
+        });
+
+        child.on('stop', function (){
+            console.log("Worker: stopped forever process");
+        });
+
+        child.on('restart', function (){
+            console.log("Worker: restarted forever process");
+        });
+
+        forever.startServer(child);
     });
 
     desc("Stops the worker backend.");
     task("stop", function (){
-
+        console.log("Stopping build worker...");
+        forever.stop("builder/buildworker.js");
     });
 
     desc("Gives a status update for the worker backend.");
     task("status", function (){
+        forever.list(true, function (err, list){
+            if (err) fail("Forever couldn't list the processes.");
 
-    });
+            list = (list || "").split("\n").filter(function (item){ return item.indexOf("builder/buildworker.js") !== -1;});
+
+            if (list.length > 0){
+                console.log(list.join("\n"));
+            }
+            else {
+                console.log("Build worker is stopped.");
+            }
+
+            complete();
+        });
+    }, {async: true});
 
     desc("Restarts the worker backend.");
-    task("restart", ["worker:stop", "worker:start", "worker:status"], function (){
-        console.log("done.");
+    task("restart", function (){
+        console.log("Restarting build worker...");
+        forever.restart("builder/buildworker.js");
     });
 });
