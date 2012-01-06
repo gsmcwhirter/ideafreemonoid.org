@@ -17,22 +17,30 @@ html(class="no-js", lang="en")
       block title
       | IdeaFreeMonoid
 
-    link(rel="stylesheet", type="text/css", href="css/reset-min.css")
-    link(rel="stylesheet", type="text/css", href="css/base-min.css")
-    link(rel="stylesheet", type="text/css", href="css/fonts-min.css")
     link(rel="stylesheet", type="text/css", href="https://fonts.googleapis.com/css?family=Electrolize|Linden+Hill")
-    link(rel="stylesheet", type="text/css", href="css/layout.css")
+    link(rel="stylesheet", type="text/css", href="ifm-min.css")
 
-    script(type="text/javascript", src="js/json2.min.js")
     script(type="text/javascript", src="js/modernizr.custom.js")
     script(type="text/javascript")
       window._gaq = typeof _gaq !== "undefined" ? _gaq || [] : [];
       _gaq.push(['_setAccount', 'UA-18419792-1']);
       _gaq.push(['_trackPageview']);
       _gaq.push(['_trackPageLoadTime']);
-      Modernizr.load({
-        load: ('https:' == location.protocol ? '//ssl' : '//www') + '.google-analytics.com/ga.js'
-      });
+      Modernizr.load([
+        {   test: window.JSON,
+            nope: 'json2.min.js'
+        },
+        {   load: "//www.google.com/jsapi?key=ABQIAAAA7cOLYGluASZQ4jD_I4NiRhSBAIjhQRxrW037Y4ZG4PyizN6QTxRA3EUwLb9eO2IWuj9BLY8IbJzG3Q"},
+        {   load: "//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js",
+            complete: function (){
+                if (!window.jQuery){
+                    Modernizr.load('js/jquery-1.7.min.js');
+                }
+            });
+        }
+        {   load: ('https:' == location.protocol ? '//ssl' : '//www') + '.google-analytics.com/ga.js'}
+      ]);
+    include ember-templates
   body
     #container
       header
@@ -47,11 +55,10 @@ html(class="no-js", lang="en")
       footer
 
     #templates
-      block templates
+      #disqus_thread
 
-    script(type="text/javascript", src="js/jquery-1.7.min.js")
-    script(type="text/javascript", src="js/showdown.js")
     script(type="text/javascript", src="js/underscore.min.js")
-    script(type="text/javascript", src="js/ember.js")
     script(type="text/javascript", src="js/plugins.js")
+    script(type="text/javascript", src="js/site.min.js")
+
     block scripts
