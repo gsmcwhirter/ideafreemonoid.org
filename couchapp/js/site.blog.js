@@ -557,7 +557,9 @@ Blog.PostDisplayView = Ember.View.extend({
       templateName: "blog-post-display"
     , willInsertElement: function (){
         this._super();
-        $("#disqus_thread").remove();
+        if (this.getPath("showComments")){
+            $("#disqus_thread").remove();
+        }
     }
     , didInsertElement: function (){
         this._super()
