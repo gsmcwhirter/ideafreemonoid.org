@@ -2,7 +2,6 @@
       "name": "ideafreemonoid.org"
     , "private": true
     , "version": "0.1.0"
-    , "private": true
     , "dependencies": {
           "express": ">= 2.5.1"
         , "jade": ">= 0.16.4"
@@ -13,5 +12,6 @@
         , "couchapp": ">= 0.8.1"
         , "hiredis": ">= 0.1.13"
         , "redis": ">= 0.7.1"
-  }
+        , "clean-css": ">= 0.3.1"
+}
 }

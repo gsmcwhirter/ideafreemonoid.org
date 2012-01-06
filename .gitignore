@@ -1,6 +1,7 @@
 node_modules
-config.live.js
-attachments/*.html
-*.out
-attachments/visualizations
-attachments/css/layout.css
+builder/config.live.js
+couchapp/attachments/js/*
+couchapp/attachments/*.html
+couchapp/attachments/visualizations
+couchapp/attachments/css/*
+couchapp/css/layout.css
