@@ -5,6 +5,8 @@ var fs = require("fs")
   , minify = require("jake-uglify").minify
   , couchapp = require("couchapp")
   , path = require("path")
+  , forever = require("forever")
+  , config = require("config.live")
   ;
 
 function abspath (pathname) {
@@ -16,8 +18,14 @@ desc("Generates the markup, css, and js for production");
 task("default", ["markup:make", "js:make", "css:make"]);
 
 namespace("couchapp", function (){
+    desc("Makes the markup, css, and js then pushes the couchapp");
+    task("push", ["default", "couchapp:push-nomake"]);
+
+    desc("Makes the markup, css, and js then syncs the couchapp");
+    task("sync", ["default", "couchapp:push-sync"]);
+
     desc("Pushes the couchapp to the server.");
-    task("push", function (couch){
+    task("push-nomake", function (couch){
         console.log("Pushing couchapp...");
 
         if (!couch){
@@ -31,7 +39,7 @@ namespace("couchapp", function (){
     }, {async: true});
 
     desc("Sets up a sync with the server.");
-    task("sync", function (couch){
+    task("sync-nomake", function (couch){
         console.log("Syncing couchapp...");
 
         if (!couch){
@@ -133,8 +141,46 @@ namespace("css", function (){
 
 namespace("notifier", function (){
     desc("Starts the notifier backend.");
-    task("start", function (){
+    task("start", function (environ){
+        var child = new (forever.Monitor)("builder/buildnotifier.js", {
+              silent: false
+            , forever: true
+            , spawnWith: {
+                  env: process.env
+            }
+            , env: {
+                  NODE_ENV: environ || config.environment || 'development'
+                , port: process.env.port || config.port || 7060
+                , host: process.env.host || config.host || '127.0.0.1'
+            }
+            , logFile: [config.logDir || "./log", "notifier_forever.log"].join("/")
+            , outFile: [config.logDir || "./log", "notifier_out.log"].join("/")
+            , errFile: [config.logDir || "./log", "notifier_forever.log"].join("/")
+            , appendLog: true
+        });
 
+        child.on('exit', function (){
+            console.log("Notifier: exiting forever process.");
+        });
+
+        child.on('error', function (err){
+            console.log("Notifier: error on forever process:");
+            console.log(err);
+        });
+
+        child.on('start', function (){
+            console.log("Notifier: started forever process");
+        });
+
+        child.on('stop', function (){
+            console.log("Notifier: stopped forever process");
+        });
+
+        child.on('restart', function (){
+            console.log("Notifier: restarted forever process");
+        });
+
+        forever.startServer(child);
     });
 
     desc("Stops the notifier backend.");
