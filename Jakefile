@@ -201,7 +201,7 @@ namespace("notifier", function (){
         forever.list(true, function (err, list){
             if (err) fail("Forever couldn't list the processes.");
 
-            list = list.split("\n").filter(function (item){ return item.indexOf("builder/buildnotifier.js") !== -1;});
+            list = (list || "").split("\n").filter(function (item){ return item.indexOf("builder/buildnotifier.js") !== -1;});
 
             if (list.length > 0){
                 console.log(list.join("\n"));
