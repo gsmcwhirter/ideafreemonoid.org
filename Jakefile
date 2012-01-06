@@ -21,7 +21,7 @@ namespace("couchapp", function (){
         console.log("Pushing couchapp...");
 
         if (!couch){
-            throw "Error: You must specify a couchdb server.";
+            fail("You must specify a couchdb server.");
         }
 
         couchapp.createApp(require(abspath("couchapp/couchapp.js")), couch, function (app) {
@@ -35,7 +35,7 @@ namespace("couchapp", function (){
         console.log("Syncing couchapp...");
 
         if (!couch){
-            throw "Error: You must specify a couchdb server.";
+            fail("You must specify a couchdb server.");
         }
 
         couchapp.createApp(require(abspath("couchapp/couchapp.js")), couch, function (app) {
