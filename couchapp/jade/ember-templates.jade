@@ -23,12 +23,6 @@ script(type="text/x-handlebars", data-template-name="blog-add-post-link")
 script(type="text/x-handlebars", data-template-name="blog-post")
   {{view Blog.EditFormView contentBinding="content" classBinding="content.isEditing:editing-form"}}
   {{view Blog.PostDisplayView contentBinding="content" classBinding="content.isEditing:editing-display" showCommentsBinding="showComments"}}
-  {{#if showComments}}
-  .disqus_thread_placeholder
-  a.dsq-brlink(href="http://disqus.com")
-    | blog comments powered by
-    span.logo-disqus Disqus
-  {{/if}}
 
 script(type="text/x-handlebars", data-template-name="blog-post-display")
   {{#with content}}
@@ -39,6 +33,15 @@ script(type="text/x-handlebars", data-template-name="blog-post-display")
   .content {{{formattedContent}}}
   .editline
     {{editString}}
+  .comments
+    {{#if showComments}}
+    .disqus_thread_placeholder
+    a.dsq-brlink(href="http://disqus.com")
+      | blog comments powered by
+      span.logo-disqus Disqus
+    {{else}}
+    | <a {{bindAttr href="commentlink"}} {{bindAttr data-disqus-identifier="slug"}}>comments</a>
+    {{/if}}
   {{/with}}
 
 script(type="text/x-handlebars", data-template-name="blog-post-form")

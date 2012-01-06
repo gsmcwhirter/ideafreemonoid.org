@@ -143,7 +143,11 @@ Blog.Post = Ember.Object.extend({
 
     , permalink: function (){
         return "#!blog/view/" + this.get("slug");
-    }.property("slug")
+    }.property("slug").cacheable()
+
+    , commentlink: function (){
+        return this.get("permalink") + "/#disqus_thread";
+    }.property("permalink").cacheable()
 
     , slug: function (){
         var id = this.get("_id") || "";
@@ -560,7 +564,7 @@ Blog.PostDisplayView = Ember.View.extend({
         if (this.getPath("showComments")){
             var thread = $("#disqus_thread")
             if (thread.length == 0) thread = $("<div id='disqus_thread'></div>");
-            this.$().parent().find(".disqus_thread_placeholder").replaceWith(thread);
+            this.$(".disqus_thread_placeholder").replaceWith(thread);
             var disqus_identifier = this.getPath('content.slug');
             var disqus_title = this.getPath('content.title');
             if (typeof DISQUS !== "undefined"){
