@@ -1,4 +1,4 @@
-window.CV = Ember.Application.create({
+var CV = Ember.Application.create({
     rootElement: $("#cv")
 });
 
