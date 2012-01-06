@@ -500,6 +500,7 @@ Blog.postsController = Ember.ArrayController.create({
 
 Blog.BlogView = Ember.View.extend({
       templateName: "blog"
+    , postsArrayBinding: "Blog.postsController.content"
     , currentPageBinding: "Blog.postsController.currentPage"
     , totalPagesBinding: "Blog.postsController.totalPages"
     , baseURLBinding: "Blog.postsController.baseURL"
@@ -531,12 +532,11 @@ Blog.BlogView = Ember.View.extend({
         return this.get("baseURL") + "/" + this.get("totalPages");
     }.property("totalPages", "baseURL").cacheable()
 
-    , didInsertElement: function (){
-        this._super();
+    , contentChanged: function (){
         if (typeof DISQUSWIDGETS !== "undefined"){
             DISQUSWIDGETS.getCount();
         }
-    }
+    }.observes("postsArray")
 });
 
 Blog.AddPostLink = Ember.View.extend({

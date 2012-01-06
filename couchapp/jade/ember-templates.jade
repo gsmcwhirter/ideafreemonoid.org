@@ -2,7 +2,7 @@ script(type="text/x-handlebars", data-template-name="blog")
   .actions
     {{view Blog.AddPostLink}}
   ol.posts
-    {{#each Blog.postsController.content}}
+    {{#each postsArray}}
     li
       {{view Blog.BlogPostView contentBinding="this" classBinding="isDraft:blog-draft"}}
     {{/each}}
