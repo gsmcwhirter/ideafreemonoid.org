@@ -575,6 +575,11 @@ Blog.PostDisplayView = Ember.View.extend({
                 });
             }
         }
+        else {
+            if ($("#disqus_thread").length === 0){
+                $("#templates").append("<div id='disqus_thread'></div>");
+            }
+        }
     }
 });
 
