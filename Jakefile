@@ -19,10 +19,14 @@ task("default", ["markup:make", "js:make", "css:make"]);
 
 namespace("couchapp", function (){
     desc("Makes the markup, css, and js then pushes the couchapp");
-    task("push", ["default", "couchapp:push-nomake"]);
+    task("push", ["default"], function (couch){
+        jake.Task["couchapp:push-nomake"].invoke(couch);
+    });
 
     desc("Makes the markup, css, and js then syncs the couchapp");
-    task("sync", ["default", "couchapp:push-sync"]);
+    task("sync", ["default"], function (couch){
+        jake.Task["couchapp:sync-nomake"].invoke(couch);
+    });
 
     desc("Pushes the couchapp to the server.");
     task("push-nomake", function (couch){
