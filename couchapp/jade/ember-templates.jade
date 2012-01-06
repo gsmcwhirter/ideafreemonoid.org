@@ -22,17 +22,16 @@ script(type="text/x-handlebars", data-template-name="blog-add-post-link")
 
 script(type="text/x-handlebars", data-template-name="blog-post")
   {{view Blog.EditFormView contentBinding="content" classBinding="content.isEditing:editing-form"}}
-  {{view Blog.PostDisplayView contentBinding="content" classBinding="content.isEditing:editing-display" showCommentsBinding="showComments"}}
+  {{view Blog.PostDisplayView contentBinding="content" showCommentsBinding="showComments" classBinding="content.isEditing:editing-display"}}
 
 script(type="text/x-handlebars", data-template-name="blog-post-display")
-  {{#with content}}
   h2
-    | <a {{bindAttr href="permalink"}}>{{title}}</a>
-  .byline Posted {{formattedDate}} by {{{formattedAuthors}}}
-  .tagline Tags: {{{formattedTags}}}
-  .content {{{formattedContent}}}
+    | <a {{bindAttr href="content.permalink"}}>{{content.title}}</a>
+  .byline Posted {{content.formattedDate}} by {{{content.formattedAuthors}}}
+  .tagline Tags: {{{content.formattedTags}}}
+  .content {{{content.formattedContent}}}
   .editline
-    {{editString}}
+    {{content.editString}}
   .comments
     {{#if showComments}}
     .disqus_thread_placeholder
@@ -40,9 +39,8 @@ script(type="text/x-handlebars", data-template-name="blog-post-display")
       | blog comments powered by
       span.logo-disqus Disqus
     {{else}}
-    | <a {{bindAttr href="commentlink"}} {{bindAttr data-disqus-identifier="slug"}}>comments</a>
+    | <a {{bindAttr href="content.commentlink"}} {{bindAttr data-disqus-identifier="content.slug"}}>comments</a>
     {{/if}}
-  {{/with}}
 
 script(type="text/x-handlebars", data-template-name="blog-post-form")
   form

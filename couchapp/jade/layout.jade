@@ -60,9 +60,9 @@ html(class="no-js", lang="en")
         dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
         (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
 
-        //var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true;
-        //s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
-        //(document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+        var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true;
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
       })();
     script(type="text/javascript", src="js/underscore.min.js")
     script(type="text/javascript", src="js/plugins.js")
