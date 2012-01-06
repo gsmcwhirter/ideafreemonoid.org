@@ -26,6 +26,7 @@ html(class="no-js", lang="en")
       _gaq.push(['_setAccount', 'UA-18419792-1']);
       _gaq.push(['_trackPageview']);
       _gaq.push(['_trackPageLoadTime']);
+      var disqus_shortname = 'ideafreemonoid';
       Modernizr.load([
           { test: window.JSON,
             nope: 'json2.min.js'
@@ -41,6 +42,7 @@ html(class="no-js", lang="en")
         , { load: ["js/underscore.min.js", "js/plugins.js"]}
         , { load: "js/site.min.js"}
         , { load: ('https:' == location.protocol ? '//ssl' : '//www') + '.google-analytics.com/ga.js'}
+        , { load: '//' + disqus_shortname + '.disqus.com/embed.js'}
       ]);
     include ember-templates
   body
@@ -58,5 +60,3 @@ html(class="no-js", lang="en")
 
     #templates
       #disqus_thread
-
-    block scripts
