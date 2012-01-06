@@ -4,6 +4,7 @@ module.exports = {
         , port: 7060
         , host: '127.0.0.1'
         , logDir: "/var/log/node/ifm"
+        , uid: "gmcwhirt"
     }
     , builder: {
           path: '/path/to/area'

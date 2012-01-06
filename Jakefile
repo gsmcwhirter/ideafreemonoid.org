@@ -142,6 +142,12 @@ namespace("css", function (){
 namespace("notifier", function (){
     desc("Starts the notifier backend.");
     task("start", function (environ){
+        var env = environ || config.forever.environment || 'development';
+        var host = process.env.host || config.forever.host || 'INADDR_ANY';
+        var port = process.env.port || config.forever.port || 7060;
+
+        console.log("Starting build notifier at " + host + ":" + port + " in " + env + " mode...");
+
         var child = forever.startDaemon("builder/buildnotifier.js", {
               silent: false
             , forever: true
@@ -150,9 +156,9 @@ namespace("notifier", function (){
                   env: process.env
             }
             , env: {
-                  NODE_ENV: environ || config.forever.environment || 'development'
-                , port: process.env.port || config.forever.port || 7060
-                , host: process.env.host || config.forever.host || '127.0.0.1'
+                  NODE_ENV: env
+                , port: port
+                , host: host
             }
             , logFile: [config.forever.logDir || "./log", "notifier_forever.log"].join("/")
             , outFile: [config.forever.logDir || "./log", "notifier_out.log"].join("/")
@@ -186,17 +192,32 @@ namespace("notifier", function (){
 
     desc("Stops the notifier backend.");
     task("stop", function (){
-
+        console.log("Stopping build notifier...");
+        forever.stop("builder/buildnotifier.js");
     });
 
     desc("Gives a status update for the notifier backend.");
     task("status", function (){
+        forever.list(true, function (err, list){
+            if (err) fail("Forever couldn't list the processes.");
 
-    });
+            list = list.filter(function (item){ return item.indexOf("builder/buildnotifier.js") !== -1;});
+
+            if (list.length > 0){
+                console.log(list.join("\n"));
+            }
+            else {
+                console.log("Build notifier is stopped.");
+            }
+
+            complete();
+        });
+    }, {async: true});
 
     desc("Restarts the notifier backend.");
-    task("restart", ["notifier:stop", "notifier:start", "notifier:status"], function (){
-        console.log("done.")
+    task("restart", function (){
+        console.log("Restarting build notifier...");
+        forever.restart("builder/buildnotifier.js");
     });
 });
 
