@@ -38,7 +38,8 @@ html(class="no-js", lang="en")
                 }
             }
         }
-        , { load: ["js/underscore.min.js", "js/plugins.js", "js/site.min.js"]}
+        , { load: ["js/underscore.min.js", "js/plugins.js"]}
+        , { load: "js/site.min.js"}
         , { load: ('https:' == location.protocol ? '//ssl' : '//www') + '.google-analytics.com/ga.js'}
       ]);
     include ember-templates
