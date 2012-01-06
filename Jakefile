@@ -2,8 +2,11 @@ var fs = require("fs")
   , cleancss = require("clean-css")
   , jade = require("jade")
   , stylus = require("stylus")
-  , minify = require("jake-upglify").minify
+  , minify = require("jake-uglify").minify
   ;
+
+desc("Generates the markup, css, and js for production");
+task("default", ["markup:make", "js:make", "css:make"]);
 
 namespace("markup", function (){
     desc("Default way to render the production markup.");
@@ -28,11 +31,13 @@ namespace("js", function (){
     desc("Default way to render the production javascript.");
     task("make", function (){
         jake.Task["js:couchapp/attachments/js/plugins.js"].invoke();
+        console.log("Minifying the site javascript...");
         jake.Task["js:couchapp/attachments/js/site.min.js"].invoke();
     });
 
     desc("Concatenates several things into the plugins.js file");
     file("couchapp/attachments/js/plugins.js", [], function (){
+        console.log("Generating the plugins.js file...");
         var plugins = fs.readFileSync("couchapp/js/libs/plugins.js");
         var ember = fs.readFileSync("couchapp/js/libs/ember.min.js");
         var showdown = fs.readFileSync("couchapp/js/libs/showdown.js");
