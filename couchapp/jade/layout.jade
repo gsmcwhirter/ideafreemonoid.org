@@ -20,6 +20,8 @@ html(class="no-js", lang="en")
     link(rel="stylesheet", type="text/css", href="https://fonts.googleapis.com/css?family=Electrolize|Linden+Hill")
     link(rel="stylesheet", type="text/css", href="ifm-min.css")
 
+    script(type="text/javascript", src="//www.google.com/jsapi?key=ABQIAAAA7cOLYGluASZQ4jD_I4NiRhSBAIjhQRxrW037Y4ZG4PyizN6QTxRA3EUwLb9eO2IWuj9BLY8IbJzG3Q")
+    script(type="text/javascript", src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js")
     script(type="text/javascript", src="js/modernizr.custom.js")
     script(type="text/javascript")
       window._gaq = typeof _gaq !== "undefined" ? _gaq || [] : [];
@@ -27,20 +29,11 @@ html(class="no-js", lang="en")
       _gaq.push(['_trackPageview']);
       _gaq.push(['_trackPageLoadTime']);
       var disqus_shortname = 'ideafreemonoid';
+
       Modernizr.load([
           { test: window.JSON,
             nope: 'json2.min.js'
         }
-        , { load: "//www.google.com/jsapi?key=ABQIAAAA7cOLYGluASZQ4jD_I4NiRhSBAIjhQRxrW037Y4ZG4PyizN6QTxRA3EUwLb9eO2IWuj9BLY8IbJzG3Q"}
-        , { load: "//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js",
-            complete: function (){
-                if (!window.jQuery){
-                    Modernizr.load('js/jquery-1.7.min.js');
-                }
-            }
-        }
-        , { load: ["js/underscore.min.js", "js/plugins.js"]}
-        , { load: "js/site.min.js"}
         , { load: ('https:' == location.protocol ? '//ssl' : '//www') + '.google-analytics.com/ga.js'}
         , { load: '//' + disqus_shortname + '.disqus.com/embed.js'}
       ]);
@@ -56,6 +49,10 @@ html(class="no-js", lang="en")
       #main(role="main")
         block maincontent
       footer
+
+    script(type="text/javascript", src="js/underscore.min.js")
+    script(type="text/javascript", src="js/plugins.js")
+    script(type="text/javascript", src="js/site.min.js")
 
     #templates
       include ember-templates
