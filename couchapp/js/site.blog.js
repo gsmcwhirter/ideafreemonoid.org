@@ -561,17 +561,19 @@ Blog.PostDisplayView = Ember.View.extend({
     }
     , didInsertElement: function (){
         this._super()
-        var disqus_identifier = this.getPath('content.slug');
-        var disqus_title = this.getPath('content.title');
-        if (typeof DISQUS !== "undefined"){
-            DISQUS.reset({
-              reload: true,
-              config: function () {
-                this.page.identifier = disqus_identifier;
-                this.page.url = window.location.href;
-                this.page.title = disqus_title;
-              }
-            });
+        if (this.getPath("showComments")){
+            var disqus_identifier = this.getPath('content.slug');
+            var disqus_title = this.getPath('content.title');
+            if (typeof DISQUS !== "undefined"){
+                DISQUS.reset({
+                  reload: true,
+                  config: function () {
+                    this.page.identifier = disqus_identifier;
+                    this.page.url = window.location.href;
+                    this.page.title = disqus_title;
+                  }
+                });
+            }
         }
     }
 });

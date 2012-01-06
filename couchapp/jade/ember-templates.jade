@@ -22,7 +22,7 @@ script(type="text/x-handlebars", data-template-name="blog-add-post-link")
 
 script(type="text/x-handlebars", data-template-name="blog-post")
   {{view Blog.EditFormView contentBinding="content" classBinding="content.isEditing:editing-form"}}
-  {{view Blog.PostDisplayView contentBinding="content" classBinding="content.isEditing:editing-display"}}
+  {{view Blog.PostDisplayView contentBinding="content" classBinding="content.isEditing:editing-display" showCommentsBinding="showComments"}}
   {{#if showComments}}
   #disqus_thread
   a.dsq-brlink(href="http://disqus.com")
