@@ -530,6 +530,13 @@ Blog.BlogView = Ember.View.extend({
     , lastHref: function (){
         return this.get("baseURL") + "/" + this.get("totalPages");
     }.property("totalPages", "baseURL").cacheable()
+
+    , didInsertElement: function (){
+        this._super();
+        if (typeof DISQUSWIDGETS !== "undefined"){
+            DISQUSWIDGETS.getCount();
+        }
+    }
 });
 
 Blog.AddPostLink = Ember.View.extend({
