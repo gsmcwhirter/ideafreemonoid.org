@@ -44,7 +44,6 @@ html(class="no-js", lang="en")
         , { load: ('https:' == location.protocol ? '//ssl' : '//www') + '.google-analytics.com/ga.js'}
         , { load: '//' + disqus_shortname + '.disqus.com/embed.js'}
       ]);
-    include ember-templates
   body
     #container
       header
@@ -59,4 +58,6 @@ html(class="no-js", lang="en")
       footer
 
     #templates
+      include ember-templates
+
       #disqus_thread
