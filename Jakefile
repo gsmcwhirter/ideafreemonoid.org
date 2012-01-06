@@ -3,10 +3,35 @@ var fs = require("fs")
   , jade = require("jade")
   , stylus = require("stylus")
   , minify = require("jake-uglify").minify
+  , couchapp = require("couchapp")
+  , path = require("path")
   ;
+
+function abspath (pathname) {
+    if (pathname[0] === '/') return pathname
+    return path.join(process.env.PWD, path.normalize(pathname));
+}
 
 desc("Generates the markup, css, and js for production");
 task("default", ["markup:make", "js:make", "css:make"]);
+
+namespace("couchapp", function (couch){
+    desc("Pushes the couchapp to the server.");
+    task("push", function (){
+        console.log("Pushing couchapp...");
+        couchapp.createApp(require(abspath("couchapp/couchapp.js")), couch, function (app) {
+            app.push();
+        });
+    });
+
+    desc("Sets up a sync with the server.");
+    task("sync", function (couch){
+        console.log("Syncing couchapp...");
+        couchapp.createApp(require(abspath("couchapp/couchapp.js")), couch, function (app) {
+            app.sync();
+        });
+    });
+});
 
 namespace("markup", function (){
     desc("Default way to render the production markup.");
