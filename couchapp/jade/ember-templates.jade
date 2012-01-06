@@ -1,103 +1,103 @@
-  script(type="text/x-handlebars", data-template-name="blog")
-    .actions
-      {{view Blog.AddPostLink}}
-    ol.posts
-      {{#each Blog.postsController.content}}
-      li
-        {{view Blog.BlogPostView contentBinding="this" classBinding="isDraft:blog-draft"}}
-      {{/each}}
-    {{#if hasManyPages}}
-    .pagination
-      a(href="#!blog/1") &laquo;first
-      {{#each pagesLinkData}}
-      | <a {{bindAttr href="pageHref"}}>{{page}}</a>
-      {{/each}}
-      <a {{bindAttr href="lastHref"}}>last&raquo;</a>
-    {{/if}}
+script(type="text/x-handlebars", data-template-name="blog")
+  .actions
+    {{view Blog.AddPostLink}}
+  ol.posts
+    {{#each Blog.postsController.content}}
+    li
+      {{view Blog.BlogPostView contentBinding="this" classBinding="isDraft:blog-draft"}}
+    {{/each}}
+  {{#if hasManyPages}}
+  .pagination
+    a(href="#!blog/1") &laquo;first
+    {{#each pagesLinkData}}
+    | <a {{bindAttr href="pageHref"}}>{{page}}</a>
+    {{/each}}
+    <a {{bindAttr href="lastHref"}}>last&raquo;</a>
+  {{/if}}
 
-  script(type="text/x-handlebars", data-template-name="blog-add-post-link")
-    {{#if currentUser.is_connected}}
-    a(href="#") Add New Post
-    {{/if}}
+script(type="text/x-handlebars", data-template-name="blog-add-post-link")
+  {{#if currentUser.is_connected}}
+  a(href="#") Add New Post
+  {{/if}}
 
-  script(type="text/x-handlebars", data-template-name="blog-post")
-    {{view Blog.EditFormView contentBinding="content" classBinding="content.isEditing:editing-form"}}
-    {{view Blog.PostDisplayView contentBinding="content" classBinding="content.isEditing:editing-display"}}
-    {{#if showComments}}
-    #disqus_thread
-    a.dsq-brlink(href="http://disqus.com")
-      | blog comments powered by
-      span.logo-disqus Disqus
-    {{/if}}
+script(type="text/x-handlebars", data-template-name="blog-post")
+  {{view Blog.EditFormView contentBinding="content" classBinding="content.isEditing:editing-form"}}
+  {{view Blog.PostDisplayView contentBinding="content" classBinding="content.isEditing:editing-display"}}
+  {{#if showComments}}
+  #disqus_thread
+  a.dsq-brlink(href="http://disqus.com")
+    | blog comments powered by
+    span.logo-disqus Disqus
+  {{/if}}
 
-  script(type="text/x-handlebars", data-template-name="blog-post-display")
-    {{#with content}}
-    h2
-      | <a {{bindAttr href="permalink"}}>{{title}}</a>
-    .byline Posted {{formattedDate}} by {{{formattedAuthors}}}
-    .tagline Tags: {{{formattedTags}}}
-    .content {{{formattedContent}}}
-    .editline
-      {{editString}}
-    {{/with}}
+script(type="text/x-handlebars", data-template-name="blog-post-display")
+  {{#with content}}
+  h2
+    | <a {{bindAttr href="permalink"}}>{{title}}</a>
+  .byline Posted {{formattedDate}} by {{{formattedAuthors}}}
+  .tagline Tags: {{{formattedTags}}}
+  .content {{{formattedContent}}}
+  .editline
+    {{editString}}
+  {{/with}}
 
-  script(type="text/x-handlebars", data-template-name="blog-post-form")
-    form
-      label Title
-      {{view Ember.TextField name="title" valueBinding="content.title" class="title"}}
-      label Tags
-      {{view Ember.TextField name="tagString" valueBinding="content.tagString"}}
-      label Content
-      {{view Ember.TextArea name="content_raw" valueBinding="content.content_raw"}}
-      {{#view saveButton contentBinding="content"}}Save{{/view}}
-      {{#unless content.is_published}}
-      {{#view publishButton contentBinding="content"}}Publish{{/view}}
-      {{/unless}}
+script(type="text/x-handlebars", data-template-name="blog-post-form")
+  form
+    label Title
+    {{view Ember.TextField name="title" valueBinding="content.title" class="title"}}
+    label Tags
+    {{view Ember.TextField name="tagString" valueBinding="content.tagString"}}
+    label Content
+    {{view Ember.TextArea name="content_raw" valueBinding="content.content_raw"}}
+    {{#view saveButton contentBinding="content"}}Save{{/view}}
+    {{#unless content.is_published}}
+    {{#view publishButton contentBinding="content"}}Publish{{/view}}
+    {{/unless}}
 
-  script(type="text/x-handlebars", data-template-name="cv")
-    ol.sections
-      {{#each CV.sectionsController.contentSorted}}
-      li
-        {{view CV.SectionView contentBinding="this"}}
-      {{/each}}
-    .actions
-      {{view CV.AddSectionLink}}
+script(type="text/x-handlebars", data-template-name="cv")
+  ol.sections
+    {{#each CV.sectionsController.contentSorted}}
+    li
+      {{view CV.SectionView contentBinding="this"}}
+    {{/each}}
+  .actions
+    {{view CV.AddSectionLink}}
 
-  script(type="text/x-handlebars", data-template-name="cv-section")
-    .cvsection
-      {{view CV.EditFormView contentBinding="content" classBinding="content.isEditing:editing-form"}}
-      {{view CV.SectionDisplayView contentBinding="content" classBinding="content.isEditing:editing-display"}}
+script(type="text/x-handlebars", data-template-name="cv-section")
+  .cvsection
+    {{view CV.EditFormView contentBinding="content" classBinding="content.isEditing:editing-form"}}
+    {{view CV.SectionDisplayView contentBinding="content" classBinding="content.isEditing:editing-display"}}
 
-  script(type="text/x-handlebars", data-template-name="cv-section-display")
-    h2 {{content.title}}
-    .content {{{content.formattedContent}}}
-    .updated Last updated {{content.formattedDate}}
+script(type="text/x-handlebars", data-template-name="cv-section-display")
+  h2 {{content.title}}
+  .content {{{content.formattedContent}}}
+  .updated Last updated {{content.formattedDate}}
 
-  script(type="text/x-handlebars", data-template-name="cv-section-form")
-    form
-      label Title
-      {{view Ember.TextField name="title" valueBinding="content.title" class="title"}}
-      label Content
-      {{view Ember.TextArea name="content_raw" valueBinding="content.content_raw"}}
-      {{#view saveButton contentBinding="content"}}Save{{/view}}
+script(type="text/x-handlebars", data-template-name="cv-section-form")
+  form
+    label Title
+    {{view Ember.TextField name="title" valueBinding="content.title" class="title"}}
+    label Content
+    {{view Ember.TextArea name="content_raw" valueBinding="content.content_raw"}}
+    {{#view saveButton contentBinding="content"}}Save{{/view}}
 
-  script(type="text/x-handlebars", data-template-name="cv-add-section-link")
-    {{#if currentUser.is_connected}}
-    a(href="#") Add New Section
-    {{/if}}
+script(type="text/x-handlebars", data-template-name="cv-add-section-link")
+  {{#if currentUser.is_connected}}
+  a(href="#") Add New Section
+  {{/if}}
 
-  script(type="text/x-handlebars", data-template-name="user")
-    {{#if currentUser.is_connected}}
-    {{view userLogoutView currentUserBinding="currentUser"}}
-    {{else}}
-    {{view userLoginView currentUserBinding="currentUser"}}
-    {{/if}}
+script(type="text/x-handlebars", data-template-name="user")
+  {{#if currentUser.is_connected}}
+  {{view userLogoutView currentUserBinding="currentUser"}}
+  {{else}}
+  {{view userLoginView currentUserBinding="currentUser"}}
+  {{/if}}
 
-  script(type="text/x-handlebars", data-template-name="user-login")
-    {{view usernameView id="login-username" name="username"}}
-    {{view passwordView id="login-password" name="password"}}
-    {{#view loginButton}}Log In{{/view}}
+script(type="text/x-handlebars", data-template-name="user-login")
+  {{view usernameView id="login-username" name="username"}}
+  {{view passwordView id="login-password" name="password"}}
+  {{#view loginButton}}Log In{{/view}}
 
-  script(type="text/x-handlebars", data-template-name="user-logout")
-    {{currentUser.name}}
-    {{#view User.LogoutButton}}Log Out{{/view}}
+script(type="text/x-handlebars", data-template-name="user-logout")
+  {{currentUser.name}}
+  {{#view User.LogoutButton}}Log Out{{/view}}
