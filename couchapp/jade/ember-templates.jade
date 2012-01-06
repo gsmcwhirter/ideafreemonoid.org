@@ -24,7 +24,7 @@ script(type="text/x-handlebars", data-template-name="blog-post")
   {{view Blog.EditFormView contentBinding="content" classBinding="content.isEditing:editing-form"}}
   {{view Blog.PostDisplayView contentBinding="content" classBinding="content.isEditing:editing-display" showCommentsBinding="showComments"}}
   {{#if showComments}}
-  #disqus_thread
+  .disqus_thread_placeholder
   a.dsq-brlink(href="http://disqus.com")
     | blog comments powered by
     span.logo-disqus Disqus
