@@ -8,7 +8,7 @@ var fs = require("fs")
   ;
 
 function abspath (pathname) {
-    if (pathname[0] === '/') return pathname
+    if (pathname[0] === '/') return pathname;
     return path.join(process.env.PWD, path.normalize(pathname));
 }
 
@@ -21,16 +21,18 @@ namespace("couchapp", function (couch){
         console.log("Pushing couchapp...");
         couchapp.createApp(require(abspath("couchapp/couchapp.js")), couch, function (app) {
             app.push();
+            complete();
         });
-    });
+    }, {async: true});
 
     desc("Sets up a sync with the server.");
     task("sync", function (couch){
         console.log("Syncing couchapp...");
         couchapp.createApp(require(abspath("couchapp/couchapp.js")), couch, function (app) {
             app.sync();
+            complete();
         });
-    });
+    }, {async: true});
 });
 
 namespace("markup", function (){
