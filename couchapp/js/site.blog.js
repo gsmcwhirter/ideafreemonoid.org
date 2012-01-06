@@ -1,4 +1,4 @@
-window.Blog = Ember.Application.create({
+var Blog = Ember.Application.create({
     rootElement: $("#blog")
 });
 

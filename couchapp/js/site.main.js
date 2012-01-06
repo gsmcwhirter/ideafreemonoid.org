@@ -35,9 +35,9 @@ function dateISOString(date){
     }
 }
 
-window.SDConverter = new Showdown.converter();
+var SDConverter = new Showdown.converter();
 
-window.App = Ember.Application.create({
+var App = Ember.Application.create({
     rootElement: $("#home")
 });
 
@@ -47,7 +47,7 @@ App.Router = {
         this.get("rootElement").show();
         App.setTitle("Home");
     }
-}
+};
 
 App.defaultPageTitle = "" + document.title;
 
