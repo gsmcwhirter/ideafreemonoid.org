@@ -6,7 +6,7 @@ var fs = require("fs")
   , couchapp = require("couchapp")
   , path = require("path")
   , forever = require("forever")
-  , config = require("config.live")
+  , config = require("./config.live")
   ;
 
 function abspath (pathname) {
