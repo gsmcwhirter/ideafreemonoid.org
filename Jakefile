@@ -88,7 +88,7 @@ namespace("js", function (){
     file("couchapp/attachments/js/plugins.js", [], function (){
         console.log("Generating the plugins.js file...");
         var plugins = fs.readFileSync("couchapp/js/libs/plugins.js");
-        var ember = fs.readFileSync("couchapp/js/libs/ember.min.js");
+        var ember = fs.readFileSync("couchapp/js/libs/ember.js");
         var showdown = fs.readFileSync("couchapp/js/libs/showdown.js");
 
         fs.writeFileSync("couchapp/attachments/js/plugins.js", plugins + ember + showdown);
