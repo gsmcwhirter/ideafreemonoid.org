@@ -142,20 +142,21 @@ namespace("css", function (){
 namespace("notifier", function (){
     desc("Starts the notifier backend.");
     task("start", function (environ){
-        var child = new (forever.Monitor)("builder/buildnotifier.js", {
+        var child = forever.startDaemon("builder/buildnotifier.js", {
               silent: false
             , forever: true
+            , uid: config.forever.uid
             , spawnWith: {
                   env: process.env
             }
             , env: {
-                  NODE_ENV: environ || config.environment || 'development'
-                , port: process.env.port || config.port || 7060
-                , host: process.env.host || config.host || '127.0.0.1'
+                  NODE_ENV: environ || config.forever.environment || 'development'
+                , port: process.env.port || config.forever.port || 7060
+                , host: process.env.host || config.forever.host || '127.0.0.1'
             }
-            , logFile: [config.logDir || "./log", "notifier_forever.log"].join("/")
-            , outFile: [config.logDir || "./log", "notifier_out.log"].join("/")
-            , errFile: [config.logDir || "./log", "notifier_forever.log"].join("/")
+            , logFile: [config.forever.logDir || "./log", "notifier_forever.log"].join("/")
+            , outFile: [config.forever.logDir || "./log", "notifier_out.log"].join("/")
+            , errFile: [config.forever.logDir || "./log", "notifier_forever.log"].join("/")
             , appendLog: true
         });
 
