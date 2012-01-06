@@ -558,7 +558,9 @@ Blog.PostDisplayView = Ember.View.extend({
     , didInsertElement: function (){
         this._super()
         if (this.getPath("showComments")){
-            this.$(".disqus_thread_placeholder").replaceWith($("#disqus_thread"));
+            var thread = $("#disqus_thread")
+            if (thread.length == 0) thread = $("<div id='disqus_thread'></div>");
+            this.$(".disqus_thread_placeholder").replaceWith(thread);
             var disqus_identifier = this.getPath('content.slug');
             var disqus_title = this.getPath('content.title');
             if (typeof DISQUS !== "undefined"){
