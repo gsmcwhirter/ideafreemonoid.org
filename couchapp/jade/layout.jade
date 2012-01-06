@@ -27,18 +27,18 @@ html(class="no-js", lang="en")
       _gaq.push(['_trackPageview']);
       _gaq.push(['_trackPageLoadTime']);
       Modernizr.load([
-        {   test: window.JSON,
+          { test: window.JSON,
             nope: 'json2.min.js'
-        },
-        {   load: "//www.google.com/jsapi?key=ABQIAAAA7cOLYGluASZQ4jD_I4NiRhSBAIjhQRxrW037Y4ZG4PyizN6QTxRA3EUwLb9eO2IWuj9BLY8IbJzG3Q"},
-        {   load: "//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js",
+        }
+        , { load: "//www.google.com/jsapi?key=ABQIAAAA7cOLYGluASZQ4jD_I4NiRhSBAIjhQRxrW037Y4ZG4PyizN6QTxRA3EUwLb9eO2IWuj9BLY8IbJzG3Q"}
+        , { load: "//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js",
             complete: function (){
                 if (!window.jQuery){
                     Modernizr.load('js/jquery-1.7.min.js');
                 }
             }
         }
-        {   load: ('https:' == location.protocol ? '//ssl' : '//www') + '.google-analytics.com/ga.js'}
+        , { load: ('https:' == location.protocol ? '//ssl' : '//www') + '.google-analytics.com/ga.js'}
       ]);
     include ember-templates
   body
