@@ -15,10 +15,15 @@ function abspath (pathname) {
 desc("Generates the markup, css, and js for production");
 task("default", ["markup:make", "js:make", "css:make"]);
 
-namespace("couchapp", function (couch){
+namespace("couchapp", function (){
     desc("Pushes the couchapp to the server.");
-    task("push", function (){
+    task("push", function (couch){
         console.log("Pushing couchapp...");
+
+        if (!couch){
+            throw "Error: You must specify a couchdb server.";
+        }
+
         couchapp.createApp(require(abspath("couchapp/couchapp.js")), couch, function (app) {
             app.push();
             complete();
@@ -28,6 +33,11 @@ namespace("couchapp", function (couch){
     desc("Sets up a sync with the server.");
     task("sync", function (couch){
         console.log("Syncing couchapp...");
+
+        if (!couch){
+            throw "Error: You must specify a couchdb server.";
+        }
+
         couchapp.createApp(require(abspath("couchapp/couchapp.js")), couch, function (app) {
             app.sync();
             complete();
