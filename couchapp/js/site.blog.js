@@ -533,7 +533,9 @@ Blog.BlogView = Ember.View.extend({
     }.property("totalPages", "baseURL").cacheable()
 
     , contentChanged: function (){
+        console.log("contentChanged");
         if (typeof DISQUSWIDGETS !== "undefined"){
+            console.log("Refreshing comment counts");
             DISQUSWIDGETS.getCount();
         }
     }.observes("postsArray")
