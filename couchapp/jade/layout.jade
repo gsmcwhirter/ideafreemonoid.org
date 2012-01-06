@@ -35,7 +35,6 @@ html(class="no-js", lang="en")
             nope: 'json2.min.js'
         }
         , { load: ('https:' == location.protocol ? '//ssl' : '//www') + '.google-analytics.com/ga.js'}
-        , { load: '//' + disqus_shortname + '.disqus.com/embed.js'}
       ]);
 
     include ember-templates
@@ -52,9 +51,10 @@ html(class="no-js", lang="en")
         block maincontent
       footer
 
+    #disqus_thread(style="display: none;")
+
     script(type="text/javascript", src="js/underscore.min.js")
     script(type="text/javascript", src="js/plugins.js")
     script(type="text/javascript", src="js/site.min.js")
+    script(type="text/javascript", src='//' + disqus_shortname + '.disqus.com/embed.js')
 
-    #templates
-      #disqus_thread
