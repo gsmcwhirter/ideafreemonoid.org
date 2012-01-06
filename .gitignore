@@ -5,3 +5,5 @@ couchapp/attachments/*.html
 couchapp/attachments/visualizations
 couchapp/attachments/css/*
 couchapp/css/layout.css
+couchapp/attachments/ifm-min.css
+couchapp/css/layout-min.css
