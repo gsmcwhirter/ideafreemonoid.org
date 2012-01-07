@@ -535,9 +535,7 @@ Blog.BlogView = Ember.View.extend({
     , contentChanged: function (){
         console.log("contentChanged");
         if (typeof DISQUSWIDGETS !== "undefined"){
-            console.log("Refreshing comment counts");
-            console.log(this.get("postsArray"));
-            setTimeout(function (){DISQUSWIDGETS.getCount();}, 100);
+            setTimeout(function (){DISQUSWIDGETS.getCount();}, 10);
         }
     }.observes("postsArray")
 });
