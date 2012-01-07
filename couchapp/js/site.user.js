@@ -1,4 +1,4 @@
-window.User = Ember.Application.create({
+var User = Ember.Application.create({
       rootElement: $("#userbox")
     , ready: function (){
         this._super();

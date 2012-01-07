@@ -1,9 +1,5 @@
 var couchapp = require('couchapp')
     , path = require('path')
-    , jade = require('jade')
-    , ffi = require('node-ffi')
-    , libc = new ffi.Library(null, {"system": ["int32", ["string"]]})
-    , run = libc.system
     ;
 
 var ddoc =
@@ -608,17 +604,6 @@ ddoc.validate_doc_update = function (newDoc, oldDoc, userCtx) {
         throw "You may not change the created_at value.";
     }
 };
-
-ddoc.templates = couchapp.loadFiles(path.join(__dirname, "templates"), {
-    operators: [
-        function renderJade(content) {
-            return jade.compile(content, {compileDebug: false, client: true});
-        }
-    ]
-});
-
-run(["jade", path.join(__dirname, "attachments")].join(" "));
-run(["stylus", path.join(__dirname, "attachments", "css", "layout.styl")].join(" "));
 
 couchapp.loadAttachments(ddoc, path.join(__dirname, 'attachments'));
 

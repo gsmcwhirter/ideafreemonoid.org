@@ -1,4 +1,4 @@
-window.IFMAPI = {
+var IFMAPI = {
       parseOpts: function (opts){
         for (var key in opts){
             if (opts.hasOwnProperty(key)){
@@ -9,7 +9,10 @@ window.IFMAPI = {
     }
 
     , getView: function (view, options, callback){
-        if (typeof options  === "function") callback = options, options = {};
+        if (typeof options  === "function"){
+            callback = options;
+            options = {};
+        }
 
         $.ajax("/api/_design/app/_view/" + view + "/?" + $.param(IFMAPI.parseOpts(options)), {
               dataType: "json"
@@ -102,4 +105,4 @@ window.IFMAPI = {
             }
         });
     }
-}
+};

@@ -1,4 +1,4 @@
-window.Gametheory = Ember.Application.create({
+var Gametheory = Ember.Application.create({
     rootElement: $("#gametheory")
 });
 

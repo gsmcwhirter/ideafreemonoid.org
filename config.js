@@ -1,7 +1,11 @@
 module.exports = {
-      env: "development"
-    , port: 7060
-    , host: '127.0.0.1'
+      forever: {
+          env: "development"
+        , port: 7060
+        , host: '127.0.0.1'
+        , logDir: "/var/log/node/ifm"
+        , uid: "gmcwhirt"
+    }
     , builder: {
           path: '/path/to/area'
         , python: '/path/to/python'

@@ -1,4 +1,4 @@
-window.Blog = Ember.Application.create({
+var Blog = Ember.Application.create({
     rootElement: $("#blog")
 });
 
@@ -143,7 +143,11 @@ Blog.Post = Ember.Object.extend({
 
     , permalink: function (){
         return "#!blog/view/" + this.get("slug");
-    }.property("slug")
+    }.property("slug").cacheable()
+
+    , commentlink: function (){
+        return this.get("permalink") + "/#disqus_thread";
+    }.property("permalink").cacheable()
 
     , slug: function (){
         var id = this.get("_id") || "";
@@ -496,6 +500,7 @@ Blog.postsController = Ember.ArrayController.create({
 
 Blog.BlogView = Ember.View.extend({
       templateName: "blog"
+    , postsArrayBinding: "Blog.postsController.content"
     , currentPageBinding: "Blog.postsController.currentPage"
     , totalPagesBinding: "Blog.postsController.totalPages"
     , baseURLBinding: "Blog.postsController.baseURL"
@@ -526,6 +531,13 @@ Blog.BlogView = Ember.View.extend({
     , lastHref: function (){
         return this.get("baseURL") + "/" + this.get("totalPages");
     }.property("totalPages", "baseURL").cacheable()
+
+    , contentChanged: function (){
+        console.log("contentChanged");
+        if (typeof DISQUSWIDGETS !== "undefined"){
+            setTimeout(function (){DISQUSWIDGETS.getCount();}, 10);
+        }
+    }.observes("postsArray")
 });
 
 Blog.AddPostLink = Ember.View.extend({
@@ -555,23 +567,29 @@ Blog.BlogPostView = Ember.View.extend({
 
 Blog.PostDisplayView = Ember.View.extend({
       templateName: "blog-post-display"
-    , willInsertElement: function (){
-        this._super();
-        $("#disqus_thread").remove();
-    }
     , didInsertElement: function (){
         this._super()
-        var disqus_identifier = this.getPath('content.slug');
-        var disqus_title = this.getPath('content.title');
-        if (typeof DISQUS !== "undefined"){
-            DISQUS.reset({
-              reload: true,
-              config: function () {
-                this.page.identifier = disqus_identifier;
-                this.page.url = window.location.href;
-                this.page.title = disqus_title;
-              }
-            });
+        if (this.getPath("showComments")){
+            var thread = $("#disqus_thread")
+            if (thread.length == 0) thread = $("<div id='disqus_thread'></div>");
+            this.$(".disqus_thread_placeholder").replaceWith(thread);
+            var disqus_identifier = this.getPath('content.slug');
+            var disqus_title = this.getPath('content.title');
+            if (typeof DISQUS !== "undefined"){
+                DISQUS.reset({
+                  reload: true,
+                  config: function () {
+                    this.page.identifier = disqus_identifier;
+                    this.page.url = window.location.href;
+                    this.page.title = disqus_title;
+                  }
+                });
+            }
+        }
+        else {
+            if ($("#disqus_thread").length === 0){
+                $("#templates").append("<div id='disqus_thread'></div>");
+            }
         }
     }
 });
