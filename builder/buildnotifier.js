@@ -2,6 +2,9 @@
  * Module dependencies.
  */
 
+console.log(process);
+console.log(process.env);
+
 var express = require('express')
     , redis = require('redis')
     , repo_name = process.env.repo_name || ""
