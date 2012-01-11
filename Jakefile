@@ -167,6 +167,8 @@ namespace("notifier", function (){
                 , port: port
                 , host: host
                 , redis_channel: redis_channel
+                , repo_name: config.builder.repo_name || ""
+                , repo_owner: config.builder.repo_owner || ""
             }
             , logFile: [logDir, "notifier_forever.log"].join("/")
             , outFile: [logDir, "notifier_out.log"].join("/")

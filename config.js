@@ -10,6 +10,8 @@ module.exports = {
           path: '/path/to/area'
         , python: '/path/to/python'
         , redis_channel: "build tasks"
+        , repo_name: "gametheory"
+        , repo_owner: "gsmcwhirter"
     }
     , couchdb: {
           host: "http://localhost:5984"

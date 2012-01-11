@@ -4,6 +4,8 @@
 
 var express = require('express')
     , redis = require('redis')
+    , repo_name = process.env.repo_name || ""
+    , repo_owner = process.env.repo_owner || ""
     ;
 
 var app = module.exports = express.createServer();
@@ -78,12 +80,46 @@ app.get('/', function (req, res, next){
 });
 
 app.post('/build/', function (req, res, next){
-    var payload = req.body.payload;
+    var payload = JSON.parse(req.body.payload || 'null');
 
     console.log(payload);
-    rclient_op({test: true});
 
-    res.end("ok");
+    if (payload &&
+            payload.commits &&
+            payload.repository &&
+            payload.repository.name === repo_name &&
+            payload.repository.owner === repo_owner &&
+            payload.ref === "refs/heads/master"){
+
+        var build_orders = {};
+
+        var checkpath = function (path){
+            var parts = path.split("/");
+            if (parts.length > 1){
+                build_orders[parts[0]] = true;
+            }
+        };
+
+        payload.commits.forEach(function (commit){
+            (commit.added || []).forEach(checkpath);
+            (commit.modified || []).forEach(checkpath);
+            (commit.removed || []).forEach(checkpath);
+        });
+
+        for (var key in build_orders){
+            if (build_orders.hasOwnProperty(key)){
+                rclient_op({
+                      head: payload.after
+                    , project: key
+                });
+            }
+        }
+
+        res.end("ok");
+    }
+    else {
+        res.end("not ok", 403);
+    }
 });
 
 rclient.on("ready", function (){
