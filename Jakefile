@@ -146,7 +146,7 @@ namespace("css", function (){
 namespace("notifier", function (){
     desc("Starts the notifier backend.");
     task("start", function (environ){
-        var env = environ || config.forever.environment || 'development';
+        var env = environ || config.forever.env || 'development';
         var host = process.env.host || config.forever.host || 'INADDR_ANY';
         var port = process.env.port || config.forever.port || 7060;
         var logDir = config.forever.logDir || "./log";
@@ -234,7 +234,7 @@ namespace("notifier", function (){
 namespace("worker", function (){
     desc("Starts the worker backend.");
     task("start", function (environ){
-        var env = environ || config.forever.environment || 'development';
+        var env = environ || config.forever.env || 'development';
         var logDir = config.forever.logDir || "./log";
         var redis_channel = process.env.redis_channel || config.builder.redis_channel || "build tasks";
 
