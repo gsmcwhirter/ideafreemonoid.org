@@ -78,17 +78,16 @@ app.get('/', function (req, res, next){
     }
 });
 
-app.post('/build', function (req, res, next){
+app.post('/build', function (req, res){
     console.log("Processing push notification...");
     var payload = JSON.parse(req.body.payload || 'null');
-
-    console.log(payload);
 
     if (payload &&
             payload.commits &&
             payload.repository &&
             payload.repository.name === repo_name &&
-            payload.repository.owner === repo_owner &&
+            payload.repository.owner &&
+            payload.repository.owner.name === repo_owner &&
             payload.ref === "refs/heads/master"){
         console.log("Payload OK.");
 
