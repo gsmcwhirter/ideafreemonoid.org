@@ -533,7 +533,6 @@ Blog.BlogView = Ember.View.extend({
     }.property("totalPages", "baseURL").cacheable()
 
     , contentChanged: function (){
-        console.log("contentChanged");
         if (typeof DISQUSWIDGETS !== "undefined"){
             setTimeout(function (){DISQUSWIDGETS.getCount();}, 10);
         }

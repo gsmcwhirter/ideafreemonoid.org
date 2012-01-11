@@ -88,5 +88,5 @@ app.post('/build/', function (req, res, next){
 
 rclient.on("ready", function (){
     app.listen(process.env.port || 7060, process.env.host || undefined);
-    console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
+    console.log("Express server listening on port %d in %s mode", process.env.port || 7060, app.settings.env);
 });
