@@ -68,7 +68,6 @@ function rclient_op(task){
 }
 
 app.get('/', function (req, res, next){
-    console.log("Here");
     var fragment = req.param("_escaped_fragment_");
     if (fragment){
         res.send([fragment, req.url]); //TODO: real functionality
@@ -79,7 +78,8 @@ app.get('/', function (req, res, next){
     }
 });
 
-app.post('/build/', function (req, res, next){
+app.post('/build', function (req, res, next){
+    console.log("Processing push notification...");
     var payload = JSON.parse(req.body.payload || 'null');
 
     console.log(payload);
@@ -90,6 +90,7 @@ app.post('/build/', function (req, res, next){
             payload.repository.name === repo_name &&
             payload.repository.owner === repo_owner &&
             payload.ref === "refs/heads/master"){
+        console.log("Payload OK.");
 
         var build_orders = {};
 
@@ -118,6 +119,7 @@ app.post('/build/', function (req, res, next){
         res.end("ok");
     }
     else {
+        console.log("Payload not OK.");
         res.end("not ok", 403);
     }
 });
