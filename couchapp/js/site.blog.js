@@ -573,8 +573,8 @@ Blog.PostDisplayView = Ember.View.extend({
             var thread = $("#disqus_thread")
             if (thread.length == 0) thread = $("<div id='disqus_thread'></div>");
             this.$(".disqus_thread_placeholder").replaceWith(thread);
-            var disqus_identifier = this.get('content.slug');
-            var disqus_title = this.get('content.title');
+            var disqus_identifier = this.getPath('content.slug');
+            var disqus_title = this.getPath('content.title');
             console.log(disqus_identifier);
             if (typeof DISQUS !== "undefined"){
                 DISQUS.reset({
