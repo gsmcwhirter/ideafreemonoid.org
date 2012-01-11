@@ -101,6 +101,9 @@ app.post('/build', function (req, res){
         };
 
         payload.commits.forEach(function (commit){
+            console.log(commit.added);
+            console.log(commit.modified);
+            console.log(commit.removed);
             (commit.added || []).forEach(checkpath);
             (commit.modified || []).forEach(checkpath);
             (commit.removed || []).forEach(checkpath);
