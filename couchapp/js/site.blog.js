@@ -575,12 +575,13 @@ Blog.PostDisplayView = Ember.View.extend({
             this.$(".disqus_thread_placeholder").replaceWith(thread);
             var disqus_identifier = this.get('content.slug');
             var disqus_title = this.get('content.title');
+            console.log(disqus_identifier);
             if (typeof DISQUS !== "undefined"){
                 DISQUS.reset({
                   reload: true,
                   config: function () {
                     this.page.identifier = disqus_identifier;
-                    this.page.url = window.location.href;
+                    this.page.url = "https://www.ideafreemonoid.org/#!blog/view/" + disqus_identifier;
                     this.page.title = disqus_title;
                   }
                 });
