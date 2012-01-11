@@ -15,6 +15,11 @@ rclient.on("message", function (channel, message){
     //TODO: do work here
     console.log("Got message on channel " + channel + ": " + message);
 
+    message = JSON.parse(message);
+
+    if (message.task === "build"){
+        console.log("Building %s at %s", message.project, message.head);
+    }
 });
 
 rclient.on("ready", function (){

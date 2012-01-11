@@ -89,6 +89,7 @@ app.post('/build', function (req, res){
             payload.repository.owner &&
             payload.repository.owner.name === repo_owner &&
             payload.ref === "refs/heads/master"){
+
         console.log("Payload OK.");
 
         var build_orders = {};
@@ -112,7 +113,8 @@ app.post('/build', function (req, res){
         for (var key in build_orders){
             if (build_orders.hasOwnProperty(key)){
                 rclient_op({
-                      head: payload.after
+                      task: "build"
+                    , head: payload.after
                     , project: key
                 });
             }

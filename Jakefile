@@ -244,9 +244,6 @@ namespace("worker", function (){
               silent: false
             , forever: true
             , uid: config.forever.uid
-            , spawnWith: {
-                  env: process.env
-            }
             , env: {
                   NODE_ENV: env
                 , redis_channel: redis_channel
