@@ -143,6 +143,16 @@ namespace("css", function (){
     }, {async: true});
 });
 
+function build_couchdb_url(conf){
+    var cdbarray = ["http:/", config.couchdb.host, config.couchdb.db];
+
+    if (conf.use_authentication){
+        cdbarray[1] = conf.user + ":" + conf.pass + "@" + cdbarray[1];
+    }
+
+    return cdbarray.join("/");
+}
+
 namespace("notifier", function (){
     desc("Starts the notifier backend.");
     task("start", function (environ){
@@ -151,6 +161,7 @@ namespace("notifier", function (){
         var port = process.env.port || config.forever.port || 7060;
         var logDir = config.forever.logDir || "./log";
         var redis_channel = process.env.redis_channel || config.builder.redis_channel || "build tasks";
+        var couchdb = process.env.couchdb || build_couchdb_url(config.couchdb);
 
         console.log("Starting build notifier at " + host + ":" + port + " in " + env + " mode...");
         console.log("Logging to " + logDir + "...");
@@ -166,8 +177,7 @@ namespace("notifier", function (){
                 , port: port
                 , host: host
                 , redis_channel: redis_channel
-                , repo_name: config.builder.repo_name || ""
-                , repo_owner: config.builder.repo_owner || ""
+                , couchdb: couchdb
             }
             , logFile: [logDir, "notifier_forever.log"].join("/")
             , outFile: [logDir, "notifier_out.log"].join("/")
@@ -236,6 +246,10 @@ namespace("worker", function (){
         var env = environ || config.forever.env || 'development';
         var logDir = config.forever.logDir || "./log";
         var redis_channel = process.env.redis_channel || config.builder.redis_channel || "build tasks";
+        var couchdb = process.env.couchdb || build_couchdb_url(config.couchdb);
+        var build_path = process.env.build_path || config.builder.build_path || "";
+        var dist_path = process.env.dist_path || config.builder.dist_path || "";
+        var python = process.env.python || config.builder.python || "";
 
         console.log("Starting build worker in " + env + " mode...");
         console.log("Logging to " + logDir + "...");
@@ -247,6 +261,10 @@ namespace("worker", function (){
             , env: {
                   NODE_ENV: env
                 , redis_channel: redis_channel
+                , couchdb: couchdb
+                , build_path: build_path
+                , dist_path: dist_path
+                , python: python
             }
             , logFile: [logDir, "worker_forever.log"].join("/")
             , outFile: [logDir, "worker_out.log"].join("/")

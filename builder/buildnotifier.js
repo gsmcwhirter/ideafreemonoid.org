@@ -4,8 +4,8 @@
 
 var express = require('express')
     , redis = require('redis')
-    , repo_name = process.env.repo_name || ""
-    , repo_owner = process.env.repo_owner || ""
+    , request = require('request')
+    , couchdb = process.env.couchdb || null
     ;
 
 var app = module.exports = express.createServer();
@@ -82,49 +82,60 @@ app.post('/build', function (req, res){
     console.log("Processing push notification...");
     var payload = JSON.parse(req.body.payload || 'null');
 
-    if (payload &&
-            payload.commits &&
-            payload.repository &&
-            payload.repository.name === repo_name &&
-            payload.repository.owner &&
-            payload.repository.owner.name === repo_owner &&
-            payload.ref === "refs/heads/master"){
+    if (payload && payload.commits && payload.repository && payload.repository.owner){
 
-        console.log("Payload OK.");
-
-        var build_orders = {};
-
-        var checkpath = function (path){
-            var parts = path.split("/");
-            if (parts.length > 1){
-                build_orders[parts[0]] = true;
+        request(couchdb + "/project:" + payload.repository.owner.name + ":" + payload.repository.name, function (err, resp, body){
+            if (err){
+                console.log("Project not found.");
+                res.send("not ok");
             }
-        };
+            else {
+                var doc = JSON.parse(body);
 
-        payload.commits.forEach(function (commit){
-            console.log(commit.added);
-            console.log(commit.modified);
-            console.log(commit.removed);
-            (commit.added || []).forEach(checkpath);
-            (commit.modified || []).forEach(checkpath);
-            (commit.removed || []).forEach(checkpath);
+                if (doc.refs && doc.refs.indexOf(payload.ref) !== -1){
+                    console.log("Payload OK.");
+
+                    var build_orders = {};
+
+                    var checkpath = function (path){
+                        var parts = path.split("/");
+                        if (parts.length > 1){
+                            build_orders[parts[0]] = true;
+                        }
+                    };
+
+                    payload.commits.forEach(function (commit){
+                        console.log(commit.added);
+                        console.log(commit.modified);
+                        console.log(commit.removed);
+                        (commit.added || []).forEach(checkpath);
+                        (commit.modified || []).forEach(checkpath);
+                        (commit.removed || []).forEach(checkpath);
+                    });
+
+                    for (var key in build_orders){
+                        if (build_orders.hasOwnProperty(key)){
+                            rclient_op({
+                                  task: "build"
+                                , head: payload.after
+                                , project: key
+                            });
+                        }
+                    }
+
+                    res.send("ok");
+                }
+                else {
+                    console.log("Payload not OK.");
+                    res.send("not ok");
+                }
+            }
         });
 
-        for (var key in build_orders){
-            if (build_orders.hasOwnProperty(key)){
-                rclient_op({
-                      task: "build"
-                    , head: payload.after
-                    , project: key
-                });
-            }
-        }
 
-        res.end("ok");
     }
     else {
-        console.log("Payload not OK.");
-        res.end("not ok", 403);
+
     }
 });
 

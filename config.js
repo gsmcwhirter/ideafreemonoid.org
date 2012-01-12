@@ -7,22 +7,17 @@ module.exports = {
         , uid: "gmcwhirt"
     }
     , builder: {
-          path: '/path/to/area'
+          build_path: '/path/to/area'
+        , dist_path: '/path/to/area'
         , python: '/path/to/python'
         , redis_channel: "build tasks"
-        , repo_name: "gametheory"
-        , repo_owner: "gsmcwhirter"
     }
     , couchdb: {
-          host: "http://localhost:5984"
+          host: "localhost:5984"
         , db: "ideafreemonoid"
         , use_authentication: false
         , user: ""
         , pass: ""
-    }
-    , system: {
-          name: "IdeaFreeMonoid"
-        , error_email: "greg@ideafreemonoid.org"
     }
     , smtp: {
           host: "smtp.example.com"
