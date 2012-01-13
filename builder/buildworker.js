@@ -184,6 +184,7 @@ function process_build(message, doc){
             var build = (typeof doc.last_build === "undefined" ? -1 : doc.last_build) + 1;
 
             fs.readFile(pdir + "/setup.py", "utf8", function (err, data){
+                console.log(pdir + "/setup.py");
                 if (!err){
                     var r = /version\s*=\s*['"](\d+\.\d+(?:\.\d+))['"],/i;
                     var s = /name\s*=\s*['"](.+)['"],/i;
@@ -191,9 +192,11 @@ function process_build(message, doc){
                     var matches = s.exec(data);
 
                     if (matches){
+                        console.log(matches);
                         var dist_name = matches[1];
 
                         var matches2 = r.exec(data);
+                        console.log(matches2);
                         if (matches2){
                             var version = matches2[1];
                             data.replace(r, "version = '$1-" + build + "',");
