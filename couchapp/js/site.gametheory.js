@@ -9,6 +9,7 @@ Gametheory.Router = {
         App.hideAll();
 
         //load content
+        Gametheory.buildsetsController.loadPage();
 
         this.get("rootElement").show();
         App.setTitle("Game Theory");
@@ -23,6 +24,7 @@ Gametheory.Router = {
             App.hideAll();
 
             //load content
+            Gametheory.buildsetsController.loadPage(params.buildset, params.build);
 
             this.get("rootElement").show();
             App.setTitle("Game Theory");
@@ -170,7 +172,7 @@ Gametheory.buildsetsController = Ember.ArrayController.create({
 
 Gametheory.BuildsetListView = Ember.View.extend({
       templateName: 'buildset-list'
-    , buildsetsBinding: "Gametheory.buildsetsController.content"
+    , buildsetsBinding: "Gametheory.buildsetsController.orderedContent"
 });
 
 Gametheory.BuildsetView = Ember.View.extend({
