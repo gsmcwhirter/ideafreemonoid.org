@@ -199,7 +199,7 @@ function process_build(message, doc){
                         console.log(matches2);
                         if (matches2){
                             var version = matches2[1];
-                            data.replace(r, "version = '$1-" + build + "',");
+                            data = data.replace(r, "version = '$1-" + build + "',");
 
                             fs.writeFile(pdir + "/setup.py", data, function (err){
                                 if (!err){
