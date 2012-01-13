@@ -156,13 +156,18 @@ function process_build(message, doc){
                     process_git_tasks(tasks, callback);
                 }
                 else {
-                    callback(err, task);
+                    callback(data || err, task);
                 }
             };
 
             args.push(cb);
 
-            repo[task[0]].apply(repo, args);
+            if (typeof repo[task[0]] === "function"){
+                repo[task[0]].apply(repo, args);
+            }
+            else {
+                callback("Unknown git function: %s", task[0], task);
+            }
         }
         else {
             console.log("Done git tasks...");

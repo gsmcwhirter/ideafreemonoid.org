@@ -134,7 +134,7 @@ Repo.prototype.addRemote = function (name, remote, args, callback){
                 callback();
             }
             else {
-                callback(stderr.join("\n"), code);
+                callback(code || true, stderr.join("\n"));
             }
         });
     }
@@ -164,7 +164,7 @@ Repo.prototype.clone = function (source, target, args, callback){
                 callback();
             }
             else {
-                callback(stderr.join("\n"), code);
+                callback(code || true, stderr.join("\n"));
             }
         });
     }
@@ -188,7 +188,7 @@ Repo.prototype.status = function (args, callback){
             callback(null, stdout.join("\n"));
         }
         else {
-            callback(stderr.join("\n"), code);
+            callback(code || true, stderr.join("\n"));
         }
     });
 };
@@ -243,7 +243,7 @@ Repo.prototype.checkout = function (branch, opts, args, callback){
                     callback();
                 }
                 else {
-                    callback(stderr.join("\n"), code);
+                    callback(code || true, stderr.join("\n"));
                 }
             });
         }
@@ -265,7 +265,7 @@ Repo.prototype.pull = function (args, callback){
             callback(null, stdout.join("\n"));
         }
         else {
-            callback(stderr.join("\n"), code);
+            callback(code || true, stderr.join("\n"));
         }
     });
 };
@@ -279,7 +279,7 @@ Repo.prototype.revlist = function (args, callback){
             callback(null, stdout.join("\n"));
         }
         else {
-            callback(stderr.join("\n"), code);
+            callback(code || true, stderr.join("\n"));
         }
     });
 };
@@ -299,7 +299,27 @@ Repo.prototype.revparse = function (args, callback){
             callback(null, stdout.join("\n"));
         }
         else {
-            callback(stderr.join("\n"), code);
+            callback(code || true, stderr.join("\n"));
+        }
+    });
+};
+
+Repo.prototype.reset = function (args, callback){
+    if (typeof args === "function"){
+        callback = args;
+        args = [];
+    }
+    else {
+        args = args || [];
+        callback = callback || function (){};
+    }
+
+    this._git(["reset"].concat(args), function (code, stdout, stderr){
+        if (code === 0){
+            callback();
+        }
+        else {
+            callback(code || true, stderr.join("\n"));
         }
     });
 };
