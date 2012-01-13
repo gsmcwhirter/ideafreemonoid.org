@@ -117,13 +117,13 @@ script(type="text/x-handlebars", data-template-name="buildset")
     dt Last Successful Build:
     {{#if content.hasSuccessfulBuild}}
     dd
-      | <a {{bindAttr href="content.lastSuccessfulBuildLink"}}>{{content.lastSuccessfulBuild}}</a> on {{content.lastSuccessfulBuildDate}}
+      | <a {{bindAttr href="content.lastSuccessfulBuildLink"}}>{{content.lastSuccessfulBuild.build}}</a> on {{content.lastSuccessfulBuildDate}}
     {{else}}
     dd
       | never
     {{/if}}
   .builds
-    {{#each buildset.formattedBuilds}}
+    {{#each content.formattedBuilds}}
     {{view Gametheory.BuildView contentBinding="this"}}
     {{/each}}
 
