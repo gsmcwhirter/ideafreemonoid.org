@@ -134,7 +134,8 @@ function process_build(message, doc){
         , ["reset", [["--hard"]]]
         , ["revparse", [["--verify", "HEAD"]], function (data){last_head = data.trim();}]
         , ["checkout", [message.project_ref]]
-        , ["pull", [["origin", message.project_ref]]]
+        , ["fetch", [["origin"]]]
+        , ["merge", [["origin/"+message.project_ref]]]
         , ["checkout", [message.head, {notBackwards: true, last_head: function (){return last_head;}}]]
     ];
 

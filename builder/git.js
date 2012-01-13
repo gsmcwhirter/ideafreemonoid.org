@@ -251,6 +251,7 @@ Repo.prototype.checkout = function (branch, opts, args, callback){
     });
 };
 
+/* Buggy due to improperly working --work-tree support. Use fetch and merge instead.*/
 Repo.prototype.pull = function (args, callback){
     if (typeof args === "function"){
         callback = args;
@@ -262,6 +263,46 @@ Repo.prototype.pull = function (args, callback){
     }
 
     this._git(["pull"].concat(args), function (code, stdout, stderr){
+        if (code === 0){
+            callback(null, stdout.join("\n"));
+        }
+        else {
+            callback(code || true, stderr.join("\n"));
+        }
+    });
+};
+
+Repo.prototype.fetch = function (args, callback){
+    if (typeof args === "function"){
+        callback = args;
+        args = [];
+    }
+    else {
+        args = args || [];
+        callback = callback || function (){};
+    }
+
+    this._git(["fetch"].concat(args), function (code, stdout, stderr){
+        if (code === 0){
+            callback(null, stdout.join("\n"));
+        }
+        else {
+            callback(code || true, stderr.join("\n"));
+        }
+    });
+};
+
+Repo.prototype.merge = function (args, callback){
+    if (typeof args === "function"){
+        callback = args;
+        args = [];
+    }
+    else {
+        args = args || [];
+        callback = callback || function (){};
+    }
+
+    this._git(["merge"].concat(args), function (code, stdout, stderr){
         if (code === 0){
             callback(null, stdout.join("\n"));
         }
