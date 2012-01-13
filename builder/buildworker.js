@@ -286,6 +286,7 @@ rclient.on("message", function (channel, message){
                         , "type": "buildset"
                         , builds: []
                         , status: "ready"
+                        , origin: "git://github.com/" + message.project_owner + "/" + message.project_name + ".git"
                     };
 
                     request.put({ uri: couchdb + "/" + doc._id
