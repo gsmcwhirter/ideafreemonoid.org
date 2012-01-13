@@ -143,30 +143,41 @@ namespace("css", function (){
     }, {async: true});
 });
 
+function build_couchdb_url(conf){
+    var cdbarray = ["http:/", config.couchdb.host, config.couchdb.db];
+
+    if (conf.use_authentication){
+        cdbarray[1] = conf.user + ":" + conf.pass + "@" + cdbarray[1];
+    }
+
+    return cdbarray.join("/");
+}
+
 namespace("notifier", function (){
     desc("Starts the notifier backend.");
     task("start", function (environ){
-        var env = environ || config.forever.environment || 'development';
+        var env = environ || config.forever.env || 'development';
         var host = process.env.host || config.forever.host || 'INADDR_ANY';
         var port = process.env.port || config.forever.port || 7060;
         var logDir = config.forever.logDir || "./log";
         var redis_channel = process.env.redis_channel || config.builder.redis_channel || "build tasks";
+        var couchdb = process.env.couchdb || build_couchdb_url(config.couchdb);
 
         console.log("Starting build notifier at " + host + ":" + port + " in " + env + " mode...");
         console.log("Logging to " + logDir + "...");
+
+
 
         var child = forever.startDaemon("builder/buildnotifier.js", {
               silent: false
             , forever: true
             , uid: config.forever.uid
-            , spawnWith: {
-                  env: process.env
-            }
             , env: {
                   NODE_ENV: env
                 , port: port
                 , host: host
                 , redis_channel: redis_channel
+                , couchdb: couchdb
             }
             , logFile: [logDir, "notifier_forever.log"].join("/")
             , outFile: [logDir, "notifier_out.log"].join("/")
@@ -232,9 +243,13 @@ namespace("notifier", function (){
 namespace("worker", function (){
     desc("Starts the worker backend.");
     task("start", function (environ){
-        var env = environ || config.forever.environment || 'development';
+        var env = environ || config.forever.env || 'development';
         var logDir = config.forever.logDir || "./log";
         var redis_channel = process.env.redis_channel || config.builder.redis_channel || "build tasks";
+        var couchdb = process.env.couchdb || build_couchdb_url(config.couchdb);
+        var build_path = process.env.build_path || config.builder.build_path || "";
+        var dist_path = process.env.dist_path || config.builder.dist_path || "";
+        var python = process.env.python || config.builder.python || "";
 
         console.log("Starting build worker in " + env + " mode...");
         console.log("Logging to " + logDir + "...");
@@ -243,12 +258,13 @@ namespace("worker", function (){
               silent: false
             , forever: true
             , uid: config.forever.uid
-            , spawnWith: {
-                  env: process.env
-            }
             , env: {
                   NODE_ENV: env
                 , redis_channel: redis_channel
+                , couchdb: couchdb
+                , build_path: build_path
+                , dist_path: dist_path
+                , python: python
             }
             , logFile: [logDir, "worker_forever.log"].join("/")
             , outFile: [logDir, "worker_out.log"].join("/")

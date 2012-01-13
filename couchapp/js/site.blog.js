@@ -533,7 +533,6 @@ Blog.BlogView = Ember.View.extend({
     }.property("totalPages", "baseURL").cacheable()
 
     , contentChanged: function (){
-        console.log("contentChanged");
         if (typeof DISQUSWIDGETS !== "undefined"){
             setTimeout(function (){DISQUSWIDGETS.getCount();}, 10);
         }
@@ -569,18 +568,19 @@ Blog.PostDisplayView = Ember.View.extend({
       templateName: "blog-post-display"
     , didInsertElement: function (){
         this._super()
-        if (this.getPath("showComments")){
+        if (this.get("showComments")){
             var thread = $("#disqus_thread")
             if (thread.length == 0) thread = $("<div id='disqus_thread'></div>");
             this.$(".disqus_thread_placeholder").replaceWith(thread);
             var disqus_identifier = this.getPath('content.slug');
             var disqus_title = this.getPath('content.title');
+            console.log(disqus_identifier);
             if (typeof DISQUS !== "undefined"){
                 DISQUS.reset({
                   reload: true,
                   config: function () {
                     this.page.identifier = disqus_identifier;
-                    this.page.url = window.location.href;
+                    this.page.url = "https://www.ideafreemonoid.org/#!blog/view/" + disqus_identifier;
                     this.page.title = disqus_title;
                   }
                 });
