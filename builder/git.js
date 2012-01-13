@@ -223,15 +223,15 @@ Repo.prototype.checkout = function (branch, opts, args, callback){
         }
 
         first = function (cb){
-            self.revlist([last_head + ".." + branch], function (code, stdout, stderr){
-                if (code === 0 && stdout.length > 0){
+            self.revlist([last_head + ".." + branch], function (err, data){
+                if (!err && (data.trim()).length > 0){
                     cb();
                 }
-                else if (code === 0){
+                else if (!err){
                     cb("backwards");
                 }
                 else {
-                    cb(stderr.join("\n"));
+                    cb(data);
                 }
             });
         };
