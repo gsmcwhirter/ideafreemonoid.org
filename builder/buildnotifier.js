@@ -84,7 +84,10 @@ app.post('/build', function (req, res){
 
     if (payload && payload.commits && payload.repository && payload.repository.owner){
 
-        request(couchdb + "/project:" + payload.repository.owner.name + ":" + payload.repository.name, function (err, resp, body){
+        var ref_parts = payload.ref.split("/");
+        var ref = ref_parts.pop();
+
+        request(couchdb + "/" + ["project", payload.repository.owner.name, payload.repository.name, ref].join(":"), function (err, resp, body){
             if (err){
                 console.log("Project not found.");
                 res.send("not ok");
@@ -92,14 +95,14 @@ app.post('/build', function (req, res){
             else {
                 var doc = JSON.parse(body);
 
-                if (doc.refs && doc.refs.indexOf(payload.ref) !== -1){
+                if (doc.type === "project"){
                     console.log("Payload OK.");
 
                     var build_orders = {};
 
                     var checkpath = function (path){
                         var parts = path.split("/");
-                        if (parts.length > 1){
+                        if (parts.length > 1 && doc.buildsets.indexOf(parts[0]) !== -1){
                             build_orders[parts[0]] = true;
                         }
                     };
@@ -118,7 +121,10 @@ app.post('/build', function (req, res){
                             rclient_op({
                                   task: "build"
                                 , head: payload.after
-                                , project: key
+                                , project_owner: payload.repository.owner.name
+                                , project_name: payload.repository.name
+                                , project_ref: ref
+                                , buildset: key
                             });
                         }
                     }
