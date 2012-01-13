@@ -280,7 +280,7 @@ rclient.on("message", function (channel, message){
                 if (!doc.error && doc.type === "buildset"){
                     do_build(message, doc);
                 }
-                else if (doc.error && doc.reason === "missing"){
+                else if (doc.error && (doc.reason === "missing" || doc.reason === "deleted")){
                     doc = {
                           "_id": ["buildset", message.project_owner, message.project_name, message.project_ref, message.buildset].join(":")
                         , "type": "buildset"
