@@ -138,7 +138,7 @@ function process_build(message, doc){
         , ["checkout", [message.project_ref]]
         , ["fetch", [["origin"]]]
         , ["merge", [["origin/"+message.project_ref]]]
-        , ["checkout", [message.head, {notBackwards: true, last_head: function (){return last_head;}}]]
+        , ["checkout", [message.head, {notBackwards: !message.force, last_head: function (){return last_head;}}]]
     ];
 
     function process_git_tasks(tasks, callback){

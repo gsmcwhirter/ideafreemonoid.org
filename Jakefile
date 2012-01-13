@@ -352,6 +352,7 @@ namespace("worker", function (){
                                 console.log("Sending message for %s...", buildset);
                                 rclient.op({
                                       task: "build"
+                                    , force: true
                                     , head: doc_data[3]
                                     , project_owner: doc_data[1]
                                     , project_name: doc_data[2]
