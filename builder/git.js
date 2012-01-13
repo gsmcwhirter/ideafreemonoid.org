@@ -209,9 +209,9 @@ Repo.prototype.checkout = function (branch, opts, args, callback){
     }
 
     var first = function (cb){cb();}
+    var self = this;
 
     if (opts.notBackwards && opts.last_head){
-        var self = this;
         var last_head;
 
         if (typeof opts.last_head === "function"){
@@ -238,7 +238,7 @@ Repo.prototype.checkout = function (branch, opts, args, callback){
 
     first(function (err){
         if (!err){
-            this._git(["checkout"].concat(args).concat(branch), function (code, stdout, stderr){
+            self._git(["checkout"].concat(args).concat(branch), function (code, stdout, stderr){
                 if (code === 0){
                     callback();
                 }
