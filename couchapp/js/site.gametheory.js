@@ -180,3 +180,7 @@ Gametheory.BuildsetView = Ember.View.extend({
       templateName: 'buildset'
     , showBuildBinding: "Gametheory.buildsetsController.showBuild"
 });
+
+Gametheory.BuildView = Ember.View.extend({
+    templateName: 'build'
+});

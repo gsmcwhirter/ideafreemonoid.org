@@ -107,32 +107,35 @@ script(type="text/x-handlebars", data-template-name="buildset-list")
   ol.buildsets
     {{#each buildsets}}
     li
-      {{view Gametheory.BuildsetView buildsetBinding="this"}}
+      {{view Gametheory.BuildsetView contentBinding="this"}}
     {{/each}}
 
 script(type="text/x-handlebars", data-template-name="buildset")
   h2
-    | <a {{bindAttr href="buildset.permalink"}}>{{buildset.packageName}}</a>
+    | <a {{bindAttr href="content.permalink"}}>{{content.packageName}}</a>
   dl.info
     dt Last Successful Build:
-    {{#if buildset.hasSuccessfulBuild}}
+    {{#if content.hasSuccessfulBuild}}
     dd
-      | <a {{attrBinding href="buildset.lastSuccessfulBuildLink"}}>{{buildset.lastSuccessfulBuild}}</a> on {{buildset.lastSuccessfulBuildDate}}
+      | <a {{attrBinding href="content.lastSuccessfulBuildLink"}}>{{content.lastSuccessfulBuild}}</a> on {{content.lastSuccessfulBuildDate}}
     {{else}}
     dd
       | never
     {{/if}}
   .builds
     {{#each buildset.formattedBuilds}}
-    dl
-      dt Build Date:
-      dd {{this.date}}
-      dt Build Status:
-      dd
-        | <span {{attrBinding class="this.successful:build-success"}} {{attrBinding class="this.failure:build-failure"}}>{{this.status}}</span>
-      {{#if this.successful}}
-      dt Download Link:
-      dd
-        | <a {{attrBinding href="this.downloadLink"}}>{{this.download_file}}</a>
-      {{/if}}
+    {{view Gametheory.BuildView contentBinding="this"}}
     {{/each}}
+
+script(type="text/x-handlebars", data-template-name="build")
+  dl
+    dt Build Date:
+    dd {{content.date}}
+    dt Build Status:
+    dd
+      | <span {{attrBinding class="content.successful:build-success"}} {{attrBinding class="content.failure:build-failure"}}>{{content.status}}</span>
+    {{#if content.successful}}
+    dt Download Link:
+    dd
+      | <a {{attrBinding href="content.downloadLink"}}>{{content.download_file}}</a>
+    {{/if}}
