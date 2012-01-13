@@ -361,13 +361,14 @@ namespace("worker", function (){
                             });
                         }
                     });
-
-                    complete();
                 }
             }
             else {
                 fail("Couldn't fetch project docs.");
             }
+
+            rclient.close();
+            complete();
         });
     }, {async: true});
 });
