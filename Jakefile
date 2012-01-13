@@ -335,7 +335,7 @@ namespace("worker", function (){
 
         var rclient = new redis.RedisClient(redis_channel);
 
-        request(couchdb + "_design/app/_view/projects?include_docs=true", function (err, resp, body){
+        request(couchdb + "/_design/app/_view/projects?include_docs=true", function (err, resp, body){
             if (!err){
                 var response = JSON.parse(body);
 
