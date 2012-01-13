@@ -150,7 +150,7 @@ Gametheory.buildsetsController = Ember.ArrayController.create({
             IFMAPI.getDoc("buildset:" + buildset, function (err, response){
                 if (!err && !response.error){
                     self.set("showBuild", build || null);
-                    self.set("content", [response]);
+                    self.set("content", [Gametheory.Buildset.create(response)]);
                 }
                 else {
                     //TODO: error handling
@@ -161,7 +161,7 @@ Gametheory.buildsetsController = Ember.ArrayController.create({
             IFMAPI.getView("buildsets", {include_docs: true}, function (err, response){
                 if (!err){
                     self.set("showBuild", null);
-                    self.set("content", _(response.rows || []).pluck('doc'));
+                    self.set("content", _(response.rows || []).chain().pluck('doc').map(function (doc){return Gametheory.Buildset.create(doc);}).value());
                 }
                 else {
                     //TODO: error handling
