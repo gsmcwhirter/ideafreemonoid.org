@@ -212,6 +212,8 @@ function process_build(message, doc){
                                             fs.stat(dist_path + "/" + dist_dir, function (err, stats){
                                                 var next = function (){
                                                     fs.rename(pdir + "/dist/" + filename, dist_path + "/" + dist_dir + "/" + filename, function (err){
+                                                        console.log(pdir + "/dist/" + filename);
+                                                        console.log(dist_path + "/" + dist_dir + "/" + filename);
                                                         if (!err){
                                                             doc.builds = doc.builds || [];
                                                             doc.builds.push({
@@ -222,7 +224,7 @@ function process_build(message, doc){
                                                             finish_build(doc);
                                                         }
                                                         else {
-                                                            handle_build_error(message, doc, "could not move to dist location");
+                                                            handle_build_error(message, doc, "could not move to dist location: " + err);
                                                         }
                                                     });
                                                 };
