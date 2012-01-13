@@ -102,3 +102,37 @@ script(type="text/x-handlebars", data-template-name="user-login")
 script(type="text/x-handlebars", data-template-name="user-logout")
   {{currentUser.name}}
   {{#view User.LogoutButton}}Log Out{{/view}}
+
+script(type="text/x-handlebars", data-template-name="buildset-list")
+  ol.buildsets
+    {{#each buildsets}}
+    li
+      {{view Gametheory.BuildsetView buildsetBinding="this"}}
+    {{/each}}
+
+script(type="text/x-handlebars", data-template-name="buildset")
+  h2
+    | <a {{bindAttr href="buildset.permalink"}}>{{buildset.packageName}}</a>
+  dl.info
+    dt Last Successful Build:
+    {{#if buildset.hasSuccessfulBuild}}
+    dd
+      | <a {{attrBinding href="buildset.lastSuccessfulBuildLink"}}>{{buildset.lastSuccessfulBuild}}</a> on {{buildset.lastSuccessfulBuildDate}}
+    {{else}}
+    dd
+      | never
+    {{/if}}
+  .builds
+    {{#each buildset.formattedBuilds}}
+    dl
+      dt Build Date:
+      dd {{this.date}}
+      dt Build Status:
+      dd
+        | <span {{attrBinding class="this.successful:build-success"}} {{attrBinding class="this.failure:build-failure"}}>{{this.status}}</span>
+      {{#if this.successful}}
+      dt Download Link:
+      dd
+        | <a {{attrBinding href="this.downloadLink"}}>{{this.download_file}}</a>
+      {{/if}}
+    {{/each}}

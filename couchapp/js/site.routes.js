@@ -14,3 +14,5 @@ Ember.routes.add('!blog/view/:post/:disqus', Blog, Blog.Router.show_post);
 Ember.routes.add('!cv', CV, CV.Router.index);
 
 Ember.routes.add('!gametheory', Gametheory, Gametheory.Router.index);
+Ember.routes.add('!gametheory/:buildset', Gametheory, Gametheory.Router.show_buildset);
+Ember.routes.add('!gametheory/:buildset/:build', Gametheory, Gametheory.Router.show_buildset);

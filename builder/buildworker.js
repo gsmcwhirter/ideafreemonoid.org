@@ -221,6 +221,8 @@ function process_build(message, doc){
                                                             doc.builds.push({
                                                                   date: (new Date()).toISOString()
                                                                 , status: "ok"
+                                                                , download_dir: dist_dir
+                                                                , download_file: filename
                                                             });
 
                                                             finish_build(doc);

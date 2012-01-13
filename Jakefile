@@ -7,6 +7,8 @@ var fs = require("fs")
   , path = require("path")
   , forever = require("forever")
   , config = require("./config.live")
+  , request = require("request")
+  , redis = require("./builder/redis_client")
   ;
 
 function abspath (pathname) {
@@ -324,5 +326,45 @@ namespace("worker", function (){
     task("restart", function (){
         console.log("Restarting build worker...");
         forever.restart("builder/buildworker.js");
+    });
+
+    desc("Forces a rebuild of all projects and buildsets.");
+    task("forcebuild", function (){
+        var redis_channel = process.env.redis_channel || config.builder.redis_channel || "build tasks";
+        var couchdb = process.env.couchdb || build_couchdb_url(config.couchdb);
+
+        var rclient = new redis.RedisClient(redis_channel);
+
+        request(couchdb + "_design/app/_view/projects?include_docs=true", function (err, resp, body){
+            if (!err){
+                var response = JSON.parse(body);
+
+                if (response.error){
+                    fail(response.error);
+                }
+                else {
+                    (response.rows || []).forEach(function (row){
+                        var doc_data = row.doc._id.split(":");
+
+                        if (doc_data.length === 4){
+                            (row.doc.buildsets || []).forEach(function (buildset){
+
+                                rclient.op({
+                                      task: "build"
+                                    , head: "HEAD"
+                                    , project_owner: doc_data[1]
+                                    , project_name: doc_data[2]
+                                    , project_ref: doc_data[3]
+                                    , buildset: buildset
+                                });
+                            });
+                        }
+                    });
+                }
+            }
+            else {
+                fail("Couldn't fetch project docs.");
+            }
+        });
     });
 });
