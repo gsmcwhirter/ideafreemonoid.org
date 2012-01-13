@@ -32,8 +32,9 @@ var Repo = function (options){
         options = {path: options};
     }
 
+    options.remotes = options.remotes || {};
+
     if (options.origin){
-        options.remotes = options.remotes || {};
         options.remotes.origin = options.origin;
         delete options.origin;
     }
@@ -126,8 +127,10 @@ Repo.prototype.addRemote = function (name, remote, args, callback){
     callback = callback || function (){};
 
     if (typeof name === "string" && typeof remote === "string"){
+        var self = this;
         this._git(["remote", "add"].concat(args).concat([name, remote]), function (code, stdout, stderr){
             if (code === 0){
+                self.remotes[name] = remote;
                 callback();
             }
             else {

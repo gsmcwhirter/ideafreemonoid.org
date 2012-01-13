@@ -145,7 +145,7 @@ function process_build(message, doc){
         if (task){
             console.log("Running git task: ");
             console.log(task);
-            var args = tasks[1] || [];
+            var args = task[1] || [];
 
             var cb = function (err, data){
                 if (!err){
