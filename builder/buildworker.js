@@ -186,7 +186,7 @@ function process_build(message, doc){
             fs.readFile(pdir + "/setup.py", "utf8", function (err, data){
                 console.log(pdir + "/setup.py");
                 if (!err){
-                    var r = /version\s*=\s*['"](\d+\.\d+(?:\.\d+))['"],/i;
+                    var r = /version\s*=\s*['"](\d+\.\d+(?:\.\d+)?)['"],/i;
                     var s = /name\s*=\s*['"](.+)['"],/i;
 
                     var matches = s.exec(data);
