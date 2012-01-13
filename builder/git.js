@@ -71,6 +71,7 @@ Repo.prototype._git = function (args, options, callback){
 
     if ((this._exists || ignoreExistsCheck) && this.path){
         args = (ignorePathArgs ? [] : ["--git-dir=" + this.path + "/.git", "--work-tree=" + this.path]).concat(args);
+        console.log("Running git %s", args.join(" "));
         _gitExec(args, ignoreExitCode, callback);
     }
     else {
