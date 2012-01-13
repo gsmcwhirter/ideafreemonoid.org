@@ -91,6 +91,8 @@ function handle_build_error(message, doc, err, callback){
 }
 
 function finish_build(doc, callback){
+    callback = callback || function (){};
+
     doc.last_build = typeof doc.last_build === "undefined" ? -1 : doc.last_build;
     doc.last_build += 1;
 
