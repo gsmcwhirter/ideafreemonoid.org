@@ -117,7 +117,7 @@ script(type="text/x-handlebars", data-template-name="buildset")
     dt Last Successful Build:
     {{#if content.hasSuccessfulBuild}}
     dd
-      | <a {{attrBinding href="content.lastSuccessfulBuildLink"}}>{{content.lastSuccessfulBuild}}</a> on {{content.lastSuccessfulBuildDate}}
+      | <a {{bindAttr href="content.lastSuccessfulBuildLink"}}>{{content.lastSuccessfulBuild}}</a> on {{content.lastSuccessfulBuildDate}}
     {{else}}
     dd
       | never
@@ -133,9 +133,9 @@ script(type="text/x-handlebars", data-template-name="build")
     dd {{content.date}}
     dt Build Status:
     dd
-      | <span {{attrBinding class="content.successful:build-success"}} {{attrBinding class="content.failure:build-failure"}}>{{content.status}}</span>
+      | <span {{bindAttr class="content.successful:build-success"}} {{bindAttr class="content.failure:build-failure"}}>{{content.status}}</span>
     {{#if content.successful}}
     dt Download Link:
     dd
-      | <a {{attrBinding href="content.downloadLink"}}>{{content.download_file}}</a>
+      | <a {{bindAttr href="content.downloadLink"}}>{{content.download_file}}</a>
     {{/if}}
