@@ -360,11 +360,13 @@ namespace("worker", function (){
                             });
                         }
                     });
+
+                    complete();
                 }
             }
             else {
                 fail("Couldn't fetch project docs.");
             }
         });
-    });
+    }, {async: true});
 });
