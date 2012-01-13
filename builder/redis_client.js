@@ -1,6 +1,6 @@
 var redis = require("redis");
 
-var RedisClient = function (channel, client){
+var RedisClient = function (channel, events, client){
     this._paused = false;
     this._queue = [];
     this._client = client || redis.createClient();
@@ -18,10 +18,18 @@ var RedisClient = function (channel, client){
             self._paused = false;
 
             if (self._queue.length > 0){
-                process.nextTick(self.op);
+                process.nextTick(function (){self.op();});
             }
         }
     });
+
+    events = events || {};
+
+    for (var key  in events){
+        if (events.hasOwnProperty(key)){
+            this._client.on(key, events[key]);
+        }
+    }
 };
 
 RedisClient.prototype.op = function (task){
@@ -39,8 +47,15 @@ RedisClient.prototype.op = function (task){
         this._paused = true;
     }
     else if (this._queue.length > 0){
-        process.nextTick(this.op);
+        console.log("Queue exists. Running next item.");
+        var self = this;
+        process.nextTick(function (){self.op();});
     }
+    else {
+        console.log("Message published.");
+    }
+
+    return;
 };
 
 exports.RedisClient = RedisClient;

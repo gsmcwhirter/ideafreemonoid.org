@@ -349,7 +349,7 @@ namespace("worker", function (){
 
                         if (doc_data.length === 4){
                             (row.doc.buildsets || []).forEach(function (buildset){
-
+                                console.log("Sending message for %s...", buildset);
                                 rclient.op({
                                       task: "build"
                                     , head: "HEAD"

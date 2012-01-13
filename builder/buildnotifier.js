@@ -9,7 +9,13 @@ var express = require('express')
     ;
 
 var app = module.exports = express.createServer();
-var rclient = new redis.RedisClient(process.env.redis_channel || "build tasks");
+var rclient = new redis.RedisClient(process.env.redis_channel || "build tasks", {
+    ready: function (){
+        app.listen(process.env.port || 7060, process.env.host || undefined);
+        console.log("Express server listening on port %d in %s mode", process.env.port || 7060, app.settings.env);
+        console.log("Accepting push notifications.");
+    }
+});
 
 // Configuration
 
@@ -103,10 +109,4 @@ app.post('/build', function (req, res){
     else {
 
     }
-});
-
-rclient.on("ready", function (){
-    app.listen(process.env.port || 7060, process.env.host || undefined);
-    console.log("Express server listening on port %d in %s mode", process.env.port || 7060, app.settings.env);
-    console.log("Accepting push notifications.");
 });
