@@ -344,6 +344,7 @@ namespace("worker", function (){
                 }
                 else {
                     (response.rows || []).forEach(function (row){
+                        console.log("Processing %s...", row.doc._id);
                         var doc_data = row.doc._id.split(":");
 
                         if (doc_data.length === 4){
