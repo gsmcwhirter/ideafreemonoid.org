@@ -23,6 +23,7 @@ function do_build(message, doc){
     var first = function (callback){callback();};
 
     if (!doc){
+        console.log("No doc provided. Fetching...");
         first = function (callback){
             request(couchdb + "/" + ["buildset", message.project_owner, message.project_name, message.project_ref, message.buildset].join(":"), function (err, resp, body){
                 if (err){
@@ -44,7 +45,9 @@ function do_build(message, doc){
 
     first(function (err){
         if (!err){
+            console.log("Doc found.");
             if (doc.status === "building"){
+                console.log("Already building. Waiting another tick...");
                 process.nextTick(function (){do_build(message);});
             }
             else {
@@ -58,11 +61,15 @@ function do_build(message, doc){
 
                         if (!jresp.error){
                             doc._rev = jresp.rev;
+                            console.log("Processing build...");
                             process_build(message, doc);
                         }
                     }
                 });
             }
+        }
+        else {
+            console.log("Error: " + err);
         }
     });
 }
@@ -118,6 +125,9 @@ function process_build(message, doc){
         })
         ;
 
+    console.log("Created repo object:");
+    console.log(repo);
+
     var last_head;
     var git_build_tasks = [
           ["checkExists", [true]]
@@ -133,6 +143,8 @@ function process_build(message, doc){
         var task = tasks.shift();
 
         if (task){
+            console.log("Running git task: ");
+            console.log(task);
             var args = tasks[1] || [];
 
             var cb = function (err, data){
@@ -153,11 +165,13 @@ function process_build(message, doc){
             repo[task[0]].apply(repo, args);
         }
         else {
+            console.log("Done git tasks...");
             callback();
         }
     }
 
     process_git_tasks(git_build_tasks, function (err){
+        console.log("Done git tasks.");
         if (!err){
             //git is in the right spot now
             var pdir = repo.path + "/" + message.buildset;
@@ -257,6 +271,7 @@ rclient.on("message", function (channel, message){
         request(couchdb + "/" + ["buildset", message.project_owner, message.project_name, message.project_ref, message.buildset].join(":"), function (err, resp, body){
 
             if (err){
+                console.log(err);
                 //TODO: error handling
             }
             else {
@@ -282,6 +297,7 @@ rclient.on("message", function (channel, message){
 
                             if (!jresp.error){
                                 doc._rev = jresp.rev;
+                                console.log("Kicking off build...");
                                 do_build(message, doc);
                             }
                         }

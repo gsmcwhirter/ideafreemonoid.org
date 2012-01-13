@@ -96,7 +96,7 @@ Repo.prototype.checkExists = function (attemptClone, callback){
                 callback();
             }
             else if (attemptClone){
-                this.clone(attemptClone, function (err){
+                self.clone(attemptClone, function (err) {
                     if (!err){
                         self._exists = true;
                         callback();
