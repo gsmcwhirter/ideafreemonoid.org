@@ -97,7 +97,7 @@ Gametheory.Buildset = Ember.Object.extend({
         return this.get("permalink") + "/" + this.get("lastSuccessfulBuild");
     }.property("permalink", "lastSuccessfulBuild").cacheable()
 
-    , formattedBuilds: function (){
+    , allFormattedBuilds: function (){
         var builds = (this.get("builds") || []).slice();
 
         return _(builds).map(function (build){
@@ -108,6 +108,12 @@ Gametheory.Buildset = Ember.Object.extend({
             return build;
         }).reverse();
     }.property("builds").cacheable()
+
+    , shortFormattedBuilds: function (){
+        var b = this.get("allFormattedBuilds");
+
+        return b.slice(0,5);
+    }.property("allFormattedBuilds").cacheable()
 
     , formattedDescription: function (){
         return SDConverter.makeHtml(this.get("description") || "\n");

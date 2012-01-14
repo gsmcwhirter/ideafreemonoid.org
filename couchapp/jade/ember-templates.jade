@@ -115,7 +115,7 @@ script(type="text/x-handlebars", data-template-name="buildset")
   .description
     {{{content.formattedDescription}}}
   dl.info
-    dt License
+    dt License:
     dd
       {{{content.formattedLicense}}}
     dt Last Successful Build:
@@ -127,17 +127,19 @@ script(type="text/x-handlebars", data-template-name="buildset")
       | never
     {{/if}}
     {{#if content.hasClassifiers}}
-    dt Classification
+    dt Classification:
     dd
       ul
         {{#each content.classifiers}}
         {{view Gametheory.ClassifierView contentBinding="this"}}
         {{/each}}
     {{/if}}
-  ol.builds
-    {{#each content.formattedBuilds}}
-    {{view Gametheory.BuildView contentBinding="this"}}
-    {{/each}}
+    dt Recent Builds:
+    dd
+      ol.builds
+        {{#each content.shortFormattedBuilds}}
+        {{view Gametheory.BuildView contentBinding="this"}}
+        {{/each}}
 
 script(type="text/x-handlebars", data-template-name="build")
   dl
