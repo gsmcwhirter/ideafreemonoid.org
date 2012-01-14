@@ -240,7 +240,7 @@ function process_build(message, doc){
 
                         if (matches2){
                             var version = matches2[1];
-                            data = data.replace(version_regex, "version = '$1-" + build + "',");
+                            data = data.replace(version_regex, "version = '$1-" + build + "'");
 
                             fs.writeFile(pdir + "/setup.py", data, function (err){
                                 if (!err){
