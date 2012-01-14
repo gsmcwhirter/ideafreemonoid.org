@@ -125,7 +125,8 @@ Gametheory.Buildset = Ember.Object.extend({
     }.property("license").cacheable()
 
     , hasClassifiers: function (){
-        if (this.get("classifiers")){
+        var c = this.get("classifiers");
+        if (c && c.length > 0){
             return true;
         }
         else {
