@@ -106,8 +106,7 @@ script(type="text/x-handlebars", data-template-name="user-logout")
 script(type="text/x-handlebars", data-template-name="buildset-list")
   ol.buildsets
     {{#each buildsets}}
-    li
-      {{view Gametheory.BuildsetView contentBinding="this"}}
+    {{view Gametheory.BuildsetView contentBinding="this"}}
     {{/each}}
 
 script(type="text/x-handlebars", data-template-name="buildset")
@@ -141,19 +140,17 @@ script(type="text/x-handlebars", data-template-name="buildset")
     {{/each}}
 
 script(type="text/x-handlebars", data-template-name="build")
-  li
-    dl
-      dt Build Date:
-      dd {{content.date}}
-      dt Build Status:
-      dd
-        | <span {{bindAttr class="content.successful:build-success"}} {{bindAttr class="content.failure:build-failure"}}>{{content.status}}</span>
-      {{#if content.successful}}
-      dt Download Link:
-      dd
-        | <a {{bindAttr href="content.downloadLink"}}>{{content.download_file}}</a>
-      {{/if}}
+  dl
+    dt Build Date:
+    dd {{content.date}}
+    dt Build Status:
+    dd
+      | <span {{bindAttr class="content.successful:build-success"}} {{bindAttr class="content.failure:build-failure"}}>{{content.status}}</span>
+    {{#if content.successful}}
+    dt Download Link:
+    dd
+      | <a {{bindAttr href="content.downloadLink"}}>{{content.download_file}}</a>
+    {{/if}}
 
 script(type="text/x-handlebars", data-template-name="classifier")
-  li
-    {{content}}
+  {{content}}

@@ -206,13 +206,16 @@ Gametheory.BuildsetListView = Ember.View.extend({
 
 Gametheory.BuildsetView = Ember.View.extend({
       templateName: 'buildset'
+    , tagName: 'li'
     , showBuildBinding: "Gametheory.buildsetsController.showBuild"
 });
 
 Gametheory.BuildView = Ember.View.extend({
-    templateName: 'build'
+      templateName: 'build'
+    , tagName: 'li'
 });
 
 Gametheory.ClassifierView = Ember.View.extend({
-    templateName: 'classifier'
+      templateName: 'classifier'
+    , tagName: 'li'
 });
