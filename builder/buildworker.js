@@ -133,7 +133,7 @@ function parse_classifiers(str){
         var cfs = line.split(",");
         return cfs.map(function (line){
             var classifier = cparse_regex.exec(line.trim());
-            return classifier ? classifier[1] || null;
+            return classifier ? classifier[1] : null;
         });
     });
 
