@@ -37,6 +37,9 @@ Gametheory.Buildset = Ember.Object.extend({
     , last_build: -1
     , origin: null
     , status: null
+    , license: null
+    , classifiers: []
+    , description: null
     , type: "buildset"
     , _id: null
     , _rev: null
@@ -103,8 +106,32 @@ Gametheory.Buildset = Ember.Object.extend({
             build.failure = !build.successful;
             build.downloadLink = "/files/" + build.download_dir + "/" + build.download_file;
             return build;
-        });
+        }).reverse();
     }.property("builds").cacheable()
+
+    , formattedDescription: function (){
+        return SDConverter.makeHtml(this.get("description") || "\n");
+    }.property("description").cacheable()
+
+    , formattedLicense: function (){
+        var lstring = this.get("license");
+
+        if (lstring){
+            return "<a href='http://http://www.opensource.org/licenses/" + lstring + "'>" + lstring + "</a>";
+        }
+        else {
+            return "closed source, all rights reserved";
+        }
+    }.property("license").cacheable()
+
+    , hasClassifiers: function (){
+        if (this.get("classifiers")){
+            return true;
+        }
+        else {
+            return false;
+        }
+    }.property("classifiers").cacheable()
 });
 
 Gametheory.buildsetsController = Ember.ArrayController.create({
@@ -183,4 +210,8 @@ Gametheory.BuildsetView = Ember.View.extend({
 
 Gametheory.BuildView = Ember.View.extend({
     templateName: 'build'
+});
+
+Gametheory.ClassifierView = Ember.View.extend({
+    templateName: 'classifier'
 });

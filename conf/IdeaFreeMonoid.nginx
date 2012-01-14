@@ -122,7 +122,8 @@ server {
         proxy_temp_file_write_size 64k;
     }
 
-    location /files/ {
-        root   /home/gmcwhirt/ideafreemonoid.org/dist/;
+    location /files {
+
+        alias   /home/gmcwhirt/ideafreemonoid.org/dist;
     }
 }

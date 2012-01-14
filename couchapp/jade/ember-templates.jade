@@ -113,7 +113,12 @@ script(type="text/x-handlebars", data-template-name="buildset-list")
 script(type="text/x-handlebars", data-template-name="buildset")
   h2
     | <a {{bindAttr href="content.permalink"}}>{{content.packageName}}</a>
+  .description
+    {{{content.formattedDescription}}}
   dl.info
+    dt License
+    dd
+      {{{content.formattedLicense}}}
     dt Last Successful Build:
     {{#if content.hasSuccessfulBuild}}
     dd
@@ -122,20 +127,33 @@ script(type="text/x-handlebars", data-template-name="buildset")
     dd
       | never
     {{/if}}
-  .builds
+    {{#if content.hasClassifiers}}
+    dt Classification
+    dd
+      ul
+        {{#each content.classifiers}}
+        {{view Gametheory.ClassifierView contentBinding="this"}}
+        {{/each}}
+    {{/if}}
+  ol.builds
     {{#each content.formattedBuilds}}
     {{view Gametheory.BuildView contentBinding="this"}}
     {{/each}}
 
 script(type="text/x-handlebars", data-template-name="build")
-  dl
-    dt Build Date:
-    dd {{content.date}}
-    dt Build Status:
-    dd
-      | <span {{bindAttr class="content.successful:build-success"}} {{bindAttr class="content.failure:build-failure"}}>{{content.status}}</span>
-    {{#if content.successful}}
-    dt Download Link:
-    dd
-      | <a {{bindAttr href="content.downloadLink"}}>{{content.download_file}}</a>
-    {{/if}}
+  li
+    dl
+      dt Build Date:
+      dd {{content.date}}
+      dt Build Status:
+      dd
+        | <span {{bindAttr class="content.successful:build-success"}} {{bindAttr class="content.failure:build-failure"}}>{{content.status}}</span>
+      {{#if content.successful}}
+      dt Download Link:
+      dd
+        | <a {{bindAttr href="content.downloadLink"}}>{{content.download_file}}</a>
+      {{/if}}
+
+script(type="text/x-handlebars", data-template-name="classifier")
+  li
+    {{content}}

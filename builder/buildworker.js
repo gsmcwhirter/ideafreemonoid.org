@@ -119,6 +119,35 @@ function finish_build(doc, callback){
     });
 }
 
+var version_regex = /version\s*=\s*['"](\d+\.\d+(?:\.\d+)?)['"]/i;
+var name_regex = /name\s*=\s*['"]([^'"]+)['"]/i;
+var license_regex = /license\s*=\s*['"]([^'"]+)['"]/i;
+var classifiers_regex = /classifiers\s*=\s*\[([^\]]*)\]/im;
+
+var cparse_regex = /['"]([^'"]+)['"]/i;
+
+function parse_classifiers(str){
+    var lines = str.split("\n");
+
+    var lineres = lines.map(function (line){
+        var cfs = line.split(",");
+        return cfs.map(function (line){
+            var classifier = cparse_regex.exec(line.trim());
+            return classifier ? classifier[1] || null;
+        });
+    });
+
+    var res = [];
+
+    lineres.forEach(function (arr){
+        res.concat(arr.filter(function (item){return item;}));
+    });
+
+    res.sort();
+
+    return res;
+}
+
 function process_build(message, doc){
     var proj_id = [message.project_owner, message.project_name, message.project_ref, message.buildset]
         , repo = new git.Repo({
@@ -188,24 +217,34 @@ function process_build(message, doc){
             fs.readFile(pdir + "/setup.py", "utf8", function (err, data){
                 console.log(pdir + "/setup.py");
                 if (!err){
-                    var r = /version\s*=\s*['"](\d+\.\d+(?:\.\d+)?)['"],/i;
-                    var s = /name\s*=\s*['"](.+)['"],/i;
 
-                    var matches = s.exec(data);
+
+                    var matches = name_regex.exec(data);
+                    var lmatches = license_regex.exec(data);
+                    var cmatches = classifiers_regex.exec(data);
+
+                    if (lmatches && doc.license !== lmatches[1]){
+                        doc.license = lmatches[1];
+                    }
+
+                    if (cmatches){
+                        var classifiers = parse_classifiers(cmatches[1]);
+                        doc.classifiers = classifiers;
+                    }
 
                     if (matches){
-                        console.log(matches);
+
                         var dist_name = matches[1];
 
-                        var matches2 = r.exec(data);
-                        console.log(matches2);
+                        var matches2 = version_regex.exec(data);
+
                         if (matches2){
                             var version = matches2[1];
-                            data = data.replace(r, "version = '$1-" + build + "',");
+                            data = data.replace(version_regex, "version = '$1-" + build + "',");
 
                             fs.writeFile(pdir + "/setup.py", data, function (err){
                                 if (!err){
-                                    exec(["cd", pdir, ";", python, "setup.py", "sdist"].join(" "), function (err, stdout, stderr){
+                                    exec(["cd", pdir, "&&", python, "setup.py", "sdist"].join(" "), function (err, stdout, stderr){
                                         if (!err){
                                             //yay!
                                             var filename = dist_name + "-" + version + "-" + build + ".tar.gz";
@@ -225,7 +264,13 @@ function process_build(message, doc){
                                                                 , download_file: filename
                                                             });
 
-                                                            finish_build(doc);
+                                                            fs.readFile(pdir + "/README.md", "utf8", function (err, readme){
+                                                                if (!err){
+                                                                    doc.description = readme;
+                                                                }
+
+                                                                finish_build(doc);
+                                                            });
                                                         }
                                                         else {
                                                             handle_build_error(message, doc, "could not move to dist location: " + err);
