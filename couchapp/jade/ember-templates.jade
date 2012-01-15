@@ -120,7 +120,7 @@ script(type="text/x-handlebars", data-template-name="buildset")
     dt Last Successful Build:
     {{#if content.hasSuccessfulBuild}}
     dd
-      | <a {{bindAttr href="content.lastSuccessfulBuildLink"}}>{{content.lastSuccessfulBuild.build}}</a> on {{content.lastSuccessfulBuildDate}}
+      | <a {{bindAttr href="content.lastSuccessfulBuildLink"}}>v{{content.lastSuccessfulBuild.version}} build {{content.lastSuccessfulBuild.build}}</a> on {{content.lastSuccessfulBuildDate}}
     {{else}}
     dd
       | never
@@ -150,6 +150,10 @@ script(type="text/x-handlebars", data-template-name="buildset")
 
 script(type="text/x-handlebars", data-template-name="build")
   dl
+    {{#if content.version}}
+    dt Build:
+    dd {{content.version}} build {{content.build}}
+    {{/if}}
     dt Build Date:
     dd {{content.date}}
     dt Build Status:
