@@ -7,6 +7,8 @@ var ddoc =
     , rewrites :
         [ {from:"/", to:'index.html'}
         , {from:"atom.xml", to:'./_list/atomfeed/blogposts', query:{startkey: ['pub',1], endkey: ['pub',0], descending: 'true', include_docs: 'true'}}
+        , {from:"/pip", to:'/_list/pip_index/pips', query:{link_downloads: false, group_level: 1}}
+        , {from:"/pip/:project", to:'/_list/pip_index/pips', query:{link_downloads: true, reduce: false, startkey: [":project",0], endkey: [":project",1]}}
         , {from:"/visualizations/", to:'visualizations/index.html'}
         , {from:"/api", to:'./'}
         , {from:"/api/*", to:'../../*'}
@@ -75,10 +77,71 @@ ddoc.views = {
             }
         }
     }
+    , pips: {
+          map: function (doc){
+            if (doc.type === "buildset"){
+                (doc.builds || []).forEach(function (build){
+                    if (build.download_file){
+                        var parts = build.download_file.split("-");
+                        var pname = parts[0];
+
+                        emit([pname, 0, build.download_dir, build.download_file], 1);
+                    }
+                });
+            }
+        }
+        , reduce: function (keys, values, rereduce){
+            if (rereduce){
+                return sum(values);
+            }
+            else {
+                return values.length;
+            }
+        }
+    }
 };
 
 ddoc.lists = {
-    atomfeed: function (){
+    pip_index: function (head, req){
+        // Helpers
+
+        var pipHeader = function (){
+            return "<!DOCTYPE html><html lang=\"en\"><head><title>Python Package Index</title></head><body><ul>";
+        };
+
+        var pipFooter = function (){
+            return "</ul></body></html>";
+        };
+
+        var pipFormatted = function (row, link_downloads){
+            if (link_downloads){
+                return "<li><a href='/files/" + row.key[2] + "/" + row.key[3] + "'>" + row.key[3] + "</a></li>";
+            }
+            else {
+                return "<li><a href='/pip/" + row.key[0] + "'>" + row.key[0] + "</a></li>";
+            }
+        };
+
+        // Put things together
+        start({
+            headers: {
+                "Content-type": "text/html"
+            }
+        });
+
+        var header = pipHeader();
+        send(header);
+
+        var row;
+        while(row = getRow()){
+            var formatted = pipFormatted(row, req.query.link_downloads);
+            send(formatted);
+        }
+
+        var footer = pipFooter();
+        return footer;
+    }
+    , atomfeed: function (){
         // Helpers
 
         // from showdown.js
