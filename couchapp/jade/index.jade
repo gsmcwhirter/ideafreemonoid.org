@@ -74,6 +74,15 @@ block maincontent
       {{view CV.CVView}}
 
   #gametheory
+    .instructions
+      | Packages here can be installed in (at least) two ways. The easiest is
+      | perhaps to run the following command (replacing "gametheory.base" with the package name):
+      code
+        | pip install --extra-index-url https://www.ideafreemonoid.org/pip gametheory.base
+      | Alternatively, you can download and extract the linked archive from any build and run
+      | the following command in the extracted directory:
+      code
+        | python setup.py install
     script(type="text/x-handlebars")
       {{view Gametheory.BuildsetListView}}
 
