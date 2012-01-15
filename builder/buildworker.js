@@ -74,15 +74,28 @@ function do_build(message, doc){
     });
 }
 
-function handle_build_error(message, doc, err, callback){
-    callback = callback || function (){};
+function handle_build_error(message, doc, err, version, callback){
+    if (typeof version === "function"){
+        callback = version;
+        version = null;
+    }
+    else {
+        callback = callback || function (){};
+    }
 
     //TODO: notification
     console.log("Error on " + [message.project_owner, message.project_name, message.project_ref, message.buildset].join(":") + " -- " + err);
 
+    var build = null;
+    if (doc.last_build && version){
+        build = typeof doc.last_build[version] === "undefined" ? 0 : doc.last_build[version] + 1;
+    }
+
     doc.builds = doc.builds || [];
     doc.builds.push({
-          date: (new Date()).toISOString()
+          version: version || "unknown"
+        , build: build || "unknown"
+        , date: (new Date()).toISOString()
         , status: "failed"
         , error: err
     });
@@ -287,7 +300,7 @@ function process_build(message, doc){
                                                             });
                                                         }
                                                         else {
-                                                            handle_build_error(message, doc, "could not move to dist location: " + err);
+                                                            handle_build_error(message, doc, "could not move to dist location: " + err, version);
                                                         }
                                                     });
                                                 };
@@ -298,7 +311,7 @@ function process_build(message, doc){
                                                             next();
                                                         }
                                                         else {
-                                                            handle_build_error(message, doc, "could not create dist location");
+                                                            handle_build_error(message, doc, "could not create dist location", version);
                                                         }
                                                     });
                                                 }
@@ -308,21 +321,21 @@ function process_build(message, doc){
                                             });
                                         }
                                         else {
-                                            handle_build_error(message, doc, stderr);
+                                            handle_build_error(message, doc, stderr, version);
                                         }
                                     });
                                 }
                                 else {
-                                    handle_build_error(message, doc, "could not update version string");
+                                    handle_build_error(message, doc, "could not update version string", version);
                                 }
                             });
                         }
                         else {
-                            handle_build_error(message, doc, "could not find version string");
+                            handle_build_error(message, doc, "could not find version string", version);
                         }
                     }
                     else {
-                        handle_build_error(message, doc, "could not find dist name");
+                        handle_build_error(message, doc, "could not find dist name", version);
                     }
                 }
             });
