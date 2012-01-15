@@ -51,21 +51,22 @@ Gametheory.Buildset = Ember.Object.extend({
         for (var i = ct-1; i >=0; i--){
             if (builds[i] && builds[i].status === "ok"){
                 return {
-                      build: i
+                      build: builds[i].build
+                    , version: builds[i].version
                     , build_report: builds[i]
                 };
             }
         }
 
         return {
-            build: -1
+            build: 0
         };
     }.property("builds").cacheable()
 
     , lastSuccessfulBuildDate: function (){
         var lsb = this.get("lastSuccessfulBuild");
 
-        if (lsb.build > -1){
+        if (lsb.build > 0){
             return (new Date(lsb.build_report.date)).toLocaleString();
         }
         else {
@@ -74,7 +75,7 @@ Gametheory.Buildset = Ember.Object.extend({
     }.property("lastSuccessfulBuild").cacheable()
 
     , hasSuccessfulBuild: function (){
-        return this.get("lastSuccessfulBuild").build > -1;
+        return this.get("lastSuccessfulBuild").build > 0;
     }.property("lastSuccessfulBuild").cacheable()
 
     , packageName: function (){
