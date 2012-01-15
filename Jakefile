@@ -39,12 +39,14 @@ task("update", function (branch){
 
     repo.process_tasks(tasks, function (err){
         if (!err){
+            console.log("Updating done. Restarting...");
             jake.Task["notifier:start"].invoke();
             jake.Task["worker:start"].invoke();
 
             complete();
         }
         else {
+            console.log("Updating failed.");
             fail(err);
         }
     });
