@@ -9,6 +9,7 @@ var fs = require("fs")
   , config = require("./config.live")
   , request = require("request")
   , redis = require("./builder/redis_client")
+  , git = require("./builder/git")
   ;
 
 function abspath (pathname) {
@@ -18,6 +19,35 @@ function abspath (pathname) {
 
 desc("Generates the markup, css, and js for production");
 task("default", ["markup:make", "js:make", "css:make"]);
+
+desc("Stops the backend services, updates the code from git, and restarts them");
+task("update", function (branch){
+    jake.Task["notifier:stop"].invoke();
+    jake.Task["worker:stop"].invoke();
+
+    branch = branch || "develop";
+
+    var repo = new git.Repo(__dirname);
+
+    var tasks = [
+          ["reset", [["--hard"]]]
+        , ["checkout", [branch]]
+        , ["fetch", [["origin"]]]
+        , ["merge", [["origin/"+branch]]]
+    ];
+
+    repo.process_tasks(tasks, function (err){
+        if (!err){
+            jake.Task["notifier:start"].invoke();
+            jake.Task["worker:start"].invoke();
+
+            complete();
+        }
+        else {
+            fail(err);
+        }
+    });
+}, {async: true});
 
 namespace("couchapp", function (){
     desc("Makes the markup, css, and js then pushes the couchapp");
