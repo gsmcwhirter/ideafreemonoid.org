@@ -16,7 +16,7 @@ TaskQueue.prototype.execute = function (callback){
             if (err){
                 callback(err, task);
             }
-            else if (self._tasks.length > 0) {
+            else {
                 self.execute(callback);
             }
         });
