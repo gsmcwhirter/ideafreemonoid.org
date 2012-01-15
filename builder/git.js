@@ -62,21 +62,25 @@ Repo.prototype._git = function (args, options, callback){
     delete options.ignoreExistsCheck;
 
     if (!this._existCheck && !ignoreExistsCheck){
+        console.log("Checking existence...");
         var self = this;
         this.checkExists(function (err){
             if (!err){
+                console.log("Existence check ok.");
                 self._git(args, options, callback);
+            }
+            else {
+                console.log("Existence check failed.");
             }
         });
     }
-
-    if ((this._exists || ignoreExistsCheck) && this.path){
+    else if ((this._exists || ignoreExistsCheck) && this.path){
         args = (ignorePathArgs ? [] : ["--git-dir=" + this.path + "/.git", "--work-tree=" + this.path]).concat(args);
         console.log("Running git %s", args.join(" "));
         _gitExec(args, ignoreExitCode, callback);
     }
     else {
-        callback(-1);
+        callback("git call failed.");
     }
 };
 
@@ -88,6 +92,8 @@ Repo.prototype.checkExists = function (attemptClone, callback){
     else if (attemptClone === true){
         attemptClone = "origin";
     }
+
+    callback = callback || function (){};
 
     if (this.path){
         var self = this;
@@ -109,6 +115,9 @@ Repo.prototype.checkExists = function (attemptClone, callback){
                         callback(err);
                     }
                 });
+            }
+            else {
+                callback("no such repository");
             }
         });
     }
