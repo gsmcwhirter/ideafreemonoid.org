@@ -247,7 +247,12 @@ namespace("notifier", function (){
     desc("Stops the notifier backend.");
     task("stop", function (){
         console.log("Stopping build notifier...");
-        forever.stop("builder/buildnotifier.js");
+        try {
+            forever.stop("builder/buildnotifier.js");
+        }
+        catch (e){
+            console.log(e);
+        }
     });
 
     desc("Gives a status update for the notifier backend.");
@@ -271,7 +276,12 @@ namespace("notifier", function (){
     desc("Restarts the notifier backend.");
     task("restart", function (){
         console.log("Restarting build notifier...");
-        forever.restart("builder/buildnotifier.js");
+        try {
+            forever.restart("builder/buildnotifier.js");
+        }
+        catch (e){
+            console.log(e);
+        }
     });
 });
 
@@ -334,7 +344,12 @@ namespace("worker", function (){
     desc("Stops the worker backend.");
     task("stop", function (){
         console.log("Stopping build worker...");
-        forever.stop("builder/buildworker.js");
+        try {
+            forever.stop("builder/buildworker.js");
+        }
+        catch (e){
+            console.log(e);
+        }
     });
 
     desc("Gives a status update for the worker backend.");
@@ -358,7 +373,12 @@ namespace("worker", function (){
     desc("Restarts the worker backend.");
     task("restart", function (){
         console.log("Restarting build worker...");
-        forever.restart("builder/buildworker.js");
+        try {
+            forever.restart("builder/buildworker.js");
+        }
+        catch (e){
+            console.log(e);
+        }
     });
 
     desc("Forces a rebuild of all projects and buildsets.");
