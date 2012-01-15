@@ -9,6 +9,7 @@ var fs = require("fs")
   , config = require("./config.live")
   , request = require("request")
   , redis = require("./builder/redis_client")
+  , git = require("./builder/git")
   ;
 
 function abspath (pathname) {
@@ -155,6 +156,37 @@ function build_couchdb_url(conf){
     return cdbarray.join("/");
 }
 
+function update(type){
+    return function (branch){
+        console.log("Updating backend codebase...");
+        jake.Task[type + ":stop"].invoke();
+
+        branch = branch || "develop";
+
+        var repo = new git.Repo(__dirname);
+
+        var tasks = [
+              ["reset", [["--hard"]]]
+            , ["checkout", [branch]]
+            , ["fetch", [["origin"]]]
+            , ["merge", [["origin/"+branch]]]
+        ];
+
+        repo.process_tasks(tasks, function (err){
+            if (!err){
+                console.log("Updating done. Restarting...");
+                jake.Task[type + ":start"].invoke();
+
+                complete();
+            }
+            else {
+                console.log("Updating failed.");
+                fail(err);
+            }
+        });
+    };
+}
+
 namespace("notifier", function (){
     desc("Starts the notifier backend.");
     task("start", function (environ){
@@ -214,7 +246,12 @@ namespace("notifier", function (){
     desc("Stops the notifier backend.");
     task("stop", function (){
         console.log("Stopping build notifier...");
-        forever.stop("builder/buildnotifier.js");
+        var proc = forever.stop("builder/buildnotifier.js");
+        proc.on('error', function (err){
+            if (err){
+                console.log(err);
+            }
+        });
     });
 
     desc("Gives a status update for the notifier backend.");
@@ -238,8 +275,16 @@ namespace("notifier", function (){
     desc("Restarts the notifier backend.");
     task("restart", function (){
         console.log("Restarting build notifier...");
-        forever.restart("builder/buildnotifier.js");
+        var proc = forever.restart("builder/buildnotifier.js");
+        proc.on('error', function (err){
+            if (err){
+                console.log(err);
+            }
+        });
     });
+
+    desc("Stops the notifier, updates the code from git, and restarts it");
+    task("update", update("notifier"), {async: true});
 });
 
 namespace("worker", function (){
@@ -301,7 +346,13 @@ namespace("worker", function (){
     desc("Stops the worker backend.");
     task("stop", function (){
         console.log("Stopping build worker...");
-        forever.stop("builder/buildworker.js");
+
+        var proc = forever.stop("builder/buildworker.js");
+        proc.on('error', function (err){
+            if (err){
+                console.log(err);
+            }
+        });
     });
 
     desc("Gives a status update for the worker backend.");
@@ -325,8 +376,16 @@ namespace("worker", function (){
     desc("Restarts the worker backend.");
     task("restart", function (){
         console.log("Restarting build worker...");
-        forever.restart("builder/buildworker.js");
+        var proc = forever.restart("builder/buildworker.js");
+        proc.on('error', function (err){
+            if (err){
+                console.log(err);
+            }
+        });
     });
+
+    desc("Stops the worker, updates the code from git, and restarts it");
+    task("update", update("worker"), {async: true});
 
     desc("Forces a rebuild of all projects and buildsets.");
     task("forcebuild", function (){

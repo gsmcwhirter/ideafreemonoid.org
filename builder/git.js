@@ -1,4 +1,5 @@
 var spawn = require("child_process").spawn
+    , task_queue = require("./task_queue").task_queue
     ;
 
 function _gitExec(args, ignoreExitCode, callback){
@@ -61,21 +62,25 @@ Repo.prototype._git = function (args, options, callback){
     delete options.ignoreExistsCheck;
 
     if (!this._existCheck && !ignoreExistsCheck){
+        console.log("Checking existence...");
         var self = this;
         this.checkExists(function (err){
             if (!err){
+                console.log("Existence check ok.");
                 self._git(args, options, callback);
+            }
+            else {
+                console.log("Existence check failed.");
             }
         });
     }
-
-    if ((this._exists || ignoreExistsCheck) && this.path){
+    else if ((this._exists || ignoreExistsCheck) && this.path){
         args = (ignorePathArgs ? [] : ["--git-dir=" + this.path + "/.git", "--work-tree=" + this.path]).concat(args);
         console.log("Running git %s", args.join(" "));
         _gitExec(args, ignoreExitCode, callback);
     }
     else {
-        callback(-1);
+        callback("git call failed.");
     }
 };
 
@@ -87,6 +92,8 @@ Repo.prototype.checkExists = function (attemptClone, callback){
     else if (attemptClone === true){
         attemptClone = "origin";
     }
+
+    callback = callback || function (){};
 
     if (this.path){
         var self = this;
@@ -108,6 +115,9 @@ Repo.prototype.checkExists = function (attemptClone, callback){
                         callback(err);
                     }
                 });
+            }
+            else {
+                callback("no such repository");
             }
         });
     }
@@ -364,9 +374,41 @@ Repo.prototype.reset = function (args, callback){
             callback();
         }
         else {
-            callback(code || true, stderr.join("\n"));
+            callback(code || true, (stderr || "").join("\n"));
         }
     });
+};
+
+Repo.prototype.process_tasks = function (tasks, callback){
+    var self = this;
+
+    task_queue(tasks, function (task, next){
+        console.log("Running git task: ");
+        console.log(task);
+        var args = task[1] || [];
+
+        var cb = function (err, data){
+            if (err){
+                next(data || err);
+            }
+            else {
+                if (typeof task[2] === "function"){
+                    (task[2])(data);
+                }
+
+                next();
+            }
+        };
+
+        args.push(cb);
+
+        if (typeof self[task[0]] === "function"){
+            self[task[0]].apply(self, args);
+        }
+        else {
+            next("Unknown git function: " + task[0]);
+        }
+    }, callback);
 };
 
 exports.Repo = Repo;
