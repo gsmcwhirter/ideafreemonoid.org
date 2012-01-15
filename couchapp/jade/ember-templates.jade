@@ -110,8 +110,7 @@ script(type="text/x-handlebars", data-template-name="buildset-list")
     {{/each}}
 
 script(type="text/x-handlebars", data-template-name="buildset")
-  h2
-    | <a {{bindAttr href="content.permalink"}}>{{content.packageName}}</a>
+  h2 {{content.packageName}}
   .description
     {{{content.formattedDescription}}}
   dl.info
@@ -137,9 +136,17 @@ script(type="text/x-handlebars", data-template-name="buildset")
     dt Recent Builds:
     dd
       ol.builds
+        {{#if onlyOneBuildset}}
+        {{#each content.allFormattedBuilds}}
+        {{view Gametheory.BuildView contentBinding="this"}}
+        {{/each}}
+        {{else}}
         {{#each content.shortFormattedBuilds}}
         {{view Gametheory.BuildView contentBinding="this"}}
         {{/each}}
+        li
+          | <a {{bindAttr href="content.permalink"}}>all builds</a>
+        {{/if}}
 
 script(type="text/x-handlebars", data-template-name="build")
   dl

@@ -144,6 +144,7 @@ Gametheory.Buildset = Ember.Object.extend({
 Gametheory.buildsetsController = Ember.ArrayController.create({
       content: []
     , showBuild: null
+    , onlyOneBuildset: false
 
     , orderedContent: function (){
         var content = this.get("content").slice();
@@ -183,6 +184,7 @@ Gametheory.buildsetsController = Ember.ArrayController.create({
         if (buildset){
             IFMAPI.getDoc("buildset:" + buildset, function (err, response){
                 if (!err && !response.error){
+                    self.set("onlyOneBuildset", true);
                     self.set("showBuild", build || null);
                     self.set("content", [Gametheory.Buildset.create(response)]);
                 }
@@ -194,6 +196,7 @@ Gametheory.buildsetsController = Ember.ArrayController.create({
         else {
             IFMAPI.getView("buildsets", {include_docs: true}, function (err, response){
                 if (!err){
+                    self.set("onlyOneBuildset", false);
                     self.set("showBuild", null);
                     self.set("content", _(response.rows || []).chain().pluck('doc').map(function (doc){return Gametheory.Buildset.create(doc);}).value());
                 }
@@ -214,6 +217,7 @@ Gametheory.BuildsetView = Ember.View.extend({
       templateName: 'buildset'
     , tagName: 'li'
     , showBuildBinding: "Gametheory.buildsetsController.showBuild"
+    , onlyOneBuildsetBinding: "Gametheory.buildsetsController.onlyOneBuildset"
 });
 
 Gametheory.BuildView = Ember.View.extend({
