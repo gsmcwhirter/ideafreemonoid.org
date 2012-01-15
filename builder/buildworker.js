@@ -88,7 +88,7 @@ function handle_build_error(message, doc, err, version, callback){
 
     var build = null;
     if (doc.last_build && version){
-        build = typeof doc.last_build[version] === "undefined" ? 0 : doc.last_build[version] + 1;
+        build = (doc.last_build[version] || 0) + 1;
     }
 
     doc.builds = doc.builds || [];
@@ -114,7 +114,7 @@ function finish_build(doc, version, callback){
 
     if (version){
         doc.last_build = doc.last_build || {};
-        doc.last_build[version] = typeof doc.last_build[version] === "undefined" ? 0 : doc.last_build[version] + 1;
+        doc.last_build[version] = (doc.last_build[version] || 0) + 1;
     }
 
     doc.status = "ready";
@@ -245,7 +245,7 @@ function process_build(message, doc){
                     }
 
                     doc.last_build = doc.last_build || {};
-                    var build = (typeof doc.last_build[version] === "undefined" ? -1 : doc.last_build[version]) + 1;
+                    var build = (doc.last_build[version] || 0) + 1;
 
                     var matches = name_regex.exec(data);
                     var lmatches = license_regex.exec(data);
