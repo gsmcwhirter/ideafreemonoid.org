@@ -274,10 +274,12 @@ nav#menu
     ol.builds>li
       list-style-type none
 
-      .build-success
-        color green
-      .build-failure
-        color red
+      dd.build-status
+        span
+          color red
+
+        span.build-success
+          color green
 
       dl
         margin-left 0

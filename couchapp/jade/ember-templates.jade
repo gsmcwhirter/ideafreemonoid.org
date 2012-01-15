@@ -153,8 +153,8 @@ script(type="text/x-handlebars", data-template-name="build")
     dt Build Date:
     dd {{content.date}}
     dt Build Status:
-    dd
-      | <span {{bindAttr class="content.successful:build-success"}} {{bindAttr class="content.failure:build-failure"}}>{{content.status}}</span>
+    dd.build-status
+      | <span {{bindAttr class="content.successful:build-success"}}>{{content.status}}</span>
     {{#if content.successful}}
     dt Download Link:
     dd

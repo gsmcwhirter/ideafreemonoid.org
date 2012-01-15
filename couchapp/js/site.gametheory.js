@@ -103,7 +103,6 @@ Gametheory.Buildset = Ember.Object.extend({
         return _(builds).map(function (build){
             build.date = (new Date(build.date)).toLocaleString();
             build.successful = (build.status === "ok");
-            build.failure = !build.successful;
             build.downloadLink = "/files/" + build.download_dir + "/" + build.download_file;
             return build;
         }).reverse();
