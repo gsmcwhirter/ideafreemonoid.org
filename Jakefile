@@ -20,38 +20,6 @@ function abspath (pathname) {
 desc("Generates the markup, css, and js for production");
 task("default", ["markup:make", "js:make", "css:make"]);
 
-desc("Stops the backend services, updates the code from git, and restarts them");
-task("update", function (branch){
-    console.log("Updating backend codebase...");
-    jake.Task["notifier:stop"].invoke();
-    jake.Task["worker:stop"].invoke();
-
-    branch = branch || "develop";
-
-    var repo = new git.Repo(__dirname);
-
-    var tasks = [
-          ["reset", [["--hard"]]]
-        , ["checkout", [branch]]
-        , ["fetch", [["origin"]]]
-        , ["merge", [["origin/"+branch]]]
-    ];
-
-    repo.process_tasks(tasks, function (err){
-        if (!err){
-            console.log("Updating done. Restarting...");
-            jake.Task["notifier:start"].invoke();
-            jake.Task["worker:start"].invoke();
-
-            complete();
-        }
-        else {
-            console.log("Updating failed.");
-            fail(err);
-        }
-    });
-}, {async: true});
-
 namespace("couchapp", function (){
     desc("Makes the markup, css, and js then pushes the couchapp");
     task("push", ["default"], function (couch){
@@ -188,6 +156,37 @@ function build_couchdb_url(conf){
     return cdbarray.join("/");
 }
 
+function update(type){
+    return function (branch){
+        console.log("Updating backend codebase...");
+        jake.Task[type + ":stop"].invoke();
+
+        branch = branch || "develop";
+
+        var repo = new git.Repo(__dirname);
+
+        var tasks = [
+              ["reset", [["--hard"]]]
+            , ["checkout", [branch]]
+            , ["fetch", [["origin"]]]
+            , ["merge", [["origin/"+branch]]]
+        ];
+
+        repo.process_tasks(tasks, function (err){
+            if (!err){
+                console.log("Updating done. Restarting...");
+                jake.Task[type + ":start"].invoke();
+
+                complete();
+            }
+            else {
+                console.log("Updating failed.");
+                fail(err);
+            }
+        });
+    };
+}
+
 namespace("notifier", function (){
     desc("Starts the notifier backend.");
     task("start", function (environ){
@@ -283,6 +282,9 @@ namespace("notifier", function (){
             }
         });
     });
+
+    desc("Stops the notifier, updates the code from git, and restarts it");
+    task("update", update("notifier"), {async: true});
 });
 
 namespace("worker", function (){
@@ -381,6 +383,9 @@ namespace("worker", function (){
             }
         });
     });
+
+    desc("Stops the worker, updates the code from git, and restarts it");
+    task("update", update("worker"), {async: true});
 
     desc("Forces a rebuild of all projects and buildsets.");
     task("forcebuild", function (){
