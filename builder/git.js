@@ -365,7 +365,7 @@ Repo.prototype.reset = function (args, callback){
             callback();
         }
         else {
-            callback(code || true, stderr.join("\n"));
+            callback(code || true, (stderr || "").join("\n"));
         }
     });
 };
