@@ -8,7 +8,7 @@ var ddoc =
         [ {from:"/", to:'index.html'}
         , {from:"atom.xml", to:'./_list/atomfeed/blogposts', query:{startkey: ['pub',1], endkey: ['pub',0], descending: 'true', include_docs: 'true'}}
         , {from:"/pip", to:'./_list/pip_index/pips', query:{link_downloads: false, group_level: 1}}
-        , {from:"/pip/:project", to:'./_list/pip_index/pips', query:{link_downloads: true, reduce: false, startkey: [":project",0], endkey: [":project",1]}}
+        , {from:"/pip/:project", to:'./_list/pip_index/pips', query:{startkey: [':project',0], endkey: [':project',1], link_downloads: true, reduce: false}}
         , {from:"/visualizations/", to:'visualizations/index.html'}
         , {from:"/api", to:'./'}
         , {from:"/api/*", to:'../../*'}
