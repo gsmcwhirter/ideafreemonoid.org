@@ -134,8 +134,10 @@ ddoc.lists = {
 
         var row;
         while(row = getRow()){
-            var formatted = pipFormatted(row, req.query.link_downloads);
-            send(formatted);
+            if (row.key){
+                var formatted = pipFormatted(row, req.query.link_downloads);
+                send(formatted);
+            }
         }
 
         var footer = pipFooter();
