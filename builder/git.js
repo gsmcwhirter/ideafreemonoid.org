@@ -248,6 +248,9 @@ Repo.prototype.checkout = function (branch, opts, args, callback){
                 }
             });
         }
+        else {
+            callback(err);
+        }
     });
 };
 

@@ -3,12 +3,19 @@
  */
 
 var express = require('express')
-    , redis = require('redis')
+    , redis = require('./redis_client')
     , request = require('request')
     , couchdb = process.env.couchdb || null
     ;
 
 var app = module.exports = express.createServer();
+var rclient = new redis.RedisClient(process.env.redis_channel || "build tasks", {
+    ready: function (){
+        app.listen(process.env.port || 7060, process.env.host || undefined);
+        console.log("Express server listening on port %d in %s mode", process.env.port || 7060, app.settings.env);
+        console.log("Accepting push notifications.");
+    }
+});
 
 // Configuration
 
@@ -25,47 +32,6 @@ app.configure('development', function(){
 app.configure('production', function(){
     app.use(express.errorHandler());
 });
-
-// Routes
-
-var rclient = redis.createClient()
-    , rclient_paused = false
-    , rclient_queue = []
-    ;
-
-rclient.on("error", function (err){
-    console.log("Redis Error: " + err);
-});
-
-rclient.on("drain", function (){
-    if (rclient_paused){
-        console.log("Resuming redis publication.");
-        rclient_paused = false;
-
-        if (rclient_queue.length > 0){
-            process.nextTick(rclient_op);
-        }
-    }
-});
-
-function rclient_op(task){
-    if (task){
-        rclient_queue.push(task);
-    }
-
-    if (rclient_queue.length === 0){
-        return;
-    }
-
-    var nexttask = rclient_queue.shift();
-    if (rclient.publish(process.env.redis_channel || "build tasks", JSON.stringify(nexttask)) === false){
-        console.log("Pausing redis publication.");
-        rclient_paused = true;
-    }
-    else if (rclient_queue.length > 0) {
-        process.nextTick(rclient_op);
-    }
-}
 
 app.get('/', function (req, res, next){
     var fragment = req.param("_escaped_fragment_");
@@ -118,7 +84,7 @@ app.post('/build', function (req, res){
 
                     for (var key in build_orders){
                         if (build_orders.hasOwnProperty(key)){
-                            rclient_op({
+                            rclient.op({
                                   task: "build"
                                 , head: payload.after
                                 , project_owner: payload.repository.owner.name
@@ -143,10 +109,4 @@ app.post('/build', function (req, res){
     else {
 
     }
-});
-
-rclient.on("ready", function (){
-    app.listen(process.env.port || 7060, process.env.host || undefined);
-    console.log("Express server listening on port %d in %s mode", process.env.port || 7060, app.settings.env);
-    console.log("Accepting push notifications.");
 });

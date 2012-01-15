@@ -102,3 +102,68 @@ script(type="text/x-handlebars", data-template-name="user-login")
 script(type="text/x-handlebars", data-template-name="user-logout")
   {{currentUser.name}}
   {{#view User.LogoutButton}}Log Out{{/view}}
+
+script(type="text/x-handlebars", data-template-name="buildset-list")
+  ol.buildsets
+    {{#each buildsets}}
+    {{view Gametheory.BuildsetView contentBinding="this"}}
+    {{/each}}
+
+script(type="text/x-handlebars", data-template-name="buildset")
+  h2 {{content.packageName}}
+  .description
+    {{{content.formattedDescription}}}
+  dl.info
+    dt License:
+    dd
+      {{{content.formattedLicense}}}
+    dt Last Successful Build:
+    {{#if content.hasSuccessfulBuild}}
+    dd
+      | <a {{bindAttr href="content.lastSuccessfulBuildLink"}}>v{{content.lastSuccessfulBuild.version}} build {{content.lastSuccessfulBuild.build}}</a> on {{content.lastSuccessfulBuildDate}}
+    {{else}}
+    dd
+      | never
+    {{/if}}
+    {{#if content.hasClassifiers}}
+    dt Classification:
+    dd
+      ul
+        {{#each content.classifiers}}
+        {{view Gametheory.ClassifierView contentBinding="this"}}
+        {{/each}}
+    {{/if}}
+    dt Recent Builds:
+    dd
+      ol.builds
+        {{#if onlyOneBuildset}}
+        {{#each content.allFormattedBuilds}}
+        {{view Gametheory.BuildView contentBinding="this"}}
+        {{/each}}
+        {{else}}
+        {{#each content.shortFormattedBuilds}}
+        {{view Gametheory.BuildView contentBinding="this"}}
+        {{/each}}
+        li
+          | <a {{bindAttr href="content.permalink"}}>all builds</a>
+        {{/if}}
+
+script(type="text/x-handlebars", data-template-name="build")
+  dl
+    {{#if content.version}}
+    dt Build:
+    dd v{{content.version}} build {{content.build}}
+    {{/if}}
+    dt Build Date:
+    dd {{content.date}}
+    dt Build Status:
+    dd.build-status
+      | <span {{bindAttr class="content.successful:build-success"}}>{{content.status}}</span>
+    {{#if content.successful}}
+    dt Download Link:
+    dd
+      | <a {{bindAttr href="content.downloadLink"}}>{{content.download_file}}</a>
+    {{/if}}
+
+script(type="text/x-handlebars", data-template-name="classifier")
+  {{content}}
