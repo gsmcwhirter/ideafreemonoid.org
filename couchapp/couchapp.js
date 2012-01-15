@@ -135,7 +135,7 @@ ddoc.lists = {
         var row;
         while(row = getRow()){
             if (row.key){
-                var formatted = pipFormatted(row, req.query.link_downloads);
+                var formatted = pipFormatted(row, JSON.parse(req.query.link_downloads);
                 send(formatted);
             }
         }
