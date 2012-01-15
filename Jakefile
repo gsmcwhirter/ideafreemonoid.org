@@ -247,12 +247,12 @@ namespace("notifier", function (){
     desc("Stops the notifier backend.");
     task("stop", function (){
         console.log("Stopping build notifier...");
-        try {
-            forever.stop("builder/buildnotifier.js");
-        }
-        catch (e){
-            console.log(e);
-        }
+        var proc = forever.stop("builder/buildnotifier.js");
+        proc.on('error', function (err){
+            if (err){
+                console.log(err);
+            }
+        });
     });
 
     desc("Gives a status update for the notifier backend.");
@@ -276,12 +276,12 @@ namespace("notifier", function (){
     desc("Restarts the notifier backend.");
     task("restart", function (){
         console.log("Restarting build notifier...");
-        try {
-            forever.restart("builder/buildnotifier.js");
-        }
-        catch (e){
-            console.log(e);
-        }
+        var proc = forever.restart("builder/buildnotifier.js");
+        proc.on('error', function (err){
+            if (err){
+                console.log(err);
+            }
+        });
     });
 });
 
@@ -344,12 +344,13 @@ namespace("worker", function (){
     desc("Stops the worker backend.");
     task("stop", function (){
         console.log("Stopping build worker...");
-        try {
-            forever.stop("builder/buildworker.js");
-        }
-        catch (e){
-            console.log(e);
-        }
+
+        var proc = forever.stop("builder/buildworker.js");
+        proc.on('error', function (err){
+            if (err){
+                console.log(err);
+            }
+        });
     });
 
     desc("Gives a status update for the worker backend.");
@@ -373,12 +374,12 @@ namespace("worker", function (){
     desc("Restarts the worker backend.");
     task("restart", function (){
         console.log("Restarting build worker...");
-        try {
-            forever.restart("builder/buildworker.js");
-        }
-        catch (e){
-            console.log(e);
-        }
+        var proc = forever.restart("builder/buildworker.js");
+        proc.on('error', function (err){
+            if (err){
+                console.log(err);
+            }
+        });
     });
 
     desc("Forces a rebuild of all projects and buildsets.");
