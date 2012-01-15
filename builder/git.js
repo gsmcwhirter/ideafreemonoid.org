@@ -1,4 +1,5 @@
 var spawn = require("child_process").spawn
+    , task_queue = require("./task_queue").task_queue
     ;
 
 function _gitExec(args, ignoreExitCode, callback){
@@ -367,6 +368,38 @@ Repo.prototype.reset = function (args, callback){
             callback(code || true, stderr.join("\n"));
         }
     });
+};
+
+Repo.prototype.process_tasks = function (tasks, callback){
+    var self = this;
+
+    task_queue(tasks, function (task, next){
+        console.log("Running git task: ");
+        console.log(task);
+        var args = task[1] || [];
+
+        var cb = function (err, data){
+            if (err){
+                next(data || err);
+            }
+            else {
+                if (typeof task[2] === "function"){
+                    (task[2])(data);
+                }
+
+                next();
+            }
+        };
+
+        args.push(cb);
+
+        if (typeof self[task[0]] === "function"){
+            self[task[0]].apply(self, args);
+        }
+        else {
+            next("Unknown git function: " + task[0]);
+        }
+    }, callback);
 };
 
 exports.Repo = Repo;

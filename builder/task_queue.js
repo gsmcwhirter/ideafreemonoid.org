@@ -1,0 +1,32 @@
+var TaskQueue = function (tasks, action){
+    this._tasks = tasks;
+    this._action = action;
+};
+
+TaskQueue.prototype.execute = function (callback){
+    var self = this;
+    var task = this._tasks.shift();
+
+    if (task){
+        this._action.call(task, function (err){
+            if (err){
+                callback(err, task);
+            }
+            else if (self._tasks.length > 0) {
+                self.execute(callback);
+            }
+        });
+    }
+    else {
+        callback();
+    }
+};
+
+function task_queue(tasks, action, callback){
+    var tqueue = new TaskQueue(tasks, action);
+
+    tqueue.execute(callback);
+}
+
+exports.task_queue = task_queue;
+exports.TaskQueue = TaskQueue;
