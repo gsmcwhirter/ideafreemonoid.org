@@ -34,7 +34,7 @@ Gametheory.Router = {
 
 Gametheory.Buildset = Ember.Object.extend({
       builds: []
-    , last_build: -1
+    , last_build: {}
     , origin: null
     , status: null
     , license: null

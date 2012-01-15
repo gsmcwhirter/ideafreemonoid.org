@@ -90,11 +90,19 @@ function handle_build_error(message, doc, err, callback){
     finish_build(doc, callback);
 }
 
-function finish_build(doc, callback){
-    callback = callback || function (){};
+function finish_build(doc, version, callback){
+    if (typeof version === "function"){
+        callback = version;
+        version = null;
+    }
+    else {
+        callback = callback || function (){};
+    }
 
-    doc.last_build = typeof doc.last_build === "undefined" ? -1 : doc.last_build;
-    doc.last_build += 1;
+    if (version){
+        doc.last_build = doc.last_build || {};
+        doc.last_build[version] = typeof doc.last_build[version] === "undefined" ? 0 : doc.last_build[version] + 1;
+    }
 
     doc.status = "ready";
 
@@ -212,12 +220,19 @@ function process_build(message, doc){
         if (!err){
             //git is in the right spot now
             var pdir = repo.path + "/" + message.buildset;
-            var build = (typeof doc.last_build === "undefined" ? -1 : doc.last_build) + 1;
 
             fs.readFile(pdir + "/setup.py", "utf8", function (err, data){
                 console.log(pdir + "/setup.py");
                 if (!err){
 
+                    var version = null;
+                    var matches2 = version_regex.exec(data);
+                    if (matches2){
+                        version = matches2[1];
+                    }
+
+                    doc.last_build = doc.last_build || {};
+                    var build = (typeof doc.last_build[version] === "undefined" ? -1 : doc.last_build[version]) + 1;
 
                     var matches = name_regex.exec(data);
                     var lmatches = license_regex.exec(data);
@@ -236,10 +251,7 @@ function process_build(message, doc){
 
                         var dist_name = matches[1];
 
-                        var matches2 = version_regex.exec(data);
-
-                        if (matches2){
-                            var version = matches2[1];
+                        if (version){
                             data = data.replace(version_regex, "version = '$1-" + build + "'");
 
                             fs.writeFile(pdir + "/setup.py", data, function (err){
@@ -258,7 +270,9 @@ function process_build(message, doc){
                                                         if (!err){
                                                             doc.builds = doc.builds || [];
                                                             doc.builds.push({
-                                                                  date: (new Date()).toISOString()
+                                                                  version: version
+                                                                , build: build
+                                                                , date: (new Date()).toISOString()
                                                                 , status: "ok"
                                                                 , download_dir: dist_dir
                                                                 , download_file: filename
@@ -269,7 +283,7 @@ function process_build(message, doc){
                                                                     doc.description = readme;
                                                                 }
 
-                                                                finish_build(doc);
+                                                                finish_build(doc, version);
                                                             });
                                                         }
                                                         else {
