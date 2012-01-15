@@ -22,6 +22,7 @@ task("default", ["markup:make", "js:make", "css:make"]);
 
 desc("Stops the backend services, updates the code from git, and restarts them");
 task("update", function (branch){
+    console.log("Updating backend codebase...");
     jake.Task["notifier:stop"].invoke();
     jake.Task["worker:stop"].invoke();
 

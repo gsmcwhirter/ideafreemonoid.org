@@ -8,7 +8,8 @@ TaskQueue.prototype.execute = function (callback){
     var task = this._tasks.shift();
 
     if (task){
-        this._action.call(task, function (err){
+
+        this._action.call(this, task, function (err){
             if (err){
                 callback(err, task);
             }
@@ -16,6 +17,7 @@ TaskQueue.prototype.execute = function (callback){
                 self.execute(callback);
             }
         });
+
     }
     else {
         callback();
