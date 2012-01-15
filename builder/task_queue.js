@@ -5,10 +5,13 @@ var TaskQueue = function (tasks, action){
 
 TaskQueue.prototype.execute = function (callback){
     var self = this;
+
+    console.log("Task queue length: %s", this._tasks.length);
+
     var task = this._tasks.shift();
 
     if (task){
-
+        console.log("Executing task...");
         this._action.call(this, task, function (err){
             if (err){
                 callback(err, task);
@@ -20,6 +23,7 @@ TaskQueue.prototype.execute = function (callback){
 
     }
     else {
+        console.log("Callback time...");
         callback();
     }
 };
