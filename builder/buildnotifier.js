@@ -67,46 +67,28 @@ app.post('/build', function (req, res){
         var ref_parts = payload.ref.split("/");
         var ref = ref_parts.pop();
 
-        request(couchdb + "/" + ["project", payload.repository.owner.name, payload.repository.name, ref].join(":"), function (err, resp, body){
+        request(couchdb + "/" + ["buildset", payload.repository.owner.name, payload.repository.name, ref].join(":"), function (err, resp, body){
             if (err){
-                console.log("Project not found.");
+                console.log("Buildset not found.");
                 res.send("not ok");
             }
             else {
                 var doc = JSON.parse(body);
 
-                if (doc.type === "project"){
+                if (doc.type === "buildset"){
                     console.log("Payload OK.");
 
-                    var build_orders = {};
-
-                    var checkpath = function (path){
-                        var parts = path.split("/");
-                        if (parts.length > 1 && doc.buildsets.indexOf(parts[0]) !== -1){
-                            build_orders[parts[0]] = true;
-                        }
-                    };
-
-                    payload.commits.forEach(function (commit){
-                        console.log(commit.added);
-                        console.log(commit.modified);
-                        console.log(commit.removed);
-                        (commit.added || []).forEach(checkpath);
-                        (commit.modified || []).forEach(checkpath);
-                        (commit.removed || []).forEach(checkpath);
-                    });
-
-                    for (var key in build_orders){
-                        if (build_orders.hasOwnProperty(key)){
-                            rclient.op({
-                                task: "build"
-                                , head: payload.after
-                                , project_owner: payload.repository.owner.name
-                                , project_name: payload.repository.name
-                                , project_ref: ref
-                                , buildset: key
-                            });
-                        }
+                    if (!doc.freeze){
+                        rclient.op({
+                            task: "build"
+                            , head: payload.after
+                            , project_owner: payload.repository.owner.name
+                            , project_name: payload.repository.name
+                            , project_ref: ref
+                        });
+                    }
+                    else {
+                        console.log("Buildset frozen.");
                     }
 
                     res.send("ok");
