@@ -169,7 +169,7 @@ function handle_build_error(message, doc, err, version, test_results, callback){
         , test_results: test_results || "unknown"
     });
 
-    finish_build(doc, callback);
+    finish_build(doc, version, callback);
 }
 
 function finish_build(doc, version, callback){
