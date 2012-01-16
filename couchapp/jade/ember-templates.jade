@@ -140,8 +140,6 @@ script(type="text/x-handlebars", data-template-name="buildset")
         {{#each content.allFormattedBuilds}}
         {{view Gametheory.BuildView contentBinding="this"}}
         {{/each}}
-        li
-          | <a {{bindAttr href="content.permalink"}}>all builds</a>
     {{else}}
     dt Recent Builds:
     dd
