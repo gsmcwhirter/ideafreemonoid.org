@@ -37,7 +37,7 @@ app.configure('production', function(){
 app.get('/', function (req, res, next){
     var fragment = req.param("_escaped_fragment_");
     if (fragment){
-    	jsdom.env({
+    	/*jsdom.env({
     		  html: "https://www.ideafreemonoid.org/#!"+fragment
     		, scripts: [
     			  [__dirname, "couchapp", "attachments", "js", "jquery-1.7.min.js"].join("/")
@@ -54,7 +54,10 @@ app.get('/', function (req, res, next){
     				res.send("not found", 404);
     			}
     		}
-    	});
+    	});*/
+    	var doc = jsdom.jsdom("https://www.ideafreemonoid.org/#!"+fragment);
+    	var win = doc.createWindow();
+    	res.send(win.document.innerHTML);
     }
     else {
         res.send("not found", 404);
