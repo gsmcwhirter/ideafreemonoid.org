@@ -1,10 +1,11 @@
 /**
- * Module dependencies.
- */
+* Module dependencies.
+*/
 
 var express = require('express')
     , redis = require('./redis_client')
     , request = require('request')
+    , zombie = require('zombie')
     , couchdb = process.env.couchdb || null
     ;
 
@@ -36,8 +37,21 @@ app.configure('production', function(){
 app.get('/', function (req, res, next){
     var fragment = req.param("_escaped_fragment_");
     if (fragment){
-        res.send([fragment, req.url]); //TODO: real functionality
-
+        zombie.visit("https://www.ideafreemonoid.org/#!"+fragment, function (err, browser){
+            if (!err){
+                browser.fire("hashchange", browser.window, function (){
+                    browser.window.run("Ember.routes.set('location', '!"+fragment+"'); console.log('Manually setting location.');");
+                    browser.wait(function (){
+                        //console.log(browser.window.console.output);
+                        console.log("Generated static content for https://www.ideafreemonoid.org/#!%s", fragment);
+                        res.send(browser.html());
+                    });
+                });
+            }
+            else {
+                next(err);
+            }
+        });
     }
     else {
         res.send("not found", 404);
@@ -85,7 +99,7 @@ app.post('/build', function (req, res){
                     for (var key in build_orders){
                         if (build_orders.hasOwnProperty(key)){
                             rclient.op({
-                                  task: "build"
+                                task: "build"
                                 , head: payload.after
                                 , project_owner: payload.repository.owner.name
                                 , project_name: payload.repository.name
