@@ -5,7 +5,7 @@
 var express = require('express')
     , redis = require('./redis_client')
     , request = require('request')
-    , jsdom = require('jsdom')
+    , zombie = require('zombie')
     , couchdb = process.env.couchdb || null
     ;
 
@@ -37,27 +37,16 @@ app.configure('production', function(){
 app.get('/', function (req, res, next){
     var fragment = req.param("_escaped_fragment_");
     if (fragment){
-    	/*jsdom.env({
-    		  html: "https://www.ideafreemonoid.org/#!"+fragment
-    		, scripts: [
-    			  [__dirname, "couchapp", "attachments", "js", "jquery-1.7.min.js"].join("/")
-    			, [__dirname, "couchapp", "attachments", "js", "modernizr.custom.js"].join("/")
-    			, [__dirname, "couchapp", "attachments", "js", "underscore.min.js"].join("/")
-    			, "https://www.ideafreemonoid.org/js/plugins.js"
-    			, "https://www.ideafreemonoid.org/js/site.min.js"
-    		]
-    		, done: function (err, window){
-    			if (!err){
-    				res.send(window.document.innerHTML);
-    			}
-    			else {
-    				res.send("not found", 404);
-    			}
+    	zombie.visit("https://www.ideafreemonoid.org/#!"+fragment, {debug: true}, function (err, browser){
+    		if (!err){
+    			browser.fire("hashchange", browser.window, function (){
+    				res.send(browser.html());
+    			});
     		}
-    	});*/
-    	var doc = jsdom.jsdom("https://www.ideafreemonoid.org/#!"+fragment);
-    	var win = doc.createWindow();
-    	res.send(win.document.innerHTML);
+    		else {
+    			next(err);
+    		}
+    	});
     }
     else {
         res.send("not found", 404);
