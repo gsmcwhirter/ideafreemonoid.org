@@ -140,8 +140,6 @@ script(type="text/x-handlebars", data-template-name="buildset")
         {{#each content.allFormattedBuilds}}
         {{view Gametheory.BuildView contentBinding="this"}}
         {{/each}}
-        li
-          | <a {{bindAttr href="content.permalink"}}>all builds</a>
     {{else}}
     dt Recent Builds:
     dd
@@ -164,6 +162,10 @@ script(type="text/x-handlebars", data-template-name="build")
     dt Build Status:
     dd.build-status
       | <span {{bindAttr class="content.successful:build-success"}}>{{content.status}}</span>
+    dt Test Results:
+    dd.test-results
+      {{view Gametheory.BuildToggle}}
+      pre.test-results {{content.test_results}}
     {{#if content.successful}}
     dt Download Link:
     dd
@@ -172,3 +174,6 @@ script(type="text/x-handlebars", data-template-name="build")
 
 script(type="text/x-handlebars", data-template-name="classifier")
   {{content}}
+
+script(type="text/x-handlebars", data-template-name="test-results-toggle")
+  | show
