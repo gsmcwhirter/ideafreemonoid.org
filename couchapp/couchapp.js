@@ -63,17 +63,10 @@ ddoc.views = {
             return sum(values);
         }
     }
-    , projects: {
-        map: function (doc){
-            if (doc.type === "project"){
-                emit(doc._id, 1);
-            }
-        }
-    }
     , buildsets: {
         map: function (doc){
             if (doc.type === "buildset"){
-                emit(doc._id, doc.last_build || -1);
+                emit(doc._id, doc.last_build || {});
             }
         }
     }
@@ -668,7 +661,7 @@ ddoc.validate_doc_update = function (newDoc, oldDoc, userCtx) {
         throw "You do not have permission to make changes.";
     }
 
-    if (!newDoc._deleted && oldDoc && (oldDoc.type === "buildset" || oldDoc.type === "project") && userCtx.roles.indexOf('builder') === -1 && userCtx.roles.indexOf('_admin') === -1){
+    if (!newDoc._deleted && oldDoc && oldDoc.type === "buildset" && userCtx.roles.indexOf('builder') === -1 && userCtx.roles.indexOf('_admin') === -1){
         throw "You may not change the build status.";
     }
 

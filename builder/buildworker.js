@@ -33,9 +33,9 @@ rclient.on("message", function (channel, message){
     message = JSON.parse(message);
 
     if (message.task === "build" && build_path && dist_path && python){
-        console.log("Building %s:%s:%s:%s at %s", message.project_owner, message.project_name, message.project_ref, message.buildset, message.head);
+        console.log("Building %s:%s:%s at %s", message.project_owner, message.project_name, message.project_ref, message.head);
 
-        request(couchdb + "/" + ["buildset", message.project_owner, message.project_name, message.project_ref, message.buildset].join(":"), function (err, resp, body){
+        request(couchdb + "/" + ["buildset", message.project_owner, message.project_name, message.project_ref].join(":"), function (err, resp, body){
 
             if (err){
                 console.log(err);
@@ -49,7 +49,7 @@ rclient.on("message", function (channel, message){
                 }
                 else if (doc.error && (doc.reason === "missing" || doc.reason === "deleted")){
                     doc = {
-                          "_id": ["buildset", message.project_owner, message.project_name, message.project_ref, message.buildset].join(":")
+                          "_id": ["buildset", message.project_owner, message.project_name, message.project_ref].join(":")
                         , "type": "buildset"
                         , builds: []
                         , status: "ready"
@@ -152,7 +152,7 @@ function handle_build_error(message, doc, err, version, test_results, callback){
     }
 
     //TODO: notification
-    console.log("Error on " + [message.project_owner, message.project_name, message.project_ref, message.buildset].join(":") + " -- " + err);
+    console.log("Error on " + [message.project_owner, message.project_name, message.project_ref].join(":") + " -- " + err);
 
     var build = null;
     if (doc.last_build && version){
@@ -232,7 +232,7 @@ function parse_classifiers(str){
 }
 
 function process_build(message, doc){
-    var proj_id = [message.project_owner, message.project_name, message.project_ref, message.buildset];
+    var proj_id = [message.project_owner, message.project_name, message.project_ref];
     var repo = new git.Repo({path: [build_path, proj_id.join("_")].join("/"), origin: doc.origin});
 
     //console.log("Created repo object:");
@@ -253,7 +253,7 @@ function process_build(message, doc){
         console.log("Done git tasks.");
         if (!err){
             //git is in the right spot now
-            var pdir = repo.path + "/" + message.buildset;
+            var pdir = repo.path;
 
             fs.readFile(pdir + "/setup.py", "utf8", function (err, data){
                 //console.log(pdir + "/setup.py");
@@ -289,7 +289,7 @@ function process_build(message, doc){
                             data = data.replace(version_regex, "version = '$1-" + build + "'");
 
                             var filename = dist_name + "-" + version + "-" + build + ".tar.gz";
-                            var dist_dir = [message.project_owner, message.project_name, message.project_ref, message.buildset].join("_");
+                            var dist_dir = [message.project_owner, message.project_name, message.project_ref].join("_");
 
                             var test_results = "";
 
