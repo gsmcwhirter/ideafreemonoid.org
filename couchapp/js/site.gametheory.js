@@ -82,7 +82,7 @@ Gametheory.Buildset = Ember.Object.extend({
         var id = this.get("_id");
         var parts = (id || "").split(":");
 
-        return parts[2] + "." + parts[4];
+        return parts[2];
     }.property("_id").cacheable()
 
     , permalink: function (){
