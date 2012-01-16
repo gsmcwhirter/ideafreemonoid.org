@@ -383,8 +383,8 @@ Repo.prototype.process_tasks = function (tasks, callback){
     var self = this;
 
     task_queue(tasks, function (task, next){
-        console.log("Running git task: ");
-        console.log(task);
+        //console.log("Running git task: ");
+        //console.log(task);
         var args = task[1] || [];
 
         var cb = function (err, data){

@@ -235,8 +235,8 @@ function process_build(message, doc){
     var proj_id = [message.project_owner, message.project_name, message.project_ref, message.buildset];
     var repo = new git.Repo({path: [build_path, proj_id.join("_")].join("/"), origin: doc.origin});
 
-    console.log("Created repo object:");
-    console.log(repo);
+    //console.log("Created repo object:");
+    //console.log(repo);
 
     var last_head;
     var git_build_tasks = [
@@ -256,7 +256,7 @@ function process_build(message, doc){
             var pdir = repo.path + "/" + message.buildset;
 
             fs.readFile(pdir + "/setup.py", "utf8", function (err, data){
-                console.log(pdir + "/setup.py");
+                //console.log(pdir + "/setup.py");
                 if (!err){
 
                     var version = null;
@@ -333,8 +333,8 @@ function process_build(message, doc){
                             }, function (err){
                                 var next = function (){
                                     fs.rename(pdir + "/dist/" + filename, dist_path + "/" + dist_dir + "/" + filename, function (err){
-                                        console.log(pdir + "/dist/" + filename);
-                                        console.log(dist_path + "/" + dist_dir + "/" + filename);
+                                        //console.log(pdir + "/dist/" + filename);
+                                        //console.log(dist_path + "/" + dist_dir + "/" + filename);
                                         if (!err){
                                             doc.builds = doc.builds || [];
                                             doc.builds.push({
