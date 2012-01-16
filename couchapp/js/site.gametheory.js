@@ -231,11 +231,11 @@ Gametheory.BuildsetView = Ember.View.extend({
             if (matches){
                 var matchto = "v" + matches[1] + " build " + matches[2];
                 this.$("ol.builds li dd.build-string").each(function(i, o){
-                    console.log($(o).text());
-                    console.log(matchto);
+                    //console.log($(o).text());
+                    //console.log(matchto);
                     if ($(o).text() === matchto){
                         var target = $(o).parents("li:first").position().top || 0;
-                        console.log("Scrolling to " + target);
+                        //console.log("Scrolling to " + target);
                         $(window).scrollTop(target);
                         return;
                     }
