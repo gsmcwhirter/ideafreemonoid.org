@@ -138,32 +138,37 @@ script(type="text/x-handlebars", data-template-name="buildset")
       ol.builds
         {{#if onlyOneBuildset}}
         {{#each content.allFormattedBuilds}}
-        {{view Gametheory.BuildView contentBinding="this"}}
+        {{view Gametheory.BuildView contentBinding="this" onlyOneBuildsetBinding="onlyOneBuildset"}}
         {{/each}}
         {{else}}
         {{#each content.shortFormattedBuilds}}
-        {{view Gametheory.BuildView contentBinding="this"}}
+        {{view Gametheory.BuildView contentBinding="this" onlyOneBuildsetBinding="onlyOneBuildset"}}
         {{/each}}
         li
           | <a {{bindAttr href="content.permalink"}}>all builds</a>
         {{/if}}
 
 script(type="text/x-handlebars", data-template-name="build")
-  dl
-    {{#if content.version}}
-    dt Build:
-    dd v{{content.version}} build {{content.build}}
-    {{/if}}
-    dt Build Date:
-    dd {{content.date}}
-    dt Build Status:
-    dd.build-status
-      | <span {{bindAttr class="content.successful:build-success"}}>{{content.status}}</span>
-    {{#if content.successful}}
-    dt Download Link:
-    dd
-      | <a {{bindAttr href="content.downloadLink"}}>{{content.download_file}}</a>
-    {{/if}}
+  {{#if onlyOneBuildset}}
+  | <dl {{bindAttr id="content.dlid"}}>
+  {{else}}
+  | <dl>
+  {{/if}}
+  {{#if content.version}}
+  dt Build:
+  dd v{{content.version}} build {{content.build}}
+  {{/if}}
+  dt Build Date:
+  dd {{content.date}}
+  dt Build Status:
+  dd.build-status
+    | <span {{bindAttr class="content.successful:build-success"}}>{{content.status}}</span>
+  {{#if content.successful}}
+  dt Download Link:
+  dd
+    | <a {{bindAttr href="content.downloadLink"}}>{{content.download_file}}</a>
+  {{/if}}
+  | </dl>
 
 script(type="text/x-handlebars", data-template-name="classifier")
   {{content}}
