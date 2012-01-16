@@ -40,7 +40,7 @@ app.get('/', function (req, res, next){
         zombie.visit("https://www.ideafreemonoid.org/#!"+fragment, {debug: true}, function (err, browser){
             if (!err){
                 browser.fire("hashchange", browser.window, function (){
-                    browser.window.run("Ember.routes.set('location', '!'+fragment); console.log('Manually setting location.');");
+                    browser.window.run("Ember.routes.set('location', '!"+fragment+"'); console.log('Manually setting location.');");
                     browser.wait(function (){
                         console.log(browser.window.console.output);
                         res.send(browser.html());
