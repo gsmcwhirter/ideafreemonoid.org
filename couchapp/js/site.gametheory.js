@@ -231,6 +231,7 @@ Gametheory.BuildsetView = Ember.View.extend({
         if (this.get("onlyOneBuildset") && this.get("showBuild")){
             var content = this.get("content") || {};
             this.$("ol.builds li dd.build-string").each(function(i, o){
+                console.log($(o).text());
                 if ($(o).text() === "v" + content.version + " build " + content.build){
                     var target = $(o).parents("li:first").position().top || 0;
                     console.log("Scrolling to " + target);
