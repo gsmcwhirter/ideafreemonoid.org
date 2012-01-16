@@ -230,7 +230,12 @@ Gametheory.BuildsetView = Ember.View.extend({
 
         if (this.get("onlyOneBuildset") && this.get("showBuild")){
             var content = this.get("content") || {};
-            $(window).scrollTop(this.$("ol.builds dl#v" + content.version + "b" + content.build).position().top);
+            this.$("ol.builds li dd.build-string").each(function(i, o){
+                if (o.text() === "v" + content.version + " build " + content.build){
+                    scrollTo($(o).parents("li:first").position().top);
+                    return;
+                }
+            });
         }
     }
 });
