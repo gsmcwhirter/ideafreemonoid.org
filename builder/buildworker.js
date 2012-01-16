@@ -166,7 +166,7 @@ function handle_build_error(message, doc, err, version, test_results, callback){
         , date: (new Date()).toISOString()
         , status: "failed"
         , error: err
-        , test_results = test_results || "unknown"
+        , test_results: test_results || "unknown"
     });
 
     finish_build(doc, callback);
