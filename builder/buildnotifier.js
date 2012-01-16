@@ -37,7 +37,7 @@ app.configure('production', function(){
 app.get('/', function (req, res, next){
     var fragment = req.param("_escaped_fragment_");
     if (fragment){
-		zombie.visit("https://www.ideafreemonoid.org/#!"+fragment, {waitFor: 2000, userAgent: "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/535.11 (KHTML, like Gecko) Chrome/17.0.963.12 Safari/535.11", debug: true}, function (err, browser){
+		zombie.visit("https://www.ideafreemonoid.org/#!"+fragment, {waitFor: 1000, userAgent: "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/535.11 (KHTML, like Gecko) Chrome/17.0.963.12 Safari/535.11", debug: true}, function (err, browser){
 			if (!err){
 				res.send(browser.html());
 			}
