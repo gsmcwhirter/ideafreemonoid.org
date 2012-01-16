@@ -297,9 +297,7 @@ function process_build(message, doc){
                                   [fs.writeFile, [pdir + "/setup.py", data], "could not update version string"]
                                 , [exec, [["cd", pdir, "&&", python, "setup.py", "nosetests", "--verbosity=2", "--with-coverage"].join(" ")], undefined, function (err, stdout, stderr){
                                     test_results = stdout;
-                                    if (err){
-                                        test_results += "\n\n" + stderr;
-                                    }
+                                    test_results += "\n\n" + stderr;
                                 }]
                                 , [exec, [["cd", pdir, "&&", python, "setup.py", "sdist"].join(" ")]]
                                 , [fs.stat, [dist_path + "/" + dist_dir], true]

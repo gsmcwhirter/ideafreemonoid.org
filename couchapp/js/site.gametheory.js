@@ -259,7 +259,7 @@ Gametheory.BuildToggle = Ember.View.extend({
       templateName: 'test-results-toggle'
     , tagName: 'a'
     , click: function (event){
-        event.preventDefault();
+        //event.preventDefault();
 
         if (this.$("pre:visible").length){
             this.$("pre").slideUp();
