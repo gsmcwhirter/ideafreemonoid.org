@@ -232,7 +232,9 @@ Gametheory.BuildsetView = Ember.View.extend({
             var content = this.get("content") || {};
             this.$("ol.builds li dd.build-string").each(function(i, o){
                 console.log($(o).text());
-                if ($(o).text() === "v" + content.version + " build " + content.build){
+                var matchto = "v" + content.version + " build " + content.build;
+                console.log(matchto);
+                if ($(o).text() === matchto){
                     var target = $(o).parents("li:first").position().top || 0;
                     console.log("Scrolling to " + target);
                     $(window).scrollTo(target);
