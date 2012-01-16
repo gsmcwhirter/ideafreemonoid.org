@@ -394,7 +394,7 @@ namespace("worker", function (){
 
         var rclient = new redis.RedisClient(redis_channel);
 
-        request(couchdb + "/_design/app/_view/projects?include_docs=true", function (err, resp, body){
+        request(couchdb + "/_design/app/_view/buildsets?include_docs=true", function (err, resp, body){
             if (!err){
                 var response = JSON.parse(body);
 
@@ -406,18 +406,15 @@ namespace("worker", function (){
                         console.log("Processing %s...", row.doc._id);
                         var doc_data = row.doc._id.split(":");
 
-                        if (doc_data.length === 4){
-                            (row.doc.buildsets || []).forEach(function (buildset){
-                                console.log("Sending message for %s...", buildset);
-                                rclient.op({
-                                      task: "build"
-                                    , force: true
-                                    , head: doc_data[3]
-                                    , project_owner: doc_data[1]
-                                    , project_name: doc_data[2]
-                                    , project_ref: doc_data[3]
-                                    , buildset: buildset
-                                });
+                        if (doc_data.length === 3){
+                            console.log("Sending message for %s...", doc_data[2]);
+                            rclient.op({
+                                  task: "build"
+                                , force: true
+                                , head: doc_data[3]
+                                , project_owner: doc_data[1]
+                                , project_name: doc_data[2]
+                                , project_ref: doc_data[3]
                             });
                         }
                     });
