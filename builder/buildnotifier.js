@@ -40,6 +40,7 @@ app.get('/', function (req, res, next){
     	zombie.visit("https://www.ideafreemonoid.org/#!"+fragment, {debug: true}, function (err, browser){
     		if (!err){
     			browser.fire("hashchange", browser.window, function (){
+    				browser.log(browser.window.console.output);
     				res.send(browser.html());
     			});
     		}
