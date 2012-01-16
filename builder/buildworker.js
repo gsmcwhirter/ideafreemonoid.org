@@ -137,10 +137,15 @@ function do_build(message, doc, from_queue){
     }
 }
 
-function handle_build_error(message, doc, err, version, callback){
+function handle_build_error(message, doc, err, version, test_results, callback){
     if (typeof version === "function"){
         callback = version;
+        test_results = null;
         version = null;
+    }
+    else if (typeof test_results === "function"){
+        callback = test_results;
+        test_results = null;
     }
     else {
         callback = callback || function (){};
@@ -161,6 +166,7 @@ function handle_build_error(message, doc, err, version, callback){
         , date: (new Date()).toISOString()
         , status: "failed"
         , error: err
+        , test_results = test_results || "unknown"
     });
 
     finish_build(doc, callback);
@@ -285,8 +291,16 @@ function process_build(message, doc){
                             var filename = dist_name + "-" + version + "-" + build + ".tar.gz";
                             var dist_dir = [message.project_owner, message.project_name, message.project_ref, message.buildset].join("_");
 
+                            var test_results = "";
+
                             var fsTasks = [
                                   [fs.writeFile, [pdir + "/setup.py", data], "could not update version string"]
+                                , [exec, [["cd", pdir, "&&", python, "setup.py", "nosetests", "--verbosity=2", "--with-coverage"].join(" ")], undefined, function (err, stdout, stderr){
+                                    test_results = stdout;
+                                    if (err){
+                                        test_results += "\n\n" + stderr;
+                                    }
+                                }]
                                 , [exec, [["cd", pdir, "&&", python, "setup.py", "sdist"].join(" ")]]
                                 , [fs.stat, [dist_path + "/" + dist_dir], true]
                             ];
@@ -295,6 +309,10 @@ function process_build(message, doc){
                             task_queue(fsTasks, function (task, next){
 
                                 var cb = function (err, stdout, stderr){
+                                    if (typeof task[3] === "function"){
+                                        (task[3])(err, stdout, stderr);
+                                    }
+
                                     if (err){
                                         next(task[2] || stderr || err);
                                     }
@@ -324,6 +342,7 @@ function process_build(message, doc){
                                                 , build: build
                                                 , date: (new Date()).toISOString()
                                                 , status: "ok"
+                                                , test_results: test_results
                                                 , download_dir: dist_dir
                                                 , download_file: filename
                                             });
@@ -337,7 +356,7 @@ function process_build(message, doc){
                                             });
                                         }
                                         else {
-                                            handle_build_error(message, doc, "could not move to dist location: " + err, version);
+                                            handle_build_error(message, doc, "could not move to dist location: " + err, version, test_results);
                                         }
                                     });
                                 };
@@ -348,12 +367,12 @@ function process_build(message, doc){
                                             next();
                                         }
                                         else {
-                                            handle_build_error(message, doc, "could not create dist location", version);
+                                            handle_build_error(message, doc, "could not create dist location", version, test_results);
                                         }
                                     });
                                 }
                                 else if (err){
-                                    handle_build_error(message, doc, err, version);
+                                    handle_build_error(message, doc, err, version, test_results);
                                 }
                                 else {
                                     next();
