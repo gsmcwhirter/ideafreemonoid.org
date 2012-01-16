@@ -406,7 +406,7 @@ namespace("worker", function (){
                         console.log("Processing %s...", row.doc._id);
                         var doc_data = row.doc._id.split(":");
 
-                        if (doc_data.length === 3){
+                        if (doc_data.length === 4){
                             console.log("Sending message for %s...", doc_data[2]);
                             rclient.op({
                                   task: "build"
