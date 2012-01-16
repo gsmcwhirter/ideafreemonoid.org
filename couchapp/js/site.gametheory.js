@@ -95,7 +95,8 @@ Gametheory.Buildset = Ember.Object.extend({
     }.property("_id").cacheable()
 
     , lastSuccessfulBuildLink: function (){
-        return this.get("permalink") + "/" + (this.get("lastSuccessfulBuild") || {}).build;
+        var lsb = this.get("lastSuccessfulBuild") || {};
+        return this.get("permalink") + "/v" + lsb.version + "b" + lsb.build;
     }.property("permalink", "lastSuccessfulBuild").cacheable()
 
     , allFormattedBuilds: function (){
@@ -107,10 +108,6 @@ Gametheory.Buildset = Ember.Object.extend({
             build.date = (new Date(build.date)).toLocaleString();
             build.successful = (build.status === "ok");
             build.downloadLink = "/files/" + build.download_dir + "/" + build.download_file;
-            build.lid = "";
-            if (build.version && build.build){
-                build.lid = "v" + build.version + "b" + build.build;
-            }
             return build;
         }).reverse();
     }.property("builds").cacheable()
@@ -229,18 +226,21 @@ Gametheory.BuildsetView = Ember.View.extend({
         this._super();
 
         if (this.get("onlyOneBuildset") && this.get("showBuild")){
-            var content = this.get("content") || {};
-            this.$("ol.builds li dd.build-string").each(function(i, o){
-                console.log($(o).text());
-                var matchto = "v" + content.version + " build " + content.build;
-                console.log(matchto);
-                if ($(o).text() === matchto){
-                    var target = $(o).parents("li:first").position().top || 0;
-                    console.log("Scrolling to " + target);
-                    $(window).scrollTo(target);
-                    return;
-                }
-            });
+            var sb = this.get("showBuild");
+            var matches = /v([^b]+)b(.+)/i.exec(sb);
+            if (matches){
+                var matchto = "v" + matches[1] + " build " + matches[2];
+                this.$("ol.builds li dd.build-string").each(function(i, o){
+                    console.log($(o).text());
+                    console.log(matchto);
+                    if ($(o).text() === matchto){
+                        var target = $(o).parents("li:first").position().top || 0;
+                        console.log("Scrolling to " + target);
+                        $(window).scrollTo(target);
+                        return;
+                    }
+                });
+            }
         }
     }
 });
