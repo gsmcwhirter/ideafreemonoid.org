@@ -43,6 +43,7 @@ app.get('/', function (req, res, next){
                     browser.window.run("Ember.routes.set('location', '!"+fragment+"'); console.log('Manually setting location.');");
                     browser.wait(function (){
                         //console.log(browser.window.console.output);
+                        console.log("Generated static content for https://www.ideafreemonoid.org/#!%s", fragment);
                         res.send(browser.html());
                     });
                 });
