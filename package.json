@@ -1,7 +1,7 @@
 {
       "name": "ideafreemonoid.org"
     , "private": true
-    , "version": "0.2.4"
+    , "version": "0.2.5"
     , "dependencies": {
           "express": ">= 2.5.1"
         , "jade": ">= 0.16.4"
