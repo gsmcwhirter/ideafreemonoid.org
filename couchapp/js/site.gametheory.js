@@ -261,12 +261,13 @@ Gametheory.BuildToggle = Ember.View.extend({
     , click: function (event){
         event.preventDefault();
 
-        if (this.$("pre:visible").length){
-            this.$("pre").parents("dd:first").slideUp('fast');
+        var dd = this.$().parents("dd:first");
+        if (dd.find("pre:visible").length){
+            dd.find("pre").slideUp('fast');
             this.$().text("show");
         }
         else {
-            this.$("pre").parents("dd:first").slideDown('fast');
+            dd.find("pre").slideDown('fast');
             this.$().text("hide");
         }
     }
