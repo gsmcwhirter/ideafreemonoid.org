@@ -254,3 +254,20 @@ Gametheory.ClassifierView = Ember.View.extend({
       templateName: 'classifier'
     , tagName: 'li'
 });
+
+Gametheory.BuildToggle = Ember.Viewe.extend({
+      templateName: 'test-results-toggle'
+    , tagName: 'a'
+    , click: function (event){
+        event.preventDefault();
+
+        if (this.$("pre:visible").length){
+            this.$("pre").slideUp();
+            this.$().text("show");
+        }
+        else {
+            this.$("pre").slideDown();
+            this.$().text("hide");
+        }
+    }
+});

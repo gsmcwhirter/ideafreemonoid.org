@@ -165,6 +165,10 @@ script(type="text/x-handlebars", data-template-name="build")
     dd.build-status
       | <span {{bindAttr class="content.successful:build-success"}}>{{content.status}}</span>
     {{#if content.successful}}
+    dt Test Results:
+    dd.test-results
+      {{view Gametheory.BuildToggle}}
+      pre.test-results {{content.test_results}}
     dt Download Link:
     dd
       | <a {{bindAttr href="content.downloadLink"}}>{{content.download_file}}</a>
@@ -172,3 +176,6 @@ script(type="text/x-handlebars", data-template-name="build")
 
 script(type="text/x-handlebars", data-template-name="classifier")
   {{content}}
+
+script(type="text/x-handlebars", data-template-name="test-results-toggle")
+  | show
