@@ -164,11 +164,11 @@ script(type="text/x-handlebars", data-template-name="build")
     dt Build Status:
     dd.build-status
       | <span {{bindAttr class="content.successful:build-success"}}>{{content.status}}</span>
-    {{#if content.successful}}
     dt Test Results:
     dd.test-results
       {{view Gametheory.BuildToggle}}
       pre.test-results {{content.test_results}}
+    {{#if content.successful}}
     dt Download Link:
     dd
       | <a {{bindAttr href="content.downloadLink"}}>{{content.download_file}}</a>
