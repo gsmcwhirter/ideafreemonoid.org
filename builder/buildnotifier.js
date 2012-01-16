@@ -37,9 +37,11 @@ app.configure('production', function(){
 app.get('/', function (req, res, next){
     var fragment = req.param("_escaped_fragment_");
     if (fragment){
-		zombie.visit("https://www.ideafreemonoid.org/#!"+fragment, function (e, browser){
-			if (!e){
-				res.send(browser.html());
+		zombie.visit("https://www.ideafreemonoid.org/#!"+fragment, function (err, browser){
+			if (!err){
+				browser.wait(function (){
+					res.send(browser.html());
+				});
 			}
 			else {
 				res.send("not found", 404);
