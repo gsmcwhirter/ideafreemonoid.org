@@ -5,6 +5,7 @@
 var express = require('express')
     , redis = require('./redis_client')
     , request = require('request')
+    , zombie = require('zombie')
     , couchdb = process.env.couchdb || null
     ;
 
@@ -36,8 +37,14 @@ app.configure('production', function(){
 app.get('/', function (req, res, next){
     var fragment = req.param("_escaped_fragment_");
     if (fragment){
-        res.send([fragment, req.url]); //TODO: real functionality
-
+		zombie.visit("https://www.ideafreemonoid.org/#!"+fragment, function (e, browser){
+			if (!e){
+				res.send(browser.html());
+			}
+			else {
+				res.send("not found", 404);
+			}
+		});
     }
     else {
         res.send("not found", 404);
