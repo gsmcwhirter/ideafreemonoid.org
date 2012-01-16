@@ -37,12 +37,12 @@ app.configure('production', function(){
 app.get('/', function (req, res, next){
     var fragment = req.param("_escaped_fragment_");
     if (fragment){
-        zombie.visit("https://www.ideafreemonoid.org/#!"+fragment, {debug: true}, function (err, browser){
+        zombie.visit("https://www.ideafreemonoid.org/#!"+fragment, function (err, browser){
             if (!err){
                 browser.fire("hashchange", browser.window, function (){
                     browser.window.run("Ember.routes.set('location', '!"+fragment+"'); console.log('Manually setting location.');");
                     browser.wait(function (){
-                        console.log(browser.window.console.output);
+                        //console.log(browser.window.console.output);
                         res.send(browser.html());
                     });
                 });
