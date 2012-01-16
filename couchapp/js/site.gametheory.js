@@ -95,13 +95,16 @@ Gametheory.Buildset = Ember.Object.extend({
     }.property("_id").cacheable()
 
     , lastSuccessfulBuildLink: function (){
-        return this.get("permalink") + "/" + this.get("lastSuccessfulBuild");
+        var lsb = this.get("lastSuccessfulBuild") || {};
+        return this.get("permalink") + "/v" + lsb.version + "b" + lsb.build;
     }.property("permalink", "lastSuccessfulBuild").cacheable()
 
     , allFormattedBuilds: function (){
         var builds = (this.get("builds") || []).slice();
 
         return _(builds).map(function (build){
+            build.version = build.version === "unknown" ? null : build.version;
+            build.build = build.build === "unknown" ? null : build.build;
             build.date = (new Date(build.date)).toLocaleString();
             build.successful = (build.status === "ok");
             build.downloadLink = "/files/" + build.download_dir + "/" + build.download_file;
@@ -218,6 +221,28 @@ Gametheory.BuildsetView = Ember.View.extend({
     , tagName: 'li'
     , showBuildBinding: "Gametheory.buildsetsController.showBuild"
     , onlyOneBuildsetBinding: "Gametheory.buildsetsController.onlyOneBuildset"
+
+    , didInsertElement: function (){
+        this._super();
+
+        if (this.get("onlyOneBuildset") && this.get("showBuild")){
+            var sb = this.get("showBuild");
+            var matches = /v([^b]+)b(.+)/i.exec(sb);
+            if (matches){
+                var matchto = "v" + matches[1] + " build " + matches[2];
+                this.$("ol.builds li dd.build-string").each(function(i, o){
+                    //console.log($(o).text());
+                    //console.log(matchto);
+                    if ($(o).text() === matchto){
+                        var target = $(o).parents("li:first").position().top || 0;
+                        //console.log("Scrolling to " + target);
+                        $(window).scrollTop(target);
+                        return;
+                    }
+                });
+            }
+        }
+    }
 });
 
 Gametheory.BuildView = Ember.View.extend({

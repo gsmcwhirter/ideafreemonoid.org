@@ -133,26 +133,31 @@ script(type="text/x-handlebars", data-template-name="buildset")
         {{view Gametheory.ClassifierView contentBinding="this"}}
         {{/each}}
     {{/if}}
-    dt Recent Builds:
+    {{#if onlyOneBuildset}}
+    dt All Builds:
     dd
       ol.builds
-        {{#if onlyOneBuildset}}
         {{#each content.allFormattedBuilds}}
         {{view Gametheory.BuildView contentBinding="this"}}
         {{/each}}
-        {{else}}
+        li
+          | <a {{bindAttr href="content.permalink"}}>all builds</a>
+    {{else}}
+    dt Recent Builds:
+    dd
+      ol.builds
         {{#each content.shortFormattedBuilds}}
         {{view Gametheory.BuildView contentBinding="this"}}
         {{/each}}
         li
           | <a {{bindAttr href="content.permalink"}}>all builds</a>
-        {{/if}}
+    {{/if}}
 
 script(type="text/x-handlebars", data-template-name="build")
   dl
     {{#if content.version}}
     dt Build:
-    dd v{{content.version}} build {{content.build}}
+    dd.build-string v{{content.version}} build {{content.build}}
     {{/if}}
     dt Build Date:
     dd {{content.date}}
