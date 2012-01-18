@@ -388,44 +388,71 @@ namespace("worker", function (){
     task("update", update("worker"), {async: true});
 
     desc("Forces a rebuild of all projects and buildsets.");
-    task("forcebuild", function (){
+    task("forcebuild", function (buildset){
         var redis_channel = process.env.redis_channel || config.builder.redis_channel || "build tasks";
         var couchdb = process.env.couchdb || build_couchdb_url(config.couchdb);
 
         var rclient = new redis.RedisClient(redis_channel);
+        
+        var send_message_for = function (buildset){
+            console.log("Processing %s...", buildset);
+            var doc_data = buildset.split(":");
 
-        request(couchdb + "/_design/app/_view/buildsets?include_docs=true", function (err, resp, body){
-            if (!err){
-                var response = JSON.parse(body);
+            if (doc_data.length === 4){
+                console.log("Sending message for %s...", doc_data[2]);
+                rclient.op({
+                      task: "build"
+                    , force: true
+                    , head: doc_data[3]
+                    , project_owner: doc_data[1]
+                    , project_name: doc_data[2]
+                    , project_ref: doc_data[3]
+                });
+            }
+        };
 
-                if (response.error){
-                    fail(response.error);
+        if (!buildset){
+            request(couchdb + "/_design/app/_view/buildsets?include_docs=true", function (err, resp, body){
+                if (!err){
+                    var response = JSON.parse(body);
+    
+                    if (response.error){
+                        fail(response.error);
+                    }
+                    else {
+                        (response.rows || []).forEach(function (row){
+                            send_message_for(row.doc._id);
+                        });
+                    }
                 }
                 else {
-                    (response.rows || []).forEach(function (row){
-                        console.log("Processing %s...", row.doc._id);
-                        var doc_data = row.doc._id.split(":");
-
-                        if (doc_data.length === 4){
-                            console.log("Sending message for %s...", doc_data[2]);
-                            rclient.op({
-                                  task: "build"
-                                , force: true
-                                , head: doc_data[3]
-                                , project_owner: doc_data[1]
-                                , project_name: doc_data[2]
-                                , project_ref: doc_data[3]
-                            });
-                        }
-                    });
+                    fail("Couldn't fetch project docs.");
                 }
-            }
-            else {
-                fail("Couldn't fetch project docs.");
-            }
-
-            rclient.close();
-            complete();
-        });
+    
+                rclient.close();
+                complete();
+            });
+        }
+        else {
+            request(couchdb + "/buildset:" + buildset, function (err, resp, body){
+                if (!err){
+                    var response = JSON.parse(body);
+                    
+                    if (response.error){
+                        fail(response.error);
+                    }
+                    else {
+                        send_message_for(response._id);
+                    }
+                }
+                else {
+                    fail("Couldn't fetch buildset doc.");
+                }
+                
+                rclient.close();
+                complete(); 
+            });
+            
+        }
     }, {async: true});
 });
