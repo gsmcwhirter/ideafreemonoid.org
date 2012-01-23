@@ -48,7 +48,7 @@ Gametheory.Build = Ember.Object.extend({
     
     , formattedBuild: function (){
         var build = this.get("build");
-        return build === "unknown" ? null : ver;
+        return build === "unknown" ? null : build;
     }.property("build").cacheable()
     
     , formattedDate: function (){
@@ -146,13 +146,13 @@ Gametheory.Buildset = Ember.Object.extend({
         
         return _(builds).map(function (build){
             return Gametheory.Build.create(build);
-        });
+        }).reverse();
     }.property("builds").cacheable()
 
     , recentBuilds: function (){
         var b = this.get("allBuilds");
 
-        return b.slice(0,5);
+        return b.slice(0,3);
     }.property("allBuilds").cacheable()
 
     , formattedDescription: function (){
