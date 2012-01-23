@@ -32,6 +32,48 @@ Gametheory.Router = {
     }
 };
 
+Gametheory.Build = Ember.Object.extend({
+      version: null
+    , build: null
+    , date: null
+    , status: null
+    , test_results: ""
+    , download_dir: null
+    , download_file: null
+    
+    , formattedVersion: function (){
+        var ver = this.get("version");
+        return ver === "unknown" ? null : ver; 
+    }.property("version").cacheable()
+    
+    , formattedBuild: function (){
+        var build = this.get("build");
+        return build === "unknown" ? null : ver;
+    }.property("build").cacheable()
+    
+    , formattedDate: function (){
+        var date = this.get("date") || undefined;
+        return (new Date(date)).toLocaleString();
+    }.property("date").cacheable()
+    
+    , successful: function (){
+        return this.get("status") === "ok";
+    }.property("status").cacheable()
+    
+    , downloadLink: function (){
+        var ddir = this.get("download_dir")
+          , dfile = this.get("download_file")
+          ;
+          
+        if (ddir && dfile){
+            return "/files/" + ddir + "/" + dfile;
+        }
+        else {
+            return "";
+        }
+    }.property("download_dir", "download_file")
+});
+
 Gametheory.Buildset = Ember.Object.extend({
       builds: []
     , last_build: {}
@@ -98,25 +140,20 @@ Gametheory.Buildset = Ember.Object.extend({
         var lsb = this.get("lastSuccessfulBuild") || {};
         return this.get("permalink") + "/v" + lsb.version + "b" + lsb.build;
     }.property("permalink", "lastSuccessfulBuild").cacheable()
-
-    , allFormattedBuilds: function (){
+    
+    , allBuilds: function (){
         var builds = (this.get("builds") || []).slice();
-
+        
         return _(builds).map(function (build){
-            build.version = build.version === "unknown" ? null : build.version;
-            build.build = build.build === "unknown" ? null : build.build;
-            build.date = (new Date(build.date)).toLocaleString();
-            build.successful = (build.status === "ok");
-            build.downloadLink = "/files/" + build.download_dir + "/" + build.download_file;
-            return build;
-        }).reverse();
+            return Gametheory.Build.create(build);
+        });
     }.property("builds").cacheable()
 
-    , shortFormattedBuilds: function (){
-        var b = this.get("allFormattedBuilds");
+    , recentBuilds: function (){
+        var b = this.get("allBuilds");
 
         return b.slice(0,5);
-    }.property("allFormattedBuilds").cacheable()
+    }.property("allBuilds").cacheable()
 
     , formattedDescription: function (){
         return SDConverter.makeHtml(this.get("description") || "\n");
@@ -142,6 +179,22 @@ Gametheory.Buildset = Ember.Object.extend({
             return false;
         }
     }.property("classifiers").cacheable()
+    
+    , documentationLink: function (){
+        var id = this.get("_id");
+        var parts = id.split(":");
+        
+        var pname = parts[2].replace(/[^a-z0-9]/ig, '');
+        
+        return "http://readthedocs.org/docs/" + pname + "/en/latest/";
+    }.property("_id").cacheable()
+    
+    , sourceCodeLink: function (){
+        var id = this.get("_id");
+        var parts = id.split(":");
+        
+        return "https://github.com/" + parts[1] + "/" + parts[2];
+    }.property("_id").cacheable()
 });
 
 Gametheory.buildsetsController = Ember.ArrayController.create({

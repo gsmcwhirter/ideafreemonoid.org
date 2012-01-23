@@ -4,7 +4,7 @@ script(type="text/x-handlebars", data-template-name="blog")
   ol.posts
     {{#each postsArray}}
     li
-      {{view Blog.BlogPostView contentBinding="this" classBinding="isDraft:blog-draft"}}
+      {{view Blog.BlogPostView contentBinding="this" classBinding="this.isDraft:blog-draft"}}
     {{/each}}
   {{#if hasManyPages}}
   .pagination
@@ -117,6 +117,12 @@ script(type="text/x-handlebars", data-template-name="buildset")
     dt License:
     dd
       {{{content.formattedLicense}}}
+    dt Source Code:
+    dd
+      | <a {{bindAttr href="content.sourceCodeLink"}}>github</a>
+    dt Documentation:
+    dd
+      | <a {{bindAttr href="content.documentationLink"}}>read the docs</a>
     dt Last Successful Build:
     {{#if content.hasSuccessfulBuild}}
     dd
@@ -137,14 +143,14 @@ script(type="text/x-handlebars", data-template-name="buildset")
     dt All Builds:
     dd
       ol.builds
-        {{#each content.allFormattedBuilds}}
+        {{#each content.allBuilds}}
         {{view Gametheory.BuildView contentBinding="this"}}
         {{/each}}
     {{else}}
     dt Recent Builds:
     dd
       ol.builds
-        {{#each content.shortFormattedBuilds}}
+        {{#each content.recentBuilds}}
         {{view Gametheory.BuildView contentBinding="this"}}
         {{/each}}
         li
@@ -153,12 +159,12 @@ script(type="text/x-handlebars", data-template-name="buildset")
 
 script(type="text/x-handlebars", data-template-name="build")
   dl
-    {{#if content.version}}
+    {{#if content.formattedVersion}}
     dt Build:
-    dd.build-string v{{content.version}} build {{content.build}}
+    dd.build-string v{{content.formattedVersion}} build {{content.formattedBuild}}
     {{/if}}
     dt Build Date:
-    dd {{content.date}}
+    dd {{content.formattedDate}}
     dt Build Status:
     dd.build-status
       | <span {{bindAttr class="content.successful:build-success"}}>{{content.status}}</span>

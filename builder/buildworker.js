@@ -301,6 +301,9 @@ function process_build(message, doc){
                                 , [exec, [["cd", pdir, "&&", python, "setup.py", "sdist"].join(" ")]]
                                 , [fs.stat, [dist_path + "/" + dist_dir], true]
                             ];
+                            
+                            //, [exec, [["cd", pdir + "/docs", "&&", "make", "html"].join(" ")]]
+                            //, [fs.rename, [pdir + "/docs/build/html", dist_path + "/" + dist_dir + "/docs/" + version]]
 
                             var self = this;
                             task_queue(fsTasks, function (task, next){
