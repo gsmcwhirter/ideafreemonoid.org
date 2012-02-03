@@ -75,14 +75,37 @@ block maincontent
 
   #gametheory
     .instructions
-      | Packages here can be installed in (at least) two ways. The easiest is
-      | perhaps to run the following command (replacing "gametheory.base" with the package name):
+      p
+        | Packages here can be re-used by either globally installing them 
+        | or using a virualenv for your project. I recommend the latter way.
+      p
+        | To start a new project using one of the packages below, you can
+        | follow these steps (replacing "gametheory.base" with the package name): 
       code
-        | pip install --extra-index-url https://www.ideafreemonoid.org/pip gametheory.base
-      | Alternatively, you can download and extract the linked archive from any build and run
-      | the following command in the extracted directory:
+        pre
+          | mkdir myproject
+          | cd myproject
+          | virtualenv --distribute .
+          | virtualenv --relocatable .
+          | pip -E . install --extra-index-url https://www.ideafreemonoid.org/pip gametheory.base
+      p
+        | As an alternative to the final step, you can download and extract the linked archive from any build and run
+        | the following command in the extracted directory:
       code
-        | pip install .
+        pre
+          | pip -E /path/to/myproject install .
+      p
+        | Once you have a project set up and want to use it, you can 
+        | activate your virtualenv by the following command:
+      code
+        pre
+          | source /path/to/myproject/bin/activate
+      p 
+        | When you want to return to your normal system environment, you 
+        | can deactivate the virtualenv by entering the following command:
+      code
+        pre
+          | deactivate 
     script(type="text/x-handlebars")
       {{view Gametheory.BuildsetListView}}
 
