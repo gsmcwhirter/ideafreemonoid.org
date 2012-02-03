@@ -295,7 +295,7 @@ function process_build(message, doc){
 
                             var fsTasks = [
                                   [fs.writeFile, [pdir + "/setup.py", data], "could not update version string"]
-                                , [exec, [["cd", pdir, "&&", python, "setup.py", "nosetests", "--verbosity=1", "--with-coverage", "--cover-package="+dist_name, "--cover-erase"].join(" ")], undefined, function (err, stdout, stderr){
+                                , [exec, [["cd", pdir, "&&", python, "setup.py", "nosetests", "--verbosity=2", "--with-coverage", "--cover-package="+dist_name, "--cover-erase"].join(" ")], undefined, function (err, stdout, stderr){
                                     test_results = stderr;
                                 }]
                                 , [exec, [["cd", pdir, "&&", python, "setup.py", "sdist"].join(" ")]]
