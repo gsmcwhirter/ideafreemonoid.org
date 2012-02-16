@@ -312,6 +312,7 @@ namespace("worker", function (){
                 , build_path: build_path
                 , dist_path: dist_path
                 , python: python
+                , C_INCLUDE_PATH: "/usr/local/lib/python2.6/dist-packages/numpy/core/include"
             }
             , logFile: [logDir, "worker_forever.log"].join("/")
             , outFile: [logDir, "worker_out.log"].join("/")
