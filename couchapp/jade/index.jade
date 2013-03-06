@@ -42,16 +42,18 @@ block maincontent
         | philosophy of science.
       h3.header Current Projects
       p
-        | I have lately been investigating relationships between deception and
-        | combinatorial communication, as well as generalizations of correlated
-        | equilibrium.
+        | I am working on a dissertation on the definition of deceptive 
+        | behavior using formal tools in game theory and applications of
+        | that definition to various situations. These include deception 
+        | as an inhibitor to the evolution of combinatorial communication
+        | and the evolutionary advantage of self-deception.
     #links
-      h3.header.top Files
-      ul
-        li
-          a(href="files/cv.pdf") Curriculum Vitae
-          | &nbsp;(PDF)
-      h3.header Links and Social Networks
+      //h3.header.top Files
+      //ul
+      //  li
+      //    a(href="files/cv.pdf") Curriculum Vitae
+      //    | &nbsp;(PDF)
+      h3.header.top Links and Social Networks
       ul
         li
           a(href="http://github.com/gsmcwhirter") GitHub
@@ -80,14 +82,14 @@ block maincontent
         | or using a virualenv for your project. I recommend the latter way.
       p
         | To start a new project using one of the packages below, you can
-        | follow these steps (replacing "gametheory.base" with the package name): 
+        | follow these steps (replacing "simulations" with the package name): 
       code
         pre
           | mkdir myproject
           | cd myproject
           | virtualenv --distribute .
           | virtualenv --relocatable .
-          | pip -E . install --extra-index-url https://www.ideafreemonoid.org/pip gametheory.base
+          | pip -E . install --extra-index-url https://www.ideafreemonoid.org/pip simulations
       p
         | As an alternative to the final step, you can download and extract the linked archive from any build and run
         | the following command in the extracted directory:
