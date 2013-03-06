@@ -10,6 +10,10 @@ var ddoc =
         , {from:"/pip", to:'./_list/pip_index/pips', query:{link_downloads:'false', group_level: '1'}}
         , {from:"/pip/:project", to:'./_list/pip_index/pips', query:{startkey: [':project',0], endkey: [':project',1], link_downloads: 'true', reduce: 'false'}}
         , {from:"/visualizations/", to:'visualizations/index.html'}
+        , {from:"/visualizations/css/*", to:'visualizations/css/*'}
+        , {from:"/visualizations/images/*", to:'visualizations/images/*'}
+        , {from:"/visualizations/js/*", to:'visualizations/js/*'}
+        , {from:"/visualizations/*", to:'visualizations/index.html'}
         , {from:"/api", to:'./'}
         , {from:"/api/*", to:'../../*'}
         , {from:"/*", to:'*'}
