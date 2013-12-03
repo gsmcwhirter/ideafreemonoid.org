@@ -2,7 +2,8 @@ var fs = require("fs")
   , cleancss = require("clean-css")
   , jade = require("jade")
   , stylus = require("stylus")
-  , minify = require("jake-uglify").minify
+  //, minify = require("jake-uglify").minify
+  , uglify = require("uglify-js")
   , couchapp = require("couchapp")
   , path = require("path")
   , forever = require("forever")
@@ -98,10 +99,28 @@ namespace("js", function (){
     });
 
     desc("Concatenates the site functionality files together and minifies");
-    var files = ["api", "main", "user", "blog", "cv", "gametheory", "routes"].map(function (file){
+    file("couchapp/attachments/js/site.min.js", function (){
+      var files = ["api", "main", "user", "blog", "cv", "gametheory", "routes"].map(function (file){
         return "couchapp/js/site." + file + ".js";
+      });
+      
+      console.log(files);
+      
+      /*var all = '';
+      files.forEach(function(file, i) {
+        if (file.match(/^.*js$/)) {
+          all += fs.readFileSync(file).toString();
+        }
+      });*/
+
+  
+      var out = fs.openSync('couchapp/attachments/js/site.min.js', 'w+');
+      /*var ast = uglify.parser.parse(all);
+      ast = uglify.uglify.ast_mangle(ast);
+      ast = uglify.uglify.ast_squeeze(ast);
+      fs.writeSync(out, uglify.uglify.gen_code(ast)); */
+      fs.writeSync(out, uglify.minify(files).code);
     });
-    minify({"couchapp/attachments/js/site.min.js": files});
 });
 
 namespace("css", function (){
