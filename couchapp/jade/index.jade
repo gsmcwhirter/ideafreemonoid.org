@@ -9,8 +9,8 @@ block menuarea
       //  a(href="#!blog") Blog
       li
         a(href="#!cv") CV
-      li
-        a(href="#!gametheory") Code
+      //li
+      //  a(href="#!gametheory") Code
       li
         a(href="/visualizations/") Visualizations
 
@@ -21,32 +21,55 @@ block userarea
 
 block maincontent
   #home
-    img.picture(src="images/picture.png", alt="Photograph")
+    img.picture(src="images/picture2.png", alt="Photograph")
 
     h2 Gregory McWhirter
-    h3.alt.top University of California, Irvine
-    h4.alt2.top Department of Logic and Philosophy of Science
+    //h3.alt.top University of California, Irvine
+    //h4.alt2.top Department of Logic and Philosophy of Science
 
     dl
-      dt Office:
-      dd SST 704
-      dt E-Mail:
+      //dt Office:
+      //dd SST 704
+      dt Academic E-Mail:
       dd gmcwhirt -at- uci -dot- edu
+      dt Personal E-Mail:
+      dd greg -at- ideafreemonoid -dot- org
     .clearfix
     #about
-      h3.header.top Research Interests
+      h3.header.top Personal Information
+      p
+        | I am Gregory McWhirter. I am currently a graduate student at the 
+        a(href="http://www.uci.edu") University of California, Irvine
+        |  in the department of 
+        a(href="http://www.lps.uci.edu") Logic and Philosophy of Science
+        | .
+      p
+        | I am originally from central Pennsylvania. I received a joint bachelor's
+        |  degree from the 
+        a(href="http://www.pitt.edu") University of Pittsburgh
+        |  in mathematics and philosophy.
+      h3.header Teaching Interests
+      p
+        | I have taught a number of classes at a university level in symbolic logic,
+        |  philosophy of science, and introductory philosophy. I also regularly teach
+        |  a mathematical logic course during the summer for the 
+        a(href="http://cty.jhu.edu") Johns Hopkins Center for Talented Youth
+        |  that focuses on introductory proof-writing, elementary number theory, 
+        |  and set theory.
+      h3.header Academic Interests
       p
         | My interests cover several areas including evolutionary game theory,
-        | philosophy of biology, mathematics, philosophy of mathematics
-        | (especially applied mathematics), philosophy of logic, and general
-        | philosophy of science.
+        |  philosophy of biology, mathematics, philosophy of mathematics
+        |  (especially applied mathematics), philosophy of logic, and general
+        |  philosophy of science.
       h3.header Current Projects
       p
-        | My dissertation is concerned with the definition of deceptive 
-        | behavior using formal tools in game theory and applications of
-        | that definition to various situations. These include deception 
-        | as an inhibitor to the evolution of combinatorial communication
-        | and the evolutionary advantage of self-deception.
+        | I have lately been focusing on my dissertation. It concerns how to
+        |  identify and understand deceptive behavior in formal models of
+        |  communication -- in particular, in Lewis-Skyrms signalling games.
+        |  I apply the general theory to trying to understand claims about
+        |  the possibility for universal deception, as well as the potential
+        |  evolutionary advantages of self-deception.
     #links
       //h3.header.top Files
       //ul
@@ -67,48 +90,48 @@ block maincontent
           a(href="http://www.linkedin.com/in/gsmcwhirter") LinkedIn
         li
           a(href="http://uci.academia.edu/GregoryMcWhirter") Academia.edu
-  #blog
-    script(type="text/x-handlebars")
-      {{view Blog.BlogView}}
+  //#blog
+  //  script(type="text/x-handlebars")
+  //    {{view Blog.BlogView}}
 
   #cv
     script(type="text/x-handlebars")
       {{view CV.CVView}}
 
-  #gametheory
-    .instructions
-      p
-        | Packages here can be re-used by either globally installing them 
-        | or using a virualenv for your project. I recommend the latter way.
-      p
-        | To start a new project using one of the packages below, you can
-        | follow these steps (replacing "simulations" with the package name): 
-      code
-        pre
-          | mkdir myproject
-          | cd myproject
-          | virtualenv --distribute .
-          | virtualenv --relocatable .
-          | pip -E . install --extra-index-url https://www.ideafreemonoid.org/pip simulations
-      p
-        | As an alternative to the final step, you can download and extract the linked archive from any build and run
-        | the following command in the extracted directory:
-      code
-        pre
-          | pip -E /path/to/myproject install .
-      p
-        | Once you have a project set up and want to use it, you can 
-        | activate your virtualenv by the following command:
-      code
-        pre
-          | source /path/to/myproject/bin/activate
-      p 
-        | When you want to return to your normal system environment, you 
-        | can deactivate the virtualenv by entering the following command:
-      code
-        pre
-          | deactivate 
-    script(type="text/x-handlebars")
-      {{view Gametheory.BuildsetListView}}
+  //#gametheory
+  //  .instructions
+  //    p
+  //      | Packages here can be re-used by either globally installing them 
+  //      | or using a virualenv for your project. I recommend the latter way.
+  //    p
+  //      | To start a new project using one of the packages below, you can
+  //      | follow these steps (replacing "simulations" with the package name): 
+  //    code
+  //      pre
+  //        | mkdir myproject
+  //        | cd myproject
+  //        | virtualenv --distribute .
+  //        | virtualenv --relocatable .
+  //        | pip -E . install --extra-index-url https://www.ideafreemonoid.org/pip simulations
+  //    p
+  //      | As an alternative to the final step, you can download and extract the linked archive from any build and run
+  //      | the following command in the extracted directory:
+  //    code
+  //      pre
+  //        | pip -E /path/to/myproject install .
+  //    p
+  //      | Once you have a project set up and want to use it, you can 
+  //      | activate your virtualenv by the following command:
+  //    code
+  //      pre
+  //        | source /path/to/myproject/bin/activate
+  //    p 
+  //      | When you want to return to your normal system environment, you 
+  //      | can deactivate the virtualenv by entering the following command:
+  //    code
+  //      pre
+  //        | deactivate 
+  //  script(type="text/x-handlebars")
+  //    {{view Gametheory.BuildsetListView}}
 
 
