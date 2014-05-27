@@ -5,12 +5,12 @@ block menuarea
     ul
       li
         a(href="#") Home
-      //li
-      //  a(href="#!blog") Blog
+      li
+        a(href="#!blog") Blog
       li
         a(href="#!cv") CV
-      //li
-      //  a(href="#!gametheory") Code
+      li
+        a(href="#!gametheory") Code
       li
         a(href="/visualizations/") Visualizations
 
@@ -24,12 +24,9 @@ block maincontent
     img.picture(src="images/picture2.png", alt="Photograph", style="height: 180px; width: 225px; min-width: 1px !important; margin-right: 10%;")
 
     h2 Gregory McWhirter
-    //h3.alt.top University of California, Irvine
-    //h4.alt2.top Department of Logic and Philosophy of Science
+    
 
     dl
-      //dt Office:
-      //dd SST 704
       dt Academic E-Mail:
       dd gmcwhirt -at- uci -dot- edu
       dt Personal E-Mail:
@@ -38,11 +35,17 @@ block maincontent
     #about
       h3.header.top Personal Information
       p
-        | I am Gregory McWhirter. I am currently a graduate student at the 
+        | Starting with the 2014-2015 academic year, I will be a mathematics and
+        | computer science teacher at the 
+        a(href="http://windwardschool.org") Windward School
+        |  in west Los Angeles.
+      p
+        | I am currently a graduate student at the 
         a(href="http://www.uci.edu") University of California, Irvine
         |  in the department of 
         a(href="http://www.lps.uci.edu") Logic and Philosophy of Science
-        | .
+        |  finishing a Ph.D. concerning how to identify deceptive behavior in
+        | formal models of signalling.
       p
         | I am originally from central Pennsylvania. I received a joint bachelor's
         |  degree from the 
@@ -56,82 +59,92 @@ block maincontent
         a(href="http://cty.jhu.edu") Johns Hopkins Center for Talented Youth
         |  that focuses on introductory proof-writing, elementary number theory, 
         |  and set theory.
-      h3.header Academic Interests
-      p
-        | My interests cover several areas including evolutionary game theory,
-        |  philosophy of biology, mathematics, philosophy of mathematics
-        |  (especially applied mathematics), philosophy of logic, and general
-        |  philosophy of science.
-      h3.header Current Projects
-      p
-        | I have lately been focusing on my dissertation. It concerns how to
-        |  identify and understand deceptive behavior in formal models of
-        |  communication -- in particular, in Lewis-Skyrms signalling games.
-        |  I apply the general theory to trying to understand claims about
-        |  the possibility for universal deception, as well as the potential
-        |  evolutionary advantages of self-deception.
+      //- h3.header Research Interests
+      //- p
+      //-   | My research interests cover several areas including evolutionary game theory,
+      //-   |  philosophy of biology, mathematics, philosophy of mathematics
+      //-   |  (especially applied mathematics), philosophy of logic, and general
+      //-   |  philosophy of science.
+      //- h3.header Current Projects
+      //- p
+      //-   | I have lately been focusing on my dissertation. It concerns how to
+      //-   |  identify and understand deceptive behavior in formal models of
+      //-   |  communication -- in particular, in Lewis-Skyrms signalling games.
+      //-   |  I apply the general theory to trying to understand claims about
+      //-   |  the possibility for universal deception, as well as the potential
+      //-   |  evolutionary advantages of self-deception.
     #links
-      //h3.header.top Files
-      //ul
-      //  li
-      //    a(href="files/cv.pdf") Curriculum Vitae
-      //    | &nbsp;(PDF)
       h3.header.top Links and Social Networks
       ul
         li
           a(href="http://github.com/gsmcwhirter") GitHub
-        //li
-        //  a(href="http://twitter.com/#!/gsmcwhirter") Twitter
         li
-          a(href="http://www.mendeley.com/profiles/gregory-mcwhirter/") Mendeley
-        li
-          a(href="http://philpapers.org/profile/2940") PhilPapers
+          a(href="http://twitter.com/#!/gsmcwhirter") Twitter
         li
           a(href="http://www.linkedin.com/in/gsmcwhirter") LinkedIn
-        li
-          a(href="http://uci.academia.edu/GregoryMcWhirter") Academia.edu
-  //#blog
-  //  script(type="text/x-handlebars")
-  //    {{view Blog.BlogView}}
+
+  #blog
+    script(type="text/x-handlebars").
+      {{view Blog.BlogView}}
 
   #cv
     script(type="text/x-handlebars").
       {{view CV.CVView}}
 
-  //#gametheory
-  //  .instructions
-  //    p
-  //      | Packages here can be re-used by either globally installing them 
-  //      | or using a virualenv for your project. I recommend the latter way.
-  //    p
-  //      | To start a new project using one of the packages below, you can
-  //      | follow these steps (replacing "simulations" with the package name): 
-  //    code
-  //      pre
-  //        | mkdir myproject
-  //        | cd myproject
-  //        | virtualenv --distribute .
-  //        | virtualenv --relocatable .
-  //        | pip -E . install --extra-index-url https://www.ideafreemonoid.org/pip simulations
-  //    p
-  //      | As an alternative to the final step, you can download and extract the linked archive from any build and run
-  //      | the following command in the extracted directory:
-  //    code
-  //      pre
-  //        | pip -E /path/to/myproject install .
-  //    p
-  //      | Once you have a project set up and want to use it, you can 
-  //      | activate your virtualenv by the following command:
-  //    code
-  //      pre
-  //        | source /path/to/myproject/bin/activate
-  //    p 
-  //      | When you want to return to your normal system environment, you 
-  //      | can deactivate the virtualenv by entering the following command:
-  //    code
-  //      pre
-  //        | deactivate 
-  //  script(type="text/x-handlebars")
-  //    {{view Gametheory.BuildsetListView}}
+  #gametheory
+    h2 C Simulation Code
+    .instructions
+      p
+        | I have recently transitioned most of my simulations to plain C
+        | from python due to speed requirements.
+        | The most recent frameworks are available from my 
+        a(href="https://github.com/gsmcwhirter/c-simulations") c-simulations project
+        | . 
+      p
+        | Examples of this framework being used are available in my 
+        a(href="https://github.com/gsmcwhirter/universal-deception") universal-deception project
+        |  and my 
+        a(href="https://github.com/gsmcwhirter/self-deception") self-deception project
+        | .
+
+    h2 Python Simulation Code
+    .instructions
+      p
+        | Formerly, I maintained the following simulations framework in python/cython.
+        | It can certainly still be used, though I have no intention of providing updates
+        | at this time.
+      p
+        | Packages here can be re-used by either globally installing them 
+        | or using a virualenv for your project. I recommend the latter way.
+      p
+        | To start a new project using one of the packages below, you can
+        | follow these steps (replacing "simulations" with the package name): 
+      code
+        pre
+          | mkdir myproject
+          | cd myproject
+          | virtualenv --distribute .
+          | virtualenv --relocatable .
+          | pip -E . install --extra-index-url https://www.ideafreemonoid.org/pip simulations
+      p
+        | As an alternative to the final step, you can download and extract the linked archive from any build and run
+        | the following command in the extracted directory:
+      code
+        pre
+          | pip -E /path/to/myproject install .
+      p
+        | Once you have a project set up and want to use it, you can 
+        | activate your virtualenv by the following command:
+      code
+        pre
+          | source /path/to/myproject/bin/activate
+      p 
+        | When you want to return to your normal system environment, you 
+        | can deactivate the virtualenv by entering the following command:
+      code
+        pre
+          | deactivate 
+    script(type="text/x-handlebars").
+      {{view Gametheory.BuildsetListView}}
 
 
