@@ -16,12 +16,12 @@ block menuarea
 
 block userarea
   #userbox
-    script(type="text/x-handlebars")
+    script(type="text/x-handlebars").
       {{view User.UserView}}
 
 block maincontent
   #home
-    img.picture(src="images/picture2.png", alt="Photograph")
+    img.picture(src="images/picture2.png", alt="Photograph", style="height: 180px; width: 225px; min-width: 1px !important; margin-right: 10%;")
 
     h2 Gregory McWhirter
     //h3.alt.top University of California, Irvine
@@ -95,7 +95,7 @@ block maincontent
   //    {{view Blog.BlogView}}
 
   #cv
-    script(type="text/x-handlebars")
+    script(type="text/x-handlebars").
       {{view CV.CVView}}
 
   //#gametheory

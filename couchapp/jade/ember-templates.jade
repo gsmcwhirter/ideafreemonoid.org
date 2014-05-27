@@ -1,4 +1,4 @@
-script(type="text/x-handlebars", data-template-name="blog")
+script(type="text/x-handlebars", data-template-name="blog").
   .actions
     {{view Blog.AddPostLink}}
   ol.posts
@@ -15,16 +15,16 @@ script(type="text/x-handlebars", data-template-name="blog")
     <a {{bindAttr href="lastHref"}}>last&raquo;</a>
   {{/if}}
 
-script(type="text/x-handlebars", data-template-name="blog-add-post-link")
+script(type="text/x-handlebars", data-template-name="blog-add-post-link").
   {{#if currentUser.is_connected}}
   a(href="#") Add New Post
   {{/if}}
 
-script(type="text/x-handlebars", data-template-name="blog-post")
+script(type="text/x-handlebars", data-template-name="blog-post").
   {{view Blog.EditFormView contentBinding="content" classBinding="content.isEditing:editing-form"}}
   {{view Blog.PostDisplayView contentBinding="content" showCommentsBinding="showComments" classBinding="content.isEditing:editing-display"}}
 
-script(type="text/x-handlebars", data-template-name="blog-post-display")
+script(type="text/x-handlebars", data-template-name="blog-post-display").
   h2
     | <a {{bindAttr href="content.permalink"}}>{{content.title}}</a>
   .byline Posted {{content.formattedDate}} by {{{content.formattedAuthors}}}
@@ -42,7 +42,7 @@ script(type="text/x-handlebars", data-template-name="blog-post-display")
     | <a {{bindAttr href="content.commentlink"}} {{bindAttr data-disqus-identifier="content.slug"}}>comments</a>
     {{/if}}
 
-script(type="text/x-handlebars", data-template-name="blog-post-form")
+script(type="text/x-handlebars", data-template-name="blog-post-form").
   form
     label Title
     {{view Ember.TextField name="title" valueBinding="content.title" class="title"}}
@@ -82,34 +82,34 @@ script(type="text/x-handlebars", data-template-name="cv-section-form")
     {{view Ember.TextArea name="content_raw" valueBinding="content.content_raw"}}
     {{#view saveButton contentBinding="content"}}Save{{/view}}
 
-script(type="text/x-handlebars", data-template-name="cv-add-section-link")
+script(type="text/x-handlebars", data-template-name="cv-add-section-link").
   {{#if currentUser.is_connected}}
   a(href="#") Add New Section
   {{/if}}
 
-script(type="text/x-handlebars", data-template-name="user")
+script(type="text/x-handlebars", data-template-name="user").
   {{#if currentUser.is_connected}}
   {{view userLogoutView currentUserBinding="currentUser"}}
   {{else}}
   {{view userLoginView currentUserBinding="currentUser"}}
   {{/if}}
 
-script(type="text/x-handlebars", data-template-name="user-login")
+script(type="text/x-handlebars", data-template-name="user-login").
   {{view usernameView id="login-username" name="username"}}
   {{view passwordView id="login-password" name="password"}}
   {{#view loginButton}}Log In{{/view}}
 
-script(type="text/x-handlebars", data-template-name="user-logout")
+script(type="text/x-handlebars", data-template-name="user-logout").
   {{currentUser.name}}
   {{#view User.LogoutButton}}Log Out{{/view}}
 
-script(type="text/x-handlebars", data-template-name="buildset-list")
+script(type="text/x-handlebars", data-template-name="buildset-list").
   ol.buildsets
     {{#each buildsets}}
     {{view Gametheory.BuildsetView contentBinding="this"}}
     {{/each}}
 
-script(type="text/x-handlebars", data-template-name="buildset")
+script(type="text/x-handlebars", data-template-name="buildset").
   h2 {{content.packageName}}
   .description
     {{{content.formattedDescription}}}
@@ -157,7 +157,7 @@ script(type="text/x-handlebars", data-template-name="buildset")
           | <a {{bindAttr href="content.permalink"}}>all builds</a>
     {{/if}}
 
-script(type="text/x-handlebars", data-template-name="build")
+script(type="text/x-handlebars", data-template-name="build").
   dl
     {{#if content.formattedVersion}}
     dt Build:
@@ -178,8 +178,8 @@ script(type="text/x-handlebars", data-template-name="build")
       | <a {{bindAttr href="content.downloadLink"}}>{{content.download_file}}</a>
     {{/if}}
 
-script(type="text/x-handlebars", data-template-name="classifier")
+script(type="text/x-handlebars", data-template-name="classifier").
   {{content}}
 
-script(type="text/x-handlebars", data-template-name="test-results-toggle")
+script(type="text/x-handlebars", data-template-name="test-results-toggle").
   | show

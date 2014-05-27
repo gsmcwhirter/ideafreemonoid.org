@@ -6,7 +6,7 @@
     "express": ">= 2.5.1",
     "jade": ">= 0.16.4",
     "stylus": ">= 0.19.2",
-    "clean-css": ">= 0.3.1",
+    "clean-css": "~ 0.3",
     "jake-uglify": ">= 1.0.1",
     "couchapp": ">= 0.8.1",
     "hiredis": ">= 0.1.13",
