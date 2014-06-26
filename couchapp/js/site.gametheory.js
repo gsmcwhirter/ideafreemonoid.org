@@ -12,7 +12,7 @@ Gametheory.Router = {
         Gametheory.buildsetsController.loadPage();
 
         this.get("rootElement").show();
-        App.setTitle("Game Theory");
+        App.setTitle("Code");
     }
     , show_buildset: function (params){
         if (!params.buildset){
@@ -27,7 +27,7 @@ Gametheory.Router = {
             Gametheory.buildsetsController.loadPage(params.buildset, params.build);
 
             this.get("rootElement").show();
-            App.setTitle("Game Theory");
+            App.setTitle("Code");
         }
     }
 };

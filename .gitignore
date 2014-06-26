@@ -7,3 +7,5 @@ couchapp/attachments/css/*
 couchapp/css/layout.css
 couchapp/attachments/ifm-min.css
 couchapp/css/layout-min.css
+*.sublime-project
+*.sublime-workspace

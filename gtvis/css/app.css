@@ -1,0 +1,1089 @@
+.booting-sub-nav.navbar-fixed-top {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1020;
+}
+
+
+
+
+
+
+/*! normalize.css v2.1.0 | MIT License | git.io/normalize */
+
+/* ==========================================================================
+   HTML5 display definitions
+   ========================================================================== */
+
+/**
+ * Correct `block` display not defined in IE 8/9.
+ */
+
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+main,
+nav,
+section,
+summary {
+    display: block;
+}
+
+/**
+ * Correct `inline-block` display not defined in IE 8/9.
+ */
+
+audio,
+canvas,
+video {
+    display: inline-block;
+}
+
+/**
+ * Prevent modern browsers from displaying `audio` without controls.
+ * Remove excess height in iOS 5 devices.
+ */
+
+audio:not([controls]) {
+    display: none;
+    height: 0;
+}
+
+/**
+ * Address styling not present in IE 8/9.
+ */
+
+[hidden] {
+    display: none;
+}
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
+
+/**
+ * 1. Set default font family to sans-serif.
+ * 2. Prevent iOS text size adjust after orientation change, without disabling
+ *    user zoom.
+ */
+
+html {
+    font-family: sans-serif; /* 1 */
+    -webkit-text-size-adjust: 100%; /* 2 */
+    -ms-text-size-adjust: 100%; /* 2 */
+}
+
+/**
+ * Remove default margin.
+ */
+
+body {
+    margin: 0;
+}
+
+/* ==========================================================================
+   Links
+   ========================================================================== */
+
+/**
+ * Address `outline` inconsistency between Chrome and other browsers.
+ */
+
+a:focus {
+    outline: thin dotted;
+}
+
+/**
+ * Improve readability when focused and also mouse hovered in all browsers.
+ */
+
+a:active,
+a:hover {
+    outline: 0;
+}
+
+/* ==========================================================================
+   Typography
+   ========================================================================== */
+
+/**
+ * Address variable `h1` font-size and margin within `section` and `article`
+ * contexts in Firefox 4+, Safari 5, and Chrome.
+ */
+
+h1 {
+    font-size: 2em;
+    margin: 0.67em 0;
+}
+
+/**
+ * Address styling not present in IE 8/9, Safari 5, and Chrome.
+ */
+
+abbr[title] {
+    border-bottom: 1px dotted;
+}
+
+/**
+ * Address style set to `bolder` in Firefox 4+, Safari 5, and Chrome.
+ */
+
+b,
+strong {
+    font-weight: bold;
+}
+
+/**
+ * Address styling not present in Safari 5 and Chrome.
+ */
+
+dfn {
+    font-style: italic;
+}
+
+/**
+ * Address differences between Firefox and other browsers.
+ */
+
+hr {
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+    height: 0;
+}
+
+/**
+ * Address styling not present in IE 8/9.
+ */
+
+mark {
+    background: #ff0;
+    color: #000;
+}
+
+/**
+ * Correct font family set oddly in Safari 5 and Chrome.
+ */
+
+code,
+kbd,
+pre,
+samp {
+    font-family: monospace, serif;
+    font-size: 1em;
+}
+
+/**
+ * Improve readability of pre-formatted text in all browsers.
+ */
+
+pre {
+    white-space: pre-wrap;
+}
+
+/**
+ * Set consistent quote types.
+ */
+
+q {
+    quotes: "\201C" "\201D" "\2018" "\2019";
+}
+
+/**
+ * Address inconsistent and variable font size in all browsers.
+ */
+
+small {
+    font-size: 80%;
+}
+
+/**
+ * Prevent `sub` and `sup` affecting `line-height` in all browsers.
+ */
+
+sub,
+sup {
+    font-size: 75%;
+    line-height: 0;
+    position: relative;
+    vertical-align: baseline;
+}
+
+sup {
+    top: -0.5em;
+}
+
+sub {
+    bottom: -0.25em;
+}
+
+/* ==========================================================================
+   Embedded content
+   ========================================================================== */
+
+/**
+ * Remove border when inside `a` element in IE 8/9.
+ */
+
+img {
+    border: 0;
+}
+
+/**
+ * Correct overflow displayed oddly in IE 9.
+ */
+
+svg:not(:root) {
+    overflow: hidden;
+}
+
+/* ==========================================================================
+   Figures
+   ========================================================================== */
+
+/**
+ * Address margin not present in IE 8/9 and Safari 5.
+ */
+
+figure {
+    margin: 0;
+}
+
+/* ==========================================================================
+   Forms
+   ========================================================================== */
+
+/**
+ * Define consistent border, margin, and padding.
+ */
+
+fieldset {
+    border: 1px solid #c0c0c0;
+    margin: 0 2px;
+    padding: 0.35em 0.625em 0.75em;
+}
+
+/**
+ * 1. Correct `color` not being inherited in IE 8/9.
+ * 2. Remove padding so people aren't caught out if they zero out fieldsets.
+ */
+
+legend {
+    border: 0; /* 1 */
+    padding: 0; /* 2 */
+}
+
+/**
+ * 1. Correct font family not being inherited in all browsers.
+ * 2. Correct font size not being inherited in all browsers.
+ * 3. Address margins set differently in Firefox 4+, Safari 5, and Chrome.
+ */
+
+button,
+input,
+select,
+textarea {
+    font-family: inherit; /* 1 */
+    font-size: 100%; /* 2 */
+    margin: 0; /* 3 */
+}
+
+/**
+ * Address Firefox 4+ setting `line-height` on `input` using `!important` in
+ * the UA stylesheet.
+ */
+
+button,
+input {
+    line-height: normal;
+}
+
+/**
+ * Address inconsistent `text-transform` inheritance for `button` and `select`.
+ * All other form control elements do not inherit `text-transform` values.
+ * Correct `button` style inheritance in Chrome, Safari 5+, and IE 8+.
+ * Correct `select` style inheritance in Firefox 4+ and Opera.
+ */
+
+button,
+select {
+    text-transform: none;
+}
+
+/**
+ * 1. Avoid the WebKit bug in Android 4.0.* where (2) destroys native `audio`
+ *    and `video` controls.
+ * 2. Correct inability to style clickable `input` types in iOS.
+ * 3. Improve usability and consistency of cursor style between image-type
+ *    `input` and others.
+ */
+
+button,
+html input[type="button"], /* 1 */
+input[type="reset"],
+input[type="submit"] {
+    -webkit-appearance: button; /* 2 */
+    cursor: pointer; /* 3 */
+}
+
+/**
+ * Re-set default cursor for disabled elements.
+ */
+
+button[disabled],
+html input[disabled] {
+    cursor: default;
+}
+
+/**
+ * 1. Address box sizing set to `content-box` in IE 8/9.
+ * 2. Remove excess padding in IE 8/9.
+ */
+
+input[type="checkbox"],
+input[type="radio"] {
+    box-sizing: border-box; /* 1 */
+    padding: 0; /* 2 */
+}
+
+/**
+ * 1. Address `appearance` set to `searchfield` in Safari 5 and Chrome.
+ * 2. Address `box-sizing` set to `border-box` in Safari 5 and Chrome
+ *    (include `-moz` to future-proof).
+ */
+
+input[type="search"] {
+    -webkit-appearance: textfield; /* 1 */
+    -moz-box-sizing: content-box;
+    -webkit-box-sizing: content-box; /* 2 */
+    box-sizing: content-box;
+}
+
+/**
+ * Remove inner padding and search cancel button in Safari 5 and Chrome
+ * on OS X.
+ */
+
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-decoration {
+    -webkit-appearance: none;
+}
+
+/**
+ * Remove inner padding and border in Firefox 4+.
+ */
+
+button::-moz-focus-inner,
+input::-moz-focus-inner {
+    border: 0;
+    padding: 0;
+}
+
+/**
+ * 1. Remove default vertical scrollbar in IE 8/9.
+ * 2. Improve readability and alignment in all browsers.
+ */
+
+textarea {
+    overflow: auto; /* 1 */
+    vertical-align: top; /* 2 */
+}
+
+/* ==========================================================================
+   Tables
+   ========================================================================== */
+
+/**
+ * Remove most spacing between table cells.
+ */
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+
+/*
+  Simple Grid
+  Learn More - http://dallasbass.com/simple-grid-a-lightweight-responsive-css-grid/
+  Project Page - http://thisisdallas.github.com/Simple-Grid/
+  Author - Dallas Bass
+  Site - dallasbass.com
+*/
+
+*, *:after, *:before {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0px;
+}
+
+[class*='col-'] {
+	float: left;
+	padding-right: 20px;
+}
+
+[class*='col-']:last-of-type {
+	padding-right: 0px;
+}
+
+.grid {
+	width: 100%;
+	max-width: 1140px;
+	min-width: 755px;
+	margin: 0 auto;
+	overflow: hidden;
+}
+
+.grid:after {
+	content: "";
+	display: table;
+	clear: both;
+}
+
+.grid-pad {
+	padding: 20px 0 0px 20px;
+}
+
+.grid-pad > [class*='col-']:last-of-type {
+	padding-right: 20px;
+}
+
+/* Content Columns */
+
+.col-1-1 {
+	width: 100%;
+}
+.col-2-3, .col-8-12 {
+	width: 66.66%;
+}
+
+.col-1-2, .col-6-12 {
+	width: 50%;
+}
+
+.col-1-3, .col-4-12 {
+	width: 33.33%;
+}
+
+.col-1-4, .col-3-12 {
+	width: 25%;
+}
+
+.col-1-5 {
+	width: 20%;
+}
+
+.col-1-6, .col-2-12 {
+	width: 16.667%;
+}
+
+.col-1-7 {
+	width: 14.28%;
+}
+
+.col-1-8 {
+	width: 12.5%;
+}
+
+.col-1-9 {
+	width: 11.1%;
+}
+
+.col-1-10 {
+	width: 10%;
+}
+
+.col-1-11 {
+	width: 9.09%;
+}
+
+.col-1-12 {
+	width: 8.33%
+}
+
+/* Layout Columns */
+
+.col-11-12 {
+	width: 91.66%
+}
+
+.col-10-12 {
+	width: 83.333%;
+}
+
+.col-9-12 {
+	width: 75%;
+}
+
+.col-5-12 {
+	width: 41.66%;
+}
+
+.col-7-12 {
+	width: 58.33%
+}
+
+@media handheld, only screen and (max-width: 767px) {
+
+
+	.grid {
+		width: 100%;
+		min-width: 0;
+		margin-left: 0px;
+		margin-right: 0px;
+		padding-left: 0px;
+		padding-right: 0px;
+	}
+
+	[class*='col-'] {
+		width: auto;
+		float: none;
+		margin-left: 0px;
+		margin-right: 0px;
+		margin-top: 10px;
+		margin-bottom: 10px;
+		padding-left: 20px;
+		padding-right: 20px;
+	}
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}
+
+/* forms.css */
+label {font-weight:bold;}
+fieldset {padding:0 1.4em 1.4em 1.4em;margin:0 0 1.5em 0;border:1px solid #ccc;}
+legend {font-weight:bold;font-size:1.2em;margin-top:-0.2em;margin-bottom:1em;}
+fieldset, #IE8#HACK {padding-top:1.4em;}
+legend, #IE8#HACK {margin-top:0;margin-bottom:0;}
+input[type=text], input[type=password], input.text, input.title, textarea {background-color:#fff;border:1px solid #bbb;}
+input[type=text]:focus, input[type=password]:focus, input.text:focus, input.title:focus, textarea:focus {border-color:#666;}
+select {background-color:#fff;border-width:1px;border-style:solid;}
+input[type=text], input[type=password], input.text, input.title, textarea, select {margin:0.5em 0;}
+input.text, input.title {width:300px;padding:5px;}
+input.title {font-size:1.5em;}
+textarea {width:390px;height:250px;padding:5px;}
+form.inline {line-height:3;}
+form.inline p {margin-bottom:0;}
+.error, .alert, .notice, .success, .info {padding:0.8em;margin-bottom:1em;border:2px solid #ddd;}
+.error, .alert {background:#fbe3e4;color:#8a1f11;border-color:#fbc2c4;}
+.notice {background:#fff6bf;color:#514721;border-color:#ffd324;}
+.success {background:#e6efc2;color:#264409;border-color:#c6d880;}
+.info {background:#d5edf8;color:#205791;border-color:#92cae4;}
+.error a, .alert a {color:#8a1f11;}
+.notice a {color:#514721;}
+.success a {color:#264409;}
+.info a {color:#205791;}
+
+/* buttons */
+a.button, button {display:block;float:left;margin:0.7em 0.5em 0.7em 0;padding:5px 10px 5px 7px;border:1px solid #dedede;border-top:1px solid #eee;border-left:1px solid #eee;background-color:#f5f5f5;font-family:"Lucida Grande", Tahoma, Arial, Verdana, sans-serif;font-size:100%;line-height:130%;text-decoration:none;font-weight:bold;color:#565656;cursor:pointer;}
+button {width:auto;overflow:visible;padding:4px 10px 3px 7px;}
+button[type] {padding:4px 10px 4px 7px;line-height:17px;}
+*:first-child+html button[type] {padding:4px 10px 3px 7px;}
+button img, a.button img {margin:0 3px -3px 0 !important;padding:0;border:none;width:16px;height:16px;float:none;}
+button:hover, a.button:hover {background-color:#dff4ff;border:1px solid #c2e1ef;color:#336699;}
+a.button:active {background-color:#6299c5;border:1px solid #6299c5;color:#fff;}
+body .positive {color:#529214;}
+a.positive:hover, button.positive:hover {background-color:#E6EFC2;border:1px solid #C6D880;color:#529214;}
+a.positive:active {background-color:#529214;border:1px solid #529214;color:#fff;}
+body .negative {color:#d12f19;}
+a.negative:hover, button.negative:hover {background-color:#fbe3e4;border:1px solid #fbc2c4;color:#d12f19;}
+a.negative:active {background-color:#d12f19;border:1px solid #d12f19;color:#fff;}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+}
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  padding: 30px;
+  font-size: 16px;
+  background: -moz-linear-gradient(top, #006080, #eee);
+  background: -webkit-gradient(linear, 0 0, 0 90%, from(#006080), to(#eee));
+  background-color: #eee;
+  background-repeat: no-repeat;
+}
+body h1,
+body h2,
+body h3,
+body h4,
+body h5,
+body h6 {
+  color: #005673;
+  font-family: Georgia, serif !important;
+}
+body #main h1,
+body #legend h1,
+body #main h2,
+body #legend h2,
+body #main h3,
+body #legend h3,
+body #main h4,
+body #legend h4,
+body #main h5,
+body #legend h5,
+body #main h6,
+body #legend h6 {
+  font-weight: normal;
+  margin: 0;
+  margin-bottom: 0.5em;
+}
+body #main h1,
+body #legend h1 {
+  font-size: 182%;
+}
+body #main h2,
+body #legend h2 {
+  color: #666;
+  font-size: 167%;
+}
+body #main h2.game-type,
+body #legend h2.game-type {
+  font-size: 153.9%;
+}
+body #main h3,
+body #legend h3 {
+  font-size: 153.9%;
+}
+body #foot-spacer {
+  clear: both;
+  height: 30px;
+}
+body #content {
+  padding: 20px;
+  padding-top: 5px;
+  border-radius: 8px;
+  -moz-border-radius: 8px;
+  -webkit-border-radius: 8px;
+  border: 1px solid #ccc;
+  -moz-box-shadow: 4px 4px 20px rgba(0,0,0,0.5);
+  -webkit-box-shadow: 4px 4px 20px rgba(0,0,0,0.5);
+  background: -moz-linear-gradient(top, #fff, #eee);
+  background: -webkit-gradient(linear, 0 0, 0 90%, from(#fff), to(#eee));
+  background-color: #eee;
+}
+body #content .cblock {
+  border-radius: 8px;
+  -moz-border-radius: 8px;
+  -webkit-border-radius: 8px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  padding: 20px;
+  margin-right: 10px;
+  margin-top: 10px;
+  overflow: auto;
+}
+body #content .cblock.tight-vert {
+  padding: 0 10px;
+}
+body #content #main {
+  padding: 5px 0;
+}
+body a {
+  color: #a75416;
+  text-decoration: none;
+}
+body a:hover {
+  color: #fb7e21;
+  text-decoration: underline;
+}
+body span.sep,
+body span.link-sep {
+  margin: 0 10px;
+}
+body .menu {
+  font-size: 14px;
+}
+body .menu a {
+  font-weight: bold;
+}
+body .menu span.sep {
+  margin: 0 10px;
+  color: #ccc;
+}
+body .menu.header {
+  border-bottom: 1px solid #ddd;
+}
+body .menu.footer {
+  margin-top: 5px;
+  border-top: 1px solid #ddd;
+}
+.game .save-button {
+  display: none;
+}
+.game .process-button {
+  display: block;
+}
+.game .edit-button {
+  display: block;
+}
+.game br.edit-button {
+  display: inline;
+}
+.game h1.label {
+  display: block;
+}
+.game input.title {
+  display: none;
+}
+.game h2.game-type {
+  display: block;
+}
+.game select.presets {
+  display: none;
+}
+.game input.entry-input {
+  display: none;
+}
+.game .entry {
+  display: inline;
+}
+.game.editing .save-button {
+  display: block;
+}
+.game.editing .process-button {
+  display: none;
+}
+.game.editing .edit-button {
+  display: none;
+}
+.game.editing h1.label {
+  display: none;
+}
+.game.editing input.title {
+  display: inline;
+}
+.game.editing h2.game-type {
+  display: none;
+}
+.game.editing select.presets {
+  display: inline;
+}
+.game.editing input.entry-input {
+  display: inline;
+}
+.game.editing .entry {
+  display: none;
+}
+a.button.positive {
+  color: #529214;
+}
+a.button.negative {
+  color: #d12f19;
+}
+a.button {
+  -webkit-user-select: none;
+  user-select: none;
+  width: auto;
+  padding: 1px 5px;
+  text-decoration: none;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+  border: 1px solid #888;
+  text-shadow: 0 -1px 0 rgba(255,255,255,0.4);
+  -webkit-box-shadow: inset 0 1px 0 rgba(255,255,255,0.4), 0 1px 1px rgba(0,0,0,0.2);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.4), 0 1px 1px rgba(0,0,0,0.2);
+  -webkit-transition-duration: 0.2s;
+  transform-duration: 0.2s;
+}
+a.button:hover,
+a.button:focus {
+  text-decoration: none;
+}
+.game {
+  overflow: auto;
+}
+.game fieldset {
+  padding: 0;
+  border: none;
+}
+.game .canvas-container {
+  display: none;
+}
+.game .canvas-container canvas {
+  width: 320px;
+  height: 320px;
+  min-width: 320px;
+  min-height: 320px;
+  margin-right: 1em;
+  margin-top: 1em;
+  float: left;
+}
+.game .canvas-container canvas.bl {
+  clear: left;
+}
+.game .game-grid {
+  width: 75%;
+  float: left;
+}
+.game .game-grid .game-grid-actual {
+  width: 300px;
+  border: 1px solid #bbb;
+}
+.game .game-grid .game-grid-actual input[type=text],
+.game .game-grid .game-grid-actual input[type=password],
+.game .game-grid .game-grid-actual input[type=email],
+.game .game-grid .game-grid-actual input[type=url],
+.game .game-grid .game-grid-actual input[type=number],
+.game .game-grid .game-grid-actual input[type=date],
+.game .game-grid .game-grid-actual input[type=datetime],
+.game .game-grid .game-grid-actual input[type=month],
+.game .game-grid .game-grid-actual input[type=week],
+.game .game-grid .game-grid-actual input[type=time],
+.game .game-grid .game-grid-actual input[type=search],
+.game .game-grid .game-grid-actual input[type=color],
+.game .game-grid .game-grid-actual select,
+.game .game-grid .game-grid-actual textarea {
+  width: 100px;
+}
+.game .game-grid .game-grid-actual .row {
+  overflow: auto;
+  border-bottom: 1px solid #bbb;
+}
+.game .game-grid .game-grid-actual .row .cell {
+  float: left;
+  width: 148px;
+  border-right: 1px solid #bbb;
+  overflow: auto;
+  text-align: center;
+  padding: 10px 0;
+}
+.game .game-grid .game-grid-actual .row .cell .entry {
+  width: 60px;
+  padding: 5px;
+  margin: 0.5em 0;
+  font-size: 1.5em;
+}
+.game .game-grid .game-grid-actual .row .cell .entry-input {
+  width: 66px;
+}
+.game .game-grid .game-grid-actual .row .cell .entry.left,
+.game .game-grid .game-grid-actual .row .cell .entry-input.left {
+  text-align: right;
+  float: left;
+}
+.game .game-grid .game-grid-actual .row .cell .entry-input.left {
+  margin-left: 2px;
+}
+.game .game-grid .game-grid-actual .row .cell .entry.right,
+.game .game-grid .game-grid-actual .row .cell .entry-input.right {
+  text-align: left;
+  float: right;
+}
+.game .game-grid .game-grid-actual .row .cell .entry-input.right {
+  margin-right: 2px;
+}
+.game .game-grid .game-grid-actual .row .cell .sep {
+  padding: 5px 0;
+  margin: 0.5em 0;
+  display: block;
+  font-size: 1.5em;
+}
+.game .game-grid .game-grid-actual .row .cell.last {
+  border-right: none;
+}
+.game .game-grid .game-grid-actual .row.last {
+  border-bottom: none;
+}
+.game .visualization {
+  margin-top: 1.5em;
+}
+.game .game-actions {
+  width: 24%;
+  float: right;
+}
+#legend {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  margin-top: 10px;
+  background-color: #fff;
+}
+#test-space {
+  height: 1000px !important;
+}
+fieldset {
+  border: 1px solid;
+  clear: both;
+  border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+}
+fieldset .form-line {
+  overflow: auto;
+  margin-bottom: 0.5em;
+}
+fieldset input[type=text],
+fieldset input[type=password],
+fieldset input[type=email],
+fieldset input[type=url],
+fieldset input[type=number],
+fieldset input[type=date],
+fieldset input[type=datetime],
+fieldset input[type=month],
+fieldset input[type=week],
+fieldset input[type=time],
+fieldset input[type=search],
+fieldset input[type=color],
+fieldset select,
+fieldset textarea {
+  width: 75%;
+  margin: 0.5em 0px;
+  padding: 5px;
+}
+fieldset textarea {
+  height: 20em;
+}
+fieldset .field-status {
+  display: inline-block;
+  width: 30px;
+  height: 26px;
+  vertical-align: top;
+  margin-top: 6px;
+  margin-left: 1em;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+}
+fieldset .status-field-ok,
+fieldset .status-field-not-ok,
+fieldset .status-field-maybe {
+  display: inline-block;
+  width: 30px;
+  height: 26px;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+fieldset .status-field-ok {
+  background-image: url("dynamics-visualization/images/signup_ok.png");
+}
+fieldset .status-field-not-ok {
+  background-image: url("dynamics-visualization/images/signup_notok.png");
+}
+fieldset .status-field-maybe {
+  background-image: url("dynamics-visualization/images/signup_maybe.png");
+}
+fieldset input.title + .field-status {
+  margin-top: 13px;
+}
+fieldset ul.field-error {
+  color: #f00;
+  margin: 0;
+  margin-bottom: 2px;
+}
+fieldset ul.field-error li {
+  color: #f00;
+}
+fieldset.narrow-fields input[type=text],
+fieldset.narrow-fields input[type=password],
+fieldset.narrow-fields input[type=email],
+fieldset.narrow-fields input[type=url],
+fieldset.narrow-fields input[type=number],
+fieldset.narrow-fields input[type=date],
+fieldset.narrow-fields input[type=datetime],
+fieldset.narrow-fields input[type=month],
+fieldset.narrow-fields input[type=week],
+fieldset.narrow-fields input[type=time],
+fieldset.narrow-fields input[type=search],
+fieldset.narrow-fields input[type=color],
+fieldset.narrow-fields select,
+fieldset.narrow-fields textarea {
+  width: 50%;
+}
+fieldset.wide-fields input[type=text],
+fieldset.wide-fields input[type=password],
+fieldset.wide-fields input[type=email],
+fieldset.wide-fields input[type=url],
+fieldset.wide-fields input[type=number],
+fieldset.wide-fields input[type=date],
+fieldset.wide-fields input[type=datetime],
+fieldset.wide-fields input[type=month],
+fieldset.wide-fields input[type=week],
+fieldset.wide-fields input[type=time],
+fieldset.wide-fields input[type=search],
+fieldset.wide-fields input[type=color],
+fieldset.wide-fields select,
+fieldset.wide-fields textarea {
+  width: 90%;
+}
+p,
+ul,
+ol {
+  margin-bottom: 1.5em;
+}
+ul,
+ul>li,
+ol,
+ol>li {
+  list-style-position: outside;
+}
+ul.bullets,
+ul.bullets>li {
+  list-style-type: circle;
+}
+ul.bullets ul.bullets,
+ul.bullets ul.bullets>li {
+  list-style-type: square;
+}
+ul.bullets ul.bullets ul.bullets,
+ul.bullets ul.bullets ul.bullets>li {
+  list-style-type: disc;
+}
+ol,
+ol>li,
+ol.decimal,
+ol.decimal>li {
+  list-style-type: decimal;
+}
+ol ol,
+ol ol>li,
+ol.Alpha,
+ol.Alpha>li {
+  list-style-type: upper-alpha;
+}
+ol ol ol,
+ol ol ol>li,
+ol.roman,
+ol.roman>li {
+  list-style-type: lower-roman;
+}
+ol ol ol ol,
+ol ol ol ol>li,
+ol.alpha,
+ol.alpha>li {
+  list-style-type: lower-alpha;
+}
+strong,
+.bold {
+  font-weight: bold;
+}
+.center {
+  text-align: center;
+}

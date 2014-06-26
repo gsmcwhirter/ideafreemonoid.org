@@ -1,26 +1,25 @@
 script(type="text/x-handlebars", data-template-name="blog")
-  .actions
+  .actions.
     {{view Blog.AddPostLink}}
   ol.posts
-    {{#each postsArray}}
-    li
-      {{view Blog.BlogPostView contentBinding="this" classBinding="this.isDraft:blog-draft"}}
-    {{/each}}
-  {{#if hasManyPages}}
-  .pagination
-    a(href="#!blog/1") &laquo;first
+    | {{#each postsArray}}
+    li {{view Blog.BlogPostView contentBinding="this" classBinding="this.isDraft:blog-draft"}}
+    | {{/each}}
+  | {{#if hasManyPages}}
+  .pagination.
+    <a href="#!blog/1">&laquo;first</a>
     {{#each pagesLinkData}}
-    | <a {{bindAttr href="pageHref"}}>{{page}}</a>
+    <a {{bindAttr href="pageHref"}}>{{page}}</a>
     {{/each}}
     <a {{bindAttr href="lastHref"}}>last&raquo;</a>
-  {{/if}}
+  | {{/if}}
 
 script(type="text/x-handlebars", data-template-name="blog-add-post-link")
-  {{#if currentUser.is_connected}}
+  | {{#if currentUser.is_connected}}
   a(href="#") Add New Post
-  {{/if}}
+  | {{/if}}
 
-script(type="text/x-handlebars", data-template-name="blog-post")
+script(type="text/x-handlebars", data-template-name="blog-post").
   {{view Blog.EditFormView contentBinding="content" classBinding="content.isEditing:editing-form"}}
   {{view Blog.PostDisplayView contentBinding="content" showCommentsBinding="showComments" classBinding="content.isEditing:editing-display"}}
 
@@ -30,42 +29,41 @@ script(type="text/x-handlebars", data-template-name="blog-post-display")
   .byline Posted {{content.formattedDate}} by {{{content.formattedAuthors}}}
   .tagline Tags: {{{content.formattedTags}}}
   .content {{{content.formattedContent}}}
-  .editline
+  .editline.
     {{content.editString}}
   .comments
-    {{#if showComments}}
+    | {{#if showComments}}
     .disqus_thread_placeholder
     a.dsq-brlink(href="http://disqus.com")
       | blog comments powered by
       span.logo-disqus Disqus
-    {{else}}
+    | {{else}}
     | <a {{bindAttr href="content.commentlink"}} {{bindAttr data-disqus-identifier="content.slug"}}>comments</a>
-    {{/if}}
+    | {{/if}}
 
 script(type="text/x-handlebars", data-template-name="blog-post-form")
   form
     label Title
-    {{view Ember.TextField name="title" valueBinding="content.title" class="title"}}
+    | {{view Ember.TextField name="title" valueBinding="content.title" class="title"}}
     label Tags
-    {{view Ember.TextField name="tagString" valueBinding="content.tagString"}}
+    | {{view Ember.TextField name="tagString" valueBinding="content.tagString"}}
     label Content
-    {{view Ember.TextArea name="content_raw" valueBinding="content.content_raw"}}
-    {{#view saveButton contentBinding="content"}}Save{{/view}}
-    {{#unless content.is_published}}
-    {{#view publishButton contentBinding="content"}}Publish{{/view}}
-    {{/unless}}
+    | {{view Ember.TextArea name="content_raw" valueBinding="content.content_raw"}}
+    | {{#view saveButton contentBinding="content"}}Save{{/view}}
+    | {{#unless content.is_published}}
+    | {{#view publishButton contentBinding="content"}}Publish{{/view}}
+    | {{/unless}}
 
 script(type="text/x-handlebars", data-template-name="cv")
   ol.sections
-    {{#each CV.sectionsController.contentSorted}}
-    li
-      {{view CV.SectionView contentBinding="this"}}
-    {{/each}}
-  .actions
+    | {{#each CV.sectionsController.contentSorted}}
+    li {{view CV.SectionView contentBinding="this"}}
+    | {{/each}}
+  .actions.
     {{view CV.AddSectionLink}}
 
 script(type="text/x-handlebars", data-template-name="cv-section")
-  .cvsection
+  .cvsection.
     {{view CV.EditFormView contentBinding="content" classBinding="content.isEditing:editing-form"}}
     {{view CV.SectionDisplayView contentBinding="content" classBinding="content.isEditing:editing-display"}}
 
@@ -77,92 +75,91 @@ script(type="text/x-handlebars", data-template-name="cv-section-display")
 script(type="text/x-handlebars", data-template-name="cv-section-form")
   form
     label Title
-    {{view Ember.TextField name="title" valueBinding="content.title" class="title"}}
+    | {{view Ember.TextField name="title" valueBinding="content.title" class="title"}}
     label Content
-    {{view Ember.TextArea name="content_raw" valueBinding="content.content_raw"}}
-    {{#view saveButton contentBinding="content"}}Save{{/view}}
+    | {{view Ember.TextArea name="content_raw" valueBinding="content.content_raw"}}
+    | {{#view saveButton contentBinding="content"}}Save{{/view}}
 
 script(type="text/x-handlebars", data-template-name="cv-add-section-link")
-  {{#if currentUser.is_connected}}
+  | {{#if currentUser.is_connected}}
   a(href="#") Add New Section
-  {{/if}}
+  | {{/if}}
 
-script(type="text/x-handlebars", data-template-name="user")
+script(type="text/x-handlebars", data-template-name="user").
   {{#if currentUser.is_connected}}
   {{view userLogoutView currentUserBinding="currentUser"}}
   {{else}}
   {{view userLoginView currentUserBinding="currentUser"}}
   {{/if}}
 
-script(type="text/x-handlebars", data-template-name="user-login")
+script(type="text/x-handlebars", data-template-name="user-login").
   {{view usernameView id="login-username" name="username"}}
   {{view passwordView id="login-password" name="password"}}
   {{#view loginButton}}Log In{{/view}}
 
-script(type="text/x-handlebars", data-template-name="user-logout")
+script(type="text/x-handlebars", data-template-name="user-logout").
   {{currentUser.name}}
   {{#view User.LogoutButton}}Log Out{{/view}}
 
 script(type="text/x-handlebars", data-template-name="buildset-list")
-  ol.buildsets
+  ol.buildsets.
     {{#each buildsets}}
     {{view Gametheory.BuildsetView contentBinding="this"}}
     {{/each}}
 
 script(type="text/x-handlebars", data-template-name="buildset")
-  h2 {{content.packageName}}
-  .description
+  h3 {{content.packageName}}
+  .description.
     {{{content.formattedDescription}}}
   dl.info
     dt License:
-    dd
+    dd.
       {{{content.formattedLicense}}}
     dt Source Code:
-    dd
-      | <a {{bindAttr href="content.sourceCodeLink"}}>github</a>
+    dd.
+      <a {{bindAttr href="content.sourceCodeLink"}}>github</a>
     dt Documentation:
-    dd
-      | <a {{bindAttr href="content.documentationLink"}}>read the docs</a>
+    dd.
+      <a {{bindAttr href="content.documentationLink"}}>read the docs</a>
     dt Last Successful Build:
-    {{#if content.hasSuccessfulBuild}}
-    dd
-      | <a {{bindAttr href="content.lastSuccessfulBuildLink"}}>v{{content.lastSuccessfulBuild.version}} build {{content.lastSuccessfulBuild.build}}</a> on {{content.lastSuccessfulBuildDate}}
-    {{else}}
-    dd
-      | never
-    {{/if}}
-    {{#if content.hasClassifiers}}
+    | {{#if content.hasSuccessfulBuild}}
+    dd.
+      <a {{bindAttr href="content.lastSuccessfulBuildLink"}}>v{{content.lastSuccessfulBuild.version}} build {{content.lastSuccessfulBuild.build}}</a> on {{content.lastSuccessfulBuildDate}}
+    | {{else}}
+    dd never
+    | {{/if}}
+    | {{#if content.hasClassifiers}}
     dt Classification:
     dd
-      ul
+      ul.
         {{#each content.classifiers}}
         {{view Gametheory.ClassifierView contentBinding="this"}}
         {{/each}}
-    {{/if}}
-    {{#if onlyOneBuildset}}
+    | {{/if}}
+    | {{#if onlyOneBuildset}}
     dt All Builds:
     dd
-      ol.builds
+      ol.builds.
         {{#each content.allBuilds}}
         {{view Gametheory.BuildView contentBinding="this"}}
         {{/each}}
-    {{else}}
+    | {{else}}
     dt Recent Builds:
     dd
       ol.builds
-        {{#each content.recentBuilds}}
-        {{view Gametheory.BuildView contentBinding="this"}}
-        {{/each}}
-        li
-          | <a {{bindAttr href="content.permalink"}}>all builds</a>
-    {{/if}}
+        | {{#each content.recentBuilds}}
+        | {{view Gametheory.BuildView contentBinding="this"}}
+        | {{/each}}
+        li.
+          <a {{bindAttr href="content.permalink"}}>all builds</a>
+    | {{/if}}
 
 script(type="text/x-handlebars", data-template-name="build")
   dl
-    {{#if content.formattedVersion}}
+    | {{#if content.formattedVersion}}
     dt Build:
     dd.build-string v{{content.formattedVersion}} build {{content.formattedBuild}}
-    {{/if}}
+    | {{/if}}
     dt Build Date:
     dd {{content.formattedDate}}
     dt Build Status:
@@ -170,16 +167,16 @@ script(type="text/x-handlebars", data-template-name="build")
       | <span {{bindAttr class="content.successful:build-success"}}>{{content.status}}</span>
     dt Test Results:
     dd.test-results
-      {{view Gametheory.BuildToggle}}
+      | {{view Gametheory.BuildToggle}}
       pre.test-results {{content.test_results}}
-    {{#if content.successful}}
+    | {{#if content.successful}}
     dt Download Link:
     dd
       | <a {{bindAttr href="content.downloadLink"}}>{{content.download_file}}</a>
-    {{/if}}
+    | {{/if}}
 
-script(type="text/x-handlebars", data-template-name="classifier")
+script(type="text/x-handlebars", data-template-name="classifier").
   {{content}}
 
-script(type="text/x-handlebars", data-template-name="test-results-toggle")
-  | show
+script(type="text/x-handlebars", data-template-name="test-results-toggle").
+  show

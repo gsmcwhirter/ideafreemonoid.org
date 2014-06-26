@@ -2,7 +2,8 @@ var fs = require("fs")
   , cleancss = require("clean-css")
   , jade = require("jade")
   , stylus = require("stylus")
-  , minify = require("jake-uglify").minify
+  //, minify = require("jake-uglify").minify
+  , uglify = require("uglify-js")
   , couchapp = require("couchapp")
   , path = require("path")
   , forever = require("forever")
@@ -72,7 +73,7 @@ namespace("markup", function (){
 
         var source = fs.readFileSync("couchapp/jade/index.jade");
 
-        var fn = jade.compile(source, {filename: "couchapp/jade/index.jade"});
+        var fn = jade.compile(source, {filename: "couchapp/jade/index.jade", pretty: true});
         var locals = {};
 
         fs.writeFileSync("couchapp/attachments/index.html", fn(locals));
@@ -98,10 +99,28 @@ namespace("js", function (){
     });
 
     desc("Concatenates the site functionality files together and minifies");
-    var files = ["api", "main", "user", "blog", "cv", "gametheory", "routes"].map(function (file){
+    file("couchapp/attachments/js/site.min.js", function (){
+      var files = ["api", "main", "user", "blog", "cv", "gametheory", "routes"].map(function (file){
         return "couchapp/js/site." + file + ".js";
+      });
+      
+      console.log(files);
+      
+      /*var all = '';
+      files.forEach(function(file, i) {
+        if (file.match(/^.*js$/)) {
+          all += fs.readFileSync(file).toString();
+        }
+      });*/
+
+  
+      var out = fs.openSync('couchapp/attachments/js/site.min.js', 'w+');
+      /*var ast = uglify.parser.parse(all);
+      ast = uglify.uglify.ast_mangle(ast);
+      ast = uglify.uglify.ast_squeeze(ast);
+      fs.writeSync(out, uglify.uglify.gen_code(ast)); */
+      fs.writeSync(out, uglify.minify(files).code);
     });
-    minify({"couchapp/attachments/js/site.min.js": files});
 });
 
 namespace("css", function (){
@@ -312,6 +331,7 @@ namespace("worker", function (){
                 , build_path: build_path
                 , dist_path: dist_path
                 , python: python
+                , C_INCLUDE_PATH: "/usr/local/lib/python2.6/dist-packages/numpy/core/include"
             }
             , logFile: [logDir, "worker_forever.log"].join("/")
             , outFile: [logDir, "worker_out.log"].join("/")
