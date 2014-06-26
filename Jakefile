@@ -73,7 +73,7 @@ namespace("markup", function (){
 
         var source = fs.readFileSync("couchapp/jade/index.jade");
 
-        var fn = jade.compile(source, {filename: "couchapp/jade/index.jade"});
+        var fn = jade.compile(source, {filename: "couchapp/jade/index.jade", pretty: true});
         var locals = {};
 
         fs.writeFileSync("couchapp/attachments/index.html", fn(locals));
