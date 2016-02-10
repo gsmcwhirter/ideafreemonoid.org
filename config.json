@@ -1,0 +1,21 @@
+{
+    "domain": "https://www.ideafreemonoid.org",
+    "cookie_secret": "woo!",
+    "facebook": {
+        "app_id": "TODO",
+        "app_secret": "TODO"
+    },
+    "google": {
+
+    },
+    "twitter": {
+        "consumer_key": "TODO",
+        "consumer_secret": "TODO"
+    },
+    "jwt": {
+        "secretOrKey": "secret",
+        "secret": "woo2!",
+        "issuer": "www.ideafreemonoid.org",
+        "audience": "ideafreemonoid.org"
+    }
+}
