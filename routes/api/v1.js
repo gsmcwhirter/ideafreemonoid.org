@@ -1,9 +1,8 @@
-var express = require('express');
-var router = express.Router();
+var router = new require("koa-router")();
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
-  res.send('respond with an API resource');
+router.get('/', function *(next) {
+  res.render('index', { title: 'Home' });
 });
 
 module.exports = router;
