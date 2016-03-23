@@ -46,6 +46,7 @@ App.Router = {
         App.hideAll();
         this.get("rootElement").show();
         App.setTitle("Home");
+        _gaq.push(["_trackPageview", "#"]);
     }
 };
 
@@ -56,6 +57,7 @@ App.hideAll = function (){
     Blog.get("rootElement").hide();
     CV.get("rootElement").hide();
     Gametheory.get("rootElement").hide();
+    Portfolio.get("rootElement").hide();
 
     this.setTitle("");
 };

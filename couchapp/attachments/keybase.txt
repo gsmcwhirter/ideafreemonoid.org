@@ -1,0 +1,66 @@
+==================================================================
+https://keybase.io/gsmcwhirter
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of https://www.ideafreemonoid.org
+  * I am gsmcwhirter (https://keybase.io/gsmcwhirter) on keybase.
+  * I have a public key with fingerprint 146F 35EA 509E 47B6 2220  6D5A 2068 4302 8C17 D002
+
+To claim this, I am signing this object:
+
+{
+    "body": {
+        "key": {
+            "fingerprint": "146f35ea509e47b622206d5a206843028c17d002",
+            "host": "keybase.io",
+            "key_id": "206843028c17d002",
+            "uid": "6c18114f5f9e871149ba0dde0c48a800",
+            "username": "gsmcwhirter"
+        },
+        "service": {
+            "hostname": "www.ideafreemonoid.org",
+            "protocol": "https:"
+        },
+        "type": "web_service_binding",
+        "version": 1
+    },
+    "ctime": 1410986817,
+    "expire_in": 157680000,
+    "prev": "8bd78153559b613347958a63a9e7d3565394452d91476bf154a2b6432d79e4cb",
+    "seqno": 5,
+    "tag": "signature"
+}
+
+with the aforementioned key, yielding the PGP signature:
+
+-----BEGIN PGP MESSAGE-----
+Version: GnuPG/MacGPG2 v2.0.22 (Darwin)
+Comment: GPGTools - https://gpgtools.org
+
+owFtkVtIFGEUx2c1M5e0UlNc1GKg0Ni2uX1zWXqzrEgDy/ACtc7lm90pd2abnXW9
+JIkWoSVWBgU9lPUSPYSlBXbR1SK0vPRWkdVLN6yoNCNCsm/E3nr5vu+c8z+/c75z
+TiXHY07H2kBB3MnMp3GOJ4OYhJVmzRQ24JKh1OHeBvwgXLhUTfdDM2RquoV7cZJh
+VRpAERACZDiJpSiKYBUgopNnaILiZZJTCILC3XjACNsZCCOJYejRDORDhk9TkPc/
++shCgJVJniQZFagC5Dn0EiSRUBRIyAwv8gRhC8PQ1MUgRGp/OChHA5ppQRNvdOMo
+UKPJ0G7brr4oikajHk2BompCGDR0Q1M8hulHoJBpWIZsVCNNwLJCYa/NsOpCC0lQ
+8i3ifJKmK2gKKKMGmmHN0HEviZSypdl8kiEJgWd5knPjsDakmdCn2QrAsahfgrDr
+wBqE5CWF40lAAyBILEnTDCcAXmRpUYCcQgMW0ALDAEoRSIZjJZUEjEhJLENTCoeG
+LUu4/cFDuoF7AWpT9CNkWPProhUxId7obHVkL8EcTmxpQpy9SMyZtPLfel/vTZwP
+3shrmU39hlXdGhrfk0EUdpbEjfzZ39rxksnJnDjevs87MHd1qKWivjSYvCv9aM8q
+obtgpD6lc2fb3IZ7qbvze7L6mye61/xoygR+17D6bNAVE8ZyQeK2jenNj4OeSPH1
+UAU4m/Rp5pd4hOD6C95mscYyaW6yvLdsfqqvbzTlSvyZC8eax2dd8oGYa1POmHM7
+saVp9M3hqGfitnO4KDcyPXAJ+hLK1pdnP3d/rgz13F1Xtdliis07aV3nX2Rc7Mrn
+3p/uxdTVnYVfHz6YPkc+Sh64tuLmiTTH5fYvv1+VvIv1xqpbZj/m3W//yTM7vhfL
+g0Udbf1TKctrP2xNmqz8Cw==
+=SIYy
+-----END PGP MESSAGE-----
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/gsmcwhirter
+
+==================================================================
+

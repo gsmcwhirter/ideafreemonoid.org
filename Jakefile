@@ -100,12 +100,12 @@ namespace("js", function (){
 
     desc("Concatenates the site functionality files together and minifies");
     file("couchapp/attachments/js/site.min.js", function (){
-      var files = ["api", "main", "user", "blog", "cv", "gametheory", "routes"].map(function (file){
+      var files = ["api", "main", "user", "blog", "cv", "portfolio", "gametheory", "routes"].map(function (file){
         return "couchapp/js/site." + file + ".js";
       });
-      
+
       console.log(files);
-      
+
       /*var all = '';
       files.forEach(function(file, i) {
         if (file.match(/^.*js$/)) {
@@ -113,7 +113,7 @@ namespace("js", function (){
         }
       });*/
 
-  
+
       var out = fs.openSync('couchapp/attachments/js/site.min.js', 'w+');
       /*var ast = uglify.parser.parse(all);
       ast = uglify.uglify.ast_mangle(ast);
@@ -413,7 +413,7 @@ namespace("worker", function (){
         var couchdb = process.env.couchdb || build_couchdb_url(config.couchdb);
 
         var rclient = new redis.RedisClient(redis_channel);
-        
+
         var send_message_for = function (buildset){
             console.log("Processing %s...", buildset);
             var doc_data = buildset.split(":");
@@ -435,7 +435,7 @@ namespace("worker", function (){
             request(couchdb + "/_design/app/_view/buildsets?include_docs=true", function (err, resp, body){
                 if (!err){
                     var response = JSON.parse(body);
-    
+
                     if (response.error){
                         fail(response.error);
                     }
@@ -448,7 +448,7 @@ namespace("worker", function (){
                 else {
                     fail("Couldn't fetch project docs.");
                 }
-    
+
                 rclient.close();
                 complete();
             });
@@ -457,7 +457,7 @@ namespace("worker", function (){
             request(couchdb + "/buildset:" + buildset, function (err, resp, body){
                 if (!err){
                     var response = JSON.parse(body);
-                    
+
                     if (response.error){
                         fail(response.error);
                     }
@@ -468,11 +468,11 @@ namespace("worker", function (){
                 else {
                     fail("Couldn't fetch buildset doc.");
                 }
-                
+
                 rclient.close();
-                complete(); 
+                complete();
             });
-            
+
         }
     }, {async: true});
 });

@@ -5,12 +5,14 @@ block menuarea
     ul
       li
         a(href="#") Home
-      li
-        a(href="#!blog") Blog
+      //li
+      //  a(href="#!blog") Blog
       li
         a(href="#!cv") CV
       li
-        a(href="#!gametheory") Code
+        a(href="#!portfolio") Portfolio
+      li
+        a(href="#!gametheory") Simulations
       li
         a(href="/visualizations/") Visualizations
       li
@@ -29,24 +31,28 @@ block maincontent
     
 
     dl
-      dt Academic E-Mail:
-      dd gmcwhirt -at- uci -dot- edu
+      dt Teaching E-mail:
+      dd gmcwhirter -at- windwardschool -dot- org
+      //dt Academic E-Mail:
+      //dd gmcwhirt -at- uci -dot- edu
       dt Personal E-Mail:
       dd greg -at- ideafreemonoid -dot- org
     .clearfix
     #about
       h3.header.top Personal Information
       p
-        | Starting with the 2014-2015 academic year, I will be a mathematics and
+        | I am currently looking for opportunities as a software developer in the greater Los Angeles area.
+      p
+        | Since 2014, I have been a mathematics and
         | computer science teacher at the 
         a(href="http://windwardschool.org") Windward School
         |  in west Los Angeles.
       p
-        | I am currently a graduate student at the 
+        | I completed a Ph. D. at the 
         a(href="http://www.uci.edu") University of California, Irvine
         |  in the department of 
         a(href="http://www.lps.uci.edu") Logic and Philosophy of Science
-        |  finishing a Ph.D. concerning how to identify deceptive behavior in
+        |  concerning how to identify deceptive behavior in
         | formal models of signalling.
       p
         | I am originally from central Pennsylvania. I received a joint bachelor's
@@ -55,7 +61,9 @@ block maincontent
         |  in mathematics and philosophy.
       h3.header Teaching Interests
       p
-        | I have taught a number of classes at a university level in symbolic logic,
+        | This year I am teaching classes on AP Computer Science A, Geometry, PreCalculus, and Introduction to Computer Programming.
+      p
+        | In the past, I have taught a number of classes at a university level in symbolic logic,
         |  philosophy of science, and introductory philosophy. I also regularly teach
         |  a mathematical logic course during the summer for the 
         a(href="http://cty.jhu.edu") Johns Hopkins Center for Talented Youth
@@ -81,13 +89,136 @@ block maincontent
         li
           a(href="http://github.com/gsmcwhirter") GitHub
         li
-          a(href="http://twitter.com/#!/gsmcwhirter") Twitter
+          a(href="http://twitter.com/gsmcwhirter") Twitter
         li
           a(href="http://www.linkedin.com/in/gsmcwhirter") LinkedIn
 
   #blog
     script(type="text/x-handlebars").
       {{view Blog.BlogView}}
+
+  #portfolio
+    h2 Portfolio Highlights
+    
+    p
+      | For a fuller portfolio, please visit 
+      a(href="https://github.com/gsmcwhirter/") my GitHub profile
+      | .
+    
+    dl
+      dt
+        a(href="https://github.com/gsmcwhirter/ideafreemonoid.org") gsmcwhirter/ideafreemonoid.org
+      dd
+        | the code for my personal website
+        dl
+          dt Language/Technology (current)
+          dd CouchApp (CouchDB) + Ember (old version) frontend, node.js backend w/ express for git hooks
+          dt Language/Technology (rewrite)
+          dd node.js backend, React frontend, PostgreSQL database
+      
+      dt
+        a(href="https://github.com/gsmcwhirter/dynamics-visualization") gsmcwhirter/dynamics-visualization
+      dd
+        | displays solution trajectories of 2x2 games
+        dl
+          dt Language/Technology
+          dd JavaScript, HTML5 canvas
+      
+      dt
+        a(href="https://github.com/gsmcwhirter/dynamics") gsmcwhirter/dynamics
+      dd
+        | calculates solution trajectories of 2x2 games
+        dl
+          dt Language/Technology
+          dd JavaScript
+          
+      dt
+        a(href="https://github.com/gsmcwhirter/c-simulations") gsmcwhirter/c-simulations
+      dd
+        | a framework for game-theoretic dynamical system simulations in C (docs: 
+        a(href="https://c-simulations.readthedocs.org/en/latest/") https://c-simulations.readthedocs.org/en/latest/
+        | )
+        dl
+          dt Language/Technology
+          dd C
+
+      dt
+        a(href="https://github.com/gsmcwhirter/self-deception") gsmcwhirter/self-deception
+      dd
+        | uses the c-simulations framework to run research simulations concerning self-deception
+        dl
+          dt Language/Technology
+          dd C
+      
+      dt
+        a(href="https://github.com/gsmcwhirter/universal-deception") gsmcwhirter/universal-deception
+      dd
+        | uses the c-simulations framework to run research simulations concerning universal deception
+        dl
+          dt Language/Technology
+          dd C
+          
+      dt
+        a(href="https://github.com/gsmcwhirter/simulations") gsmcwhirter/simulations
+      dd
+        | a framework for game-theoretic dynamical system simulations in Python (docs: 
+        a(href="https://simulations.readthedocs.org/en/latest/") https://simulations.readthedocs.org/en/latest/
+        | )
+        dl
+          dt Language/Technology
+          dd Python
+          
+      dt
+        a(href="https://github.com/WindwardProgramming-2014/wwgamelib") WindwardProgramming-2014/wwgamelib
+      dd
+        | an attempt at a 2d game wrapper for students to use at Windward School; somewhat incomplete (docs: 
+        a(href="http://wwgamelib.readthedocs.org/en/develop/") http://wwgamelib.readthedocs.org/en/develop/
+        | )
+        dl
+          dt Language/Technology
+          dd Python, pyglet
+
+      dt
+        a(href="https://github.com/WindwardProgramming-2014/zombiehunter") WindwardProgramming-2014/zombiehunter
+      dd
+        | a demo game using wwgamelib
+        dl
+          dt Language/Technology
+          dd Python
+          
+      dt
+        a(href="https://github.com/WindwardAPCS/Bioinformatics") WindwardAPCS/Bioinformatics
+      dd
+        | a Bioinformatics project in Java for AP Computer Science A students; completed code available on request
+        | (also available as gsmcwhirter/Bioinformatics)
+        dl
+          dt Language/Technology
+          dd Java
+          
+      dt
+        a(href="https://github.com/WindwardAPCS/Simulations") WindwardAPCS/Simulations
+      dd
+        | a predator-prey simulation in Java for AP Computer Science A students; completed code available on request
+        | (also available as gsmcwhirter/Simulations-1)
+        dl
+          dt Language/Technology
+          dd Java, javafx
+          
+      dt
+        a(href="https://github.com/swtor-apps/swtor-tanking") swtor-apps/swtor-tanking
+      dd
+        | a node.js extension for optimizing game stats given certain constraints
+        dl
+          dt Language/Technology
+          dd C/C++, node.js
+          
+      dt
+        a(href="https://github.com/swtor-apps/swtor-tanking-site") swtor-apps/swtor-tanking-site
+      dd
+        | the code for the website that used to host the swtor-tanking calculator; no longer live
+        dl
+          dt Language/Technology
+          dd node.js w/ express
 
   #cv
     script(type="text/x-handlebars").
@@ -101,7 +232,9 @@ block maincontent
         | from python due to speed requirements.
         | The most recent frameworks are available from my 
         a(href="https://github.com/gsmcwhirter/c-simulations") c-simulations project
-        | . 
+        | . Documentation for this project is ongoing and available at 
+        a(href="http://c-simulations.readthedocs.org/en/latest/") its readthedocs page
+        | .
       p
         | Examples of this framework being used are available in my 
         a(href="https://github.com/gsmcwhirter/universal-deception") universal-deception project
@@ -148,5 +281,3 @@ block maincontent
           | deactivate 
     script(type="text/x-handlebars").
       {{view Gametheory.BuildsetListView}}
-
-
