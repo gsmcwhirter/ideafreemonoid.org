@@ -83,9 +83,9 @@ app.use(helmet());
 
 // routing
 // load routes
-var indexroutes = require('./routes/index')
+var api1 = require('./routes/api/v1')
   , users = require('./routes/users')
-  , api1 = require('./routes/api/v1')
+  , indexroutes = require('./routes/index')
   ;
 
 var router = new Router();

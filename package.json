@@ -12,6 +12,7 @@
   "dependencies": {
     "db-migrate": "^0.9.23",
     "debug": "^2.2.0",
+    "fbemitter": "^2.0.2",
     "jade": "^1.11.0",
     "jsonwebtoken": "^5.7.0",
     "koa": "^1.2.0",
@@ -39,7 +40,9 @@
     "passport-twitter": "^1.0.4",
     "react": "^0.14.7",
     "react-dom": "^0.14.7",
-    "stylus": "^0.54.1"
+    "react-router": "^2.0.1",
+    "stylus": "^0.54.1",
+    "underscore": "^1.8.3"
   },
   "description": "This project is actually the source code running on my personal website.",
   "main": "app.js",
