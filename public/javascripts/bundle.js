@@ -27162,10 +27162,68 @@ var ReactDOM = require('react-dom');
 },{"react":219,"react-dom":56}],224:[function(require,module,exports){
 'use strict';
 
-var React = require('react');
-var ReactDOM = require('react-dom');
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-},{"react":219,"react-dom":56}],225:[function(require,module,exports){
+var React = require('react');
+var marked = require('marked');
+
+var CVCategory = React.createClass({
+  displayName: 'CVCategory',
+
+  rawMarkup: function rawMarkup() {
+    var rawMarkup = marked(this.props.cvContent, { sanitize: true });
+    return { __html: rawMarkup };
+  },
+  render: function render() {
+    return React.createElement(
+      'li',
+      null,
+      React.createElement(
+        'h3',
+        null,
+        this.props.name
+      ),
+      React.createElement('div', { className: 'cv-section-content', dangerouslySetInnerHTML: this.rawMarkup() }),
+      React.createElement(
+        'div',
+        { className: 'cv-section-updated' },
+        'Last updated ',
+        this.props.updated
+      )
+    );
+  }
+});
+
+var CV = React.createClass({
+  displayName: 'CV',
+
+  getInitialState: function getInitialState() {
+    return { categories: [{ name: "Education", cvContent: "", updated: "" }] };
+  },
+  componentDidMount: function componentDidMount() {
+    this.props.emitter.emit("titleChange", "CV");
+    // this.serverRequest = $.get("/api/v1/page/"+this.props.page, function (result){
+    //     //when done fetching
+    //     this.setState(result);
+    // }.bind(this));
+  },
+  componentWillUnmount: function componentWillUnmount() {
+    // this.serverRequest.abort();
+  },
+  render: function render() {
+    return React.createElement(
+      'ol',
+      { className: 'cvsections' },
+      this.state.categories.map(function (category) {
+        return React.createElement(CVCategory, _extends({ key: category.name }, category));
+      })
+    );
+  }
+});
+
+module.exports = CV;
+
+},{"marked":54,"react":219}],225:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -27183,6 +27241,7 @@ var SideBar = require('./sidebar.jsx');
 
 var Page = require('./page.jsx');
 var Portfolio = require('./portfolio.jsx');
+var CV = require('./cv.jsx');
 
 var PageTitleEmitter = new EventEmitter();
 
@@ -27196,6 +27255,7 @@ var wrapComponent = function wrapComponent(Component, props) {
 
 var components = {
   "home": { actual: Page, pageName: "home" },
+  "cv": { actual: CV },
   "portfolio": { actual: Portfolio },
   "404": { actual: Page, pageName: "error404" }
 };
@@ -27242,7 +27302,11 @@ var App = React.createClass({
         React.createElement(PageTitle, { emitter: PageTitleEmitter })
       ),
       this.props.menu || React.createElement(Menu, null),
-      this.props.children
+      React.createElement(
+        'div',
+        { id: 'main', role: 'main' },
+        this.props.children
+      )
     );
   }
 });
@@ -27251,7 +27315,7 @@ var AppWrapper = React.createClass({
   displayName: 'AppWrapper',
 
   getInitialState: function getInitialState() {
-    return { paths: [{ path: "/", component: "home" }, { path: "/portfolio", component: "portfolio" }] };
+    return { paths: [{ path: "/", component: "home" }, { path: "/portfolio", component: "portfolio" }, { path: "/cv", component: "cv" }] };
   },
   componentDidMount: function componentDidMount() {
     // this.serverRequest = $.get("/api/v1/page/"+this.props.page, function (result){
@@ -27283,7 +27347,7 @@ var AppWrapper = React.createClass({
 ReactDOM.render(React.createElement(AppWrapper, null), document.getElementById('content'));
 ReactDOM.render(React.createElement(SideBar, null), document.getElementById('sidebar'));
 
-},{"./menu.jsx":226,"./page.jsx":227,"./portfolio.jsx":228,"./sidebar.jsx":229,"fbemitter":5,"react":219,"react-dom":56,"react-router":84,"underscore":221}],226:[function(require,module,exports){
+},{"./cv.jsx":224,"./menu.jsx":226,"./page.jsx":227,"./portfolio.jsx":228,"./sidebar.jsx":229,"fbemitter":5,"react":219,"react-dom":56,"react-router":84,"underscore":221}],226:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -27293,7 +27357,9 @@ var Menu = React.createClass({
     displayName: 'Menu',
 
     getInitialState: function getInitialState() {
-        return { menuItems: [{ id: 0, url: "/", title: "Home" }, { id: 1, url: "/blog", title: "Blog" }, { id: 2, url: "/cv/", title: "CV" }, { id: 3, url: "/portfolio/", title: "Portfolio" }] };
+        return { menuItems: [{ id: 0, url: "/", title: "Home" },
+            //{id: 1, url: "/blog", title: "Blog"},
+            { id: 2, url: "/cv", title: "CV" }, { id: 3, url: "/portfolio", title: "Portfolio" }] };
     },
     componentDidMount: function componentDidMount() {
         // this.serverRequest = $.get("/api/v1/menu", function (result){
@@ -27355,7 +27421,6 @@ var Page = React.createClass({
     },
     componentDidMount: function componentDidMount() {
         this.props.emitter.emit("titleChange", this.state.pageTitle);
-        console.log("Fired emit", this.props.emitter, this.state.pageTitle);
         // this.serverRequest = $.get("/api/v1/page/"+this.props.page, function (result){
         //     //when done fetching
         //     this.setState(result);
@@ -27369,7 +27434,7 @@ var Page = React.createClass({
         return { __html: rawMarkup };
     },
     render: function render() {
-        return React.createElement('div', { id: 'main', role: 'main', dangerouslySetInnerHTML: this.rawMarkup() });
+        return React.createElement('div', { className: 'pageContent', dangerouslySetInnerHTML: this.rawMarkup() });
     }
 });
 
@@ -27378,102 +27443,124 @@ module.exports = Page;
 },{"marked":54,"react":219}],228:[function(require,module,exports){
 'use strict';
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var React = require('react');
 var marked = require('marked');
 
 var TechList = React.createClass({
-    displayName: 'TechList',
+  displayName: 'TechList',
 
-    render: function render() {
+  render: function render() {
+    return React.createElement(
+      'ul',
+      { className: 'techList' },
+      this.props.techs.map(function (tech) {
         return React.createElement(
-            'ul',
-            { className: 'techlist' },
-            this.props.techs.map(function (tech) {
-                return React.createElement(
-                    'li',
-                    { key: tech },
-                    tech
-                );
-            })
+          'li',
+          { key: tech },
+          tech
         );
-    }
+      })
+    );
+  }
 });
 
 var GitHubLink = React.createClass({
-    displayName: 'GitHubLink',
+  displayName: 'GitHubLink',
 
-    render: function render() {
-        return React.createElement(
-            'a',
-            { href: 'https://www.github.com/{this.props.repo}' },
-            this.props.repo
-        );
-    }
+  render: function render() {
+    return React.createElement(
+      'a',
+      { className: 'githubLink', href: 'https://www.github.com/{this.props.repo}' },
+      this.props.repo
+    );
+  }
 });
 
 var DocsLink = React.createClass({
-    displayName: 'DocsLink',
+  displayName: 'DocsLink',
 
-    render: function render() {
-        if (this.props.url) {
-            return React.createElement('a', { href: this.props.url });
-        } else {
-            return;
-        }
+  render: function render() {
+    if (this.props.url) {
+      return React.createElement(
+        'a',
+        { className: 'docsLink', href: this.props.url },
+        'documentation'
+      );
+    } else {
+      return;
     }
+  }
+});
+
+var LiveLink = React.createClass({
+  displayName: 'LiveLink',
+
+  render: function render() {
+    if (this.props.url) {
+      return React.createElement(
+        'a',
+        { className: 'liveLink', href: this.props.url },
+        'live example'
+      );
+    } else {
+      return;
+    }
+  }
 });
 
 var PortfolioItem = React.createClass({
-    displayName: 'PortfolioItem',
+  displayName: 'PortfolioItem',
 
-    rawMarkup: function rawMarkup() {
-        var rawMarkup = marked(this.props.item.about, { sanitize: true });
-        return { __html: rawMarkup };
-    },
-    render: function render() {
-        return React.createElement(
-            'li',
-            null,
-            React.createElement(
-                'h3',
-                null,
-                this.props.item.name
-            ),
-            React.createElement(TechList, { techs: this.props.item.tech }),
-            React.createElement(GitHubLink, { repo: this.props.item.github }),
-            React.createElement(DocsLink, { url: this.props.item.docs }),
-            React.createElement('div', { className: 'about', dangerouslySetInnerHTML: this.rawMarkup() })
-        );
-    }
+  rawMarkup: function rawMarkup() {
+    var rawMarkup = marked(this.props.about, { sanitize: true });
+    return { __html: rawMarkup };
+  },
+  render: function render() {
+    return React.createElement(
+      'li',
+      null,
+      React.createElement(
+        'h3',
+        null,
+        this.props.name
+      ),
+      React.createElement(TechList, { techs: this.props.tech }),
+      React.createElement(GitHubLink, { repo: this.props.github }),
+      React.createElement(DocsLink, { url: this.props.docs }),
+      React.createElement(LiveLink, { url: this.props.live }),
+      React.createElement('div', { className: 'about', dangerouslySetInnerHTML: this.rawMarkup() })
+    );
+  }
 });
 
 var Portfolio = React.createClass({
-    displayName: 'Portfolio',
+  displayName: 'Portfolio',
 
-    getInitialState: function getInitialState() {
-        //return [{name: "", github: "", docs: "", live: "", tech: ["", ""], about: ""}];
-        return { items: [] };
-    },
-    componentDidMount: function componentDidMount() {
-        this.props.emitter.emit("titleChange", "Portfolio");
-        console.log("Fired emit", this.props.emitter, this.state.pageTitle);
-        // this.serverRequest = $.get("/api/v1/page/"+this.props.page, function (result){
-        //     //when done fetching
-        //     this.setState(result);
-        // }.bind(this));
-    },
-    componentWillUnmount: function componentWillUnmount() {
-        // this.serverRequest.abort();
-    },
-    render: function render() {
-        return React.createElement(
-            'ol',
-            { className: 'portfolioItems' },
-            this.state.items.map(function (item) {
-                return React.createElement(PortfolioItem, { item: item });
-            })
-        );
-    }
+  getInitialState: function getInitialState() {
+    return { items: [{ name: "Test", github: "gsmcwhirter/test", docs: "readthedocs/test", live: "yay", tech: ["C", "Python"], about: "Stuffy stuff stuff" }] };
+    //return {items: []};
+  },
+  componentDidMount: function componentDidMount() {
+    this.props.emitter.emit("titleChange", "Portfolio");
+    // this.serverRequest = $.get("/api/v1/page/"+this.props.page, function (result){
+    //     //when done fetching
+    //     this.setState(result);
+    // }.bind(this));
+  },
+  componentWillUnmount: function componentWillUnmount() {
+    // this.serverRequest.abort();
+  },
+  render: function render() {
+    return React.createElement(
+      'ol',
+      { className: 'portfolioItems' },
+      this.state.items.map(function (item) {
+        return React.createElement(PortfolioItem, _extends({ key: item.name }, item));
+      })
+    );
+  }
 });
 
 module.exports = Portfolio;
@@ -27492,6 +27579,15 @@ var SideBar = React.createClass({
     getInitialState: function getInitialState() {
         //TODO
         return { about: "", email: "greg@ideafreemonoi.org", github: "gsmcwhirter", twitter: "gsmcwhirter", linkedin: "gsmcwhirter" };
+    },
+    componentDidMount: function componentDidMount() {
+        // this.serverRequest = $.get("/api/v1/menu", function (result){
+        //     //when done fetching
+        //     this.setState(result);
+        // }.bind(this));
+    },
+    componentWillUnmount: function componentWillUnmount() {
+        // this.serverRequest.abort();
     },
     rawMarkup: function rawMarkup() {
         var rawMarkup = marked(this.state.about, { sanitize: true });

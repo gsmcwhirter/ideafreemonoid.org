@@ -24,7 +24,7 @@
 
 - List featured projects
 - List by tag/technology
-- Search projects
+- Search/filter projects
 
 ### CV
 
@@ -32,7 +32,7 @@
 
 ### About / Sidebar
 
-- Picture
+- Picture 
 - Contact Info
 - Social links
 - Who am I

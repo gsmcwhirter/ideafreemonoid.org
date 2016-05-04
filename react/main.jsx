@@ -13,6 +13,7 @@ var SideBar = require('./sidebar.jsx');
 
 var Page = require('./page.jsx');
 var Portfolio = require('./portfolio.jsx');
+var CV = require('./cv.jsx');
 
 var PageTitleEmitter = new EventEmitter();
 
@@ -26,6 +27,7 @@ var wrapComponent = function(Component, props) {
 
 var components = {
     "home": {actual: Page, pageName: "home"},
+    "cv": {actual: CV},
     "portfolio": {actual: Portfolio},
     "404": {actual: Page, pageName: "error404"}
 };
@@ -57,7 +59,9 @@ var App = React.createClass({
               <PageTitle emitter={PageTitleEmitter} />
           </header>
           {this.props.menu || <Menu />}
-          {this.props.children}
+          <div id="main" role="main">
+            {this.props.children}
+          </div>
           </div>
         );
     }
@@ -65,7 +69,7 @@ var App = React.createClass({
 
 var AppWrapper = React.createClass({
   getInitialState: function (){
-    return {paths: [{path: "/", component: "home"}, {path: "/portfolio", component: "portfolio"}]};
+    return {paths: [{path: "/", component: "home"}, {path: "/portfolio", component: "portfolio"}, {path: "/cv", component: "cv"}]};
   },
   componentDidMount: function (){
     // this.serverRequest = $.get("/api/v1/page/"+this.props.page, function (result){

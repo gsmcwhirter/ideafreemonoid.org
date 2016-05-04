@@ -5,12 +5,15 @@
   "scripts": {
     "start": "node ./bin/www",
     "db:repl": "./node_modules/.bin/massive -d",
-    "db:migrate": "./node_modules/.bin/db-migrate",
+    "db:migrate:up": "./node_modules/.bin/db-migrate up",
+    "db:migrate:down": "./node_modules/.bin/db-migrate down",
+    "db:migrate:reset": "./node_modules/.bin/db-migrate reset",
     "db:migrate:create": "./node_modules/.bin/db-migrate create --sql-file",
     "browserify": "browserify -t babelify react/* -o public/javascripts/bundle.js"
   },
   "dependencies": {
-    "db-migrate": "^0.9.23",
+    "db-migrate": "^0.10.0-beta.11",
+    "db-migrate-pg": "^0.1.9",
     "debug": "^2.2.0",
     "fbemitter": "^2.0.2",
     "jade": "^1.11.0",
@@ -42,6 +45,7 @@
     "react-dom": "^0.14.7",
     "react-router": "^2.0.1",
     "stylus": "^0.54.1",
+    "thunkify-wrap": "^1.0.4",
     "underscore": "^1.8.3"
   },
   "description": "This project is actually the source code running on my personal website.",

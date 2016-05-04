@@ -4,7 +4,6 @@
     "user": { "ENV" : "DB_USER" },
     "password" : { "ENV" : "DB_PASS" },
     "database": "testdb",
-    "db": "testdb",
     "driver": "pg"
   }
 }

@@ -20,7 +20,7 @@ var Page = React.createClass({
         return { __html: rawMarkup };
     },
     render: function (){
-        return <div id="main" role="main" dangerouslySetInnerHTML={this.rawMarkup()}></div>;
+        return <div className="pageContent" dangerouslySetInnerHTML={this.rawMarkup()}></div>;
     }
 });
 

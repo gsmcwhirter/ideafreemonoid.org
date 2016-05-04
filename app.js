@@ -12,6 +12,7 @@ var koa = require('koa')
   , favicon = require("koa-favicon")
   , bodyParser = require("koa-bodyparser")
   , path = require('path')
+  , thunkify = require('thunkify-wrap')
   ;
 
 // load configuation files
@@ -23,6 +24,7 @@ var databaseConf = require("./database.json")
 var app = koa();
 
 //connect to database
+databaseConf[app.env].db = databaseConf[app.env].database;
 var dbInstance = massive.connectSync(databaseConf[app.env]);
 
 // response time headers

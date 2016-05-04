@@ -4,6 +4,15 @@ var UserStatus = React.createClass({
     getInitialState: function (){
         return {user: null};
     },
+    componentDidMount: function (){
+      // this.serverRequest = $.get("/api/v1/page/"+this.props.page, function (result){
+      //     //when done fetching
+      //     this.setState(result);
+      // }.bind(this));
+    },
+    componentWillUnmount: function (){
+      // this.serverRequest.abort();
+    },
     onLogin: function (){
         //TODO: try to log in
         this.setState({user: "Greg"});

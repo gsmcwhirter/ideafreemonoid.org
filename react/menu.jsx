@@ -4,7 +4,12 @@ var Link = require('react-router').Link;
 var Menu = React.createClass({
     getInitialState: function ()
     {
-        return {menuItems: [{id: 0, url: "/", title: "Home"}, {id: 1, url: "/blog", title: "Blog"}, {id: 2, url:"/cv/", title: "CV"}, {id: 3, url: "/portfolio/", title: "Portfolio"}]};
+        return {menuItems: [
+                  {id: 0, url: "/", title: "Home"},
+                  //{id: 1, url: "/blog", title: "Blog"},
+                  {id: 2, url:"/cv", title: "CV"},
+                  {id: 3, url: "/portfolio", title: "Portfolio"}
+                ]};
     },
     componentDidMount: function (){
         // this.serverRequest = $.get("/api/v1/menu", function (result){

@@ -4,7 +4,7 @@ var marked = require('marked');
 var TechList = React.createClass({
     render: function (){
       return (
-          <ul className="techlist">
+          <ul className="techList">
             {this.props.techs.map(function (tech){
                 return <li key={tech}>{tech}</li>;
             })}
@@ -15,33 +15,45 @@ var TechList = React.createClass({
 
 var GitHubLink = React.createClass({
     render: function (){
-      return <a href="https://www.github.com/{this.props.repo}">{this.props.repo}</a>;
+      return <a className="githubLink" href="https://www.github.com/{this.props.repo}">{this.props.repo}</a>;
     }
 });
 
 var DocsLink = React.createClass({
     render: function (){
       if (this.props.url){
-        return <a href={this.props.url}></a>;
+        return <a className="docsLink" href={this.props.url}>documentation</a>;
       }
-      else{
+      else {
         return;
       }
     }
 });
 
+var LiveLink = React.createClass({
+  render: function (){
+    if (this.props.url){
+      return <a className="liveLink" href={this.props.url}>live example</a>;
+    }
+    else {
+      return;
+    }
+  }
+});
+
 var PortfolioItem = React.createClass({
     rawMarkup: function() {
-        var rawMarkup = marked(this.props.item.about, {sanitize: true});
+        var rawMarkup = marked(this.props.about, {sanitize: true});
         return { __html: rawMarkup };
     },
     render: function (){
         return (
           <li>
-            <h3>{this.props.item.name}</h3>
-            <TechList techs={this.props.item.tech} />
-            <GitHubLink repo={this.props.item.github} />
-            <DocsLink url={this.props.item.docs} />
+            <h3>{this.props.name}</h3>
+            <TechList techs={this.props.tech} />
+            <GitHubLink repo={this.props.github} />
+            <DocsLink url={this.props.docs} />
+            <LiveLink url={this.props.live} />
             <div className="about" dangerouslySetInnerHTML={this.rawMarkup()}></div>
           </li>
         );
@@ -50,8 +62,8 @@ var PortfolioItem = React.createClass({
 
 var Portfolio = React.createClass({
   getInitialState: function (){
-      //return [{name: "", github: "", docs: "", live: "", tech: ["", ""], about: ""}];
-      return {items: []};
+      return {items: [{name: "Test", github: "gsmcwhirter/test", docs: "readthedocs/test", live: "yay", tech: ["C", "Python"], about: "Stuffy stuff stuff"}]};
+      //return {items: []};
   },
   componentDidMount: function (){
       this.props.emitter.emit("titleChange", "Portfolio");
@@ -67,7 +79,7 @@ var Portfolio = React.createClass({
       return (
         <ol className="portfolioItems">
         {this.state.items.map(function (item){
-          return <PortfolioItem item={item} />;
+          return <PortfolioItem key={item.name} {...item} />;
         })}
         </ol>
       );

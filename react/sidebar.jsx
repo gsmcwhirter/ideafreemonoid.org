@@ -8,6 +8,15 @@ var SideBar = React.createClass({
         //TODO
         return {about: "", email: "greg@ideafreemonoi.org", github: "gsmcwhirter", twitter: "gsmcwhirter", linkedin: "gsmcwhirter"};
     },
+    componentDidMount: function (){
+      // this.serverRequest = $.get("/api/v1/menu", function (result){
+      //     //when done fetching
+      //     this.setState(result);
+      // }.bind(this));
+    },
+    componentWillUnmount: function (){
+      // this.serverRequest.abort();
+    },
     rawMarkup: function() {
         var rawMarkup = marked(this.state.about, {sanitize: true});
         return { __html: rawMarkup };

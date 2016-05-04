@@ -118,7 +118,7 @@ nav#menu {
   clear: left;
   margin-left: 2em;
 }
-nav#menu ul>li {
+nav#menu li {
   list-style-type: none;
   display: block;
   float: left;
@@ -171,162 +171,67 @@ nav#menu ul>li {
   clear: both;
 }
 #main {
-  border: 1px solid #000;
   float: left;
   width: 66%;
 }
-#templates {
-  display: none;
-}
-#home {
-  padding-top: 1em;
-}
-#home #about {
-  float: left;
-  width: 58%;
-}
-#home #links {
-  float: right;
-  width: 40%;
-}
-#home .alt {
+.alt {
   color: #666;
 }
-#home .alt2 {
+.alt2 {
   color: #888;
 }
-#home .header.top {
+.header:first-of-type {
   margin-top: 0em;
   margin-left: 0em;
 }
-#home .top,
-#home dl {
-  margin-left: 35px;
-}
-#home dt {
-  float: left;
-  clear: left;
-  width: 10em;
-  color: #62aa00;
-}
-#blog {
+ol.cvsections {
   padding-top: 1em;
-}
-#blog ol.posts {
   margin-left: 0;
 }
-#blog ol.posts>li {
-  list-style-type: none;
-  border-bottom: 1px solid #0bf;
-  padding-bottom: 1em;
-}
-#blog ol.posts>li h2 a {
-  text-decoration: none;
-}
-#blog ol.posts>li .byline,
-#blog ol.posts>li .tagline,
-#blog ol.posts>li .permalink {
-  font-size: 93%;
-  color: #444;
-  padding: 0 1em;
-}
-#blog ol.posts>li .editline {
-  text-align: right;
-  margin-top: -1em;
-  font-size: 77%;
-  color: #888;
-  padding: 0 1em;
-}
-#blog ol.posts>li .content {
-  padding: 1em;
-}
-#blog .blog-draft {
-  border: 1px dotted #888;
-  border-radius: 10px;
-  -moz-border-radius: 10px;
-  -webkit-border-radius: 10px;
-  background-color: #ccc;
-  padding: 1em;
-  padding-top: 0;
-}
-#cv {
-  padding-top: 1em;
-}
-#cv ol.sections {
-  margin-left: 0;
-}
-#cv ol.sections>li {
+ol.cvsections li {
   clear: both;
   list-style-type: none;
   border-bottom: 1px solid #0bf;
   padding-bottom: 1em;
 }
-#cv ol.sections>li .updated {
+ol.cvsections li .updated {
   text-align: right;
   font-size: 77%;
   color: #888;
 }
-#cv ol.sections>li .content {
+ol.cvsections li .content {
   padding: 1em;
   padding-bottom: 0;
 }
-#cv ol.sections>li .content ul,
-#cv ol.sections>li .content ol {
+ol.cvsections li .content ul,
+ol.cvsections li .content ol {
   margin-top: 0;
 }
-#portfolio {
+ol.portfolioItems {
   padding-top: 1em;
-}
-#portfolio .instructions code {
-  display: block;
-  padding: 0.5em;
-  margin: 0.5em 2em;
-  background-color: #eee;
-  border: 1px solid #aaa;
-}
-#portfolio .instructions code pre {
-  margin-bottom: 0;
-}
-#portfolio ol.buildsets {
   margin-left: 0;
 }
-#portfolio ol.buildsets>li {
+ol.portfolioItems li {
+  clear: both;
   list-style-type: none;
   border-bottom: 1px solid #0bf;
   padding-bottom: 1em;
 }
-#portfolio ol.buildsets>li h2 a {
-  text-decoration: none;
+ol.portfolioItems li .techList {
+  clear: right;
+  float: right;
 }
-#portfolio ol.buildsets>li dt {
-  float: left;
-  width: 12em;
-  color: #62aa00;
+ol.portfolioItems li .techList li {
+  display: inline;
+  margin-right: 0.5em;
+  border: none;
+  padding: none;
 }
-#portfolio ol.buildsets>li dd {
-  margin-left: 12em;
+ol.portfolioItems li .githubLink {
+  clear: right;
+  float: right;
 }
-#portfolio ol.buildsets>li ol.builds {
-  margin-left: 0;
-}
-#portfolio ol.buildsets>li ol.builds>li {
-  list-style-type: none;
-}
-#portfolio ol.buildsets>li ol.builds>li pre.test-results {
-  display: none;
-}
-#portfolio ol.buildsets>li ol.builds>li dd.build-status span {
-  color: #f00;
-}
-#portfolio ol.buildsets>li ol.builds>li dd.build-status span.build-success {
-  color: #008000;
-}
-#portfolio ol.buildsets>li ol.builds>li dl {
-  margin-left: 0;
-}
-#portfolio ol.buildsets>li ol.builds>li dt {
-  width: 8em;
-}
-#portfolio ol.buildsets>li ol.builds>li dd {
-  margin-left: 8em;
+ol.portfolioItems li .docsLink {
+  clear: right;
+  float: right;
 }
